@@ -1,0 +1,23 @@
+version: '3.9'
+
+services:
+    mysql:
+        image: mysql:8.0.32
+        command: --default-authentication-plugin=mysql_native_password
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: database
+            MY_SQL_ROOT_HOST: '%'
+        ports:
+            - '3306:3306'
+        volumes:
+            - equiprent-data:/var/lib/mysql
+        networks:
+            - equiprent-network
+
+networks:
+    equiprent-network:
+        driver: bridge
+
+volumes:
+    equiprent-data:
