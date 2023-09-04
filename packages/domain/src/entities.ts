@@ -26,6 +26,12 @@ export class User extends BaseEntity {
 	receivedFeedbacks: Feedback[];
 
 	notifications: Notification[];
+
+	changeEmailTokens: ChangeEmailToken[];
+
+	changePasswordTokens: ChangePasswordToken[];
+
+	emailVerificationTokens: EmailVerificationToken[];
 }
 
 export class UserProfile extends BaseEntity {
@@ -44,24 +50,48 @@ export class UserProfile extends BaseEntity {
 	user: User;
 }
 
-export class UserChangeEmailToken extends BaseEntity {
-	token: string;
+export class ChangeEmailToken extends BaseEntity {
+	user: User;
 
 	newEmail: string;
 
-	expiryDate: Date;
-}
-
-export class UserChangePasswordToken extends BaseEntity {
 	token: string;
 
-	expiryDate: Date;
+	expiresAt: Date;
+
+	consumedAt?: Date;
+
+	invalidatedAt?: Date;
+
+	consumerIp?: string;
 }
 
-export class UserEmailVerificationToken extends BaseEntity {
+export class ChangePasswordToken extends BaseEntity {
+	user: User;
+
 	token: string;
 
-	expiryDate: Date;
+	expiresAt: Date;
+
+	consumedAt?: Date;
+
+	invalidatedAt?: Date;
+
+	consumerIp?: string;
+}
+
+export class EmailVerificationToken extends BaseEntity {
+	user: User;
+
+	token: string;
+
+	expiresAt: Date;
+
+	consumedAt?: Date;
+
+	invalidatedAt?: Date;
+
+	consumerIp?: string;
 }
 
 export class Chat extends BaseEntity {
