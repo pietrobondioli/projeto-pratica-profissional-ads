@@ -1,4 +1,4 @@
-import { EmailVerificationToken, User } from '@/domain';
+import { User } from '@/domain';
 import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
 import { BaseModel } from './base.model';
 import { UserProfileModel } from './user-profile.model';
@@ -8,6 +8,7 @@ import { FeedbackModel } from './feedback.model';
 import { NotificationModel } from './notification.model';
 import { ChangeEmailTokenModel } from './change-email-token.model';
 import { ChangePasswordTokenModel } from './change-password-token.model';
+import { EmailVerificationTokenModel } from './email-verification-token.model';
 
 @Entity()
 export class UserModel extends BaseModel implements User {
@@ -44,6 +45,9 @@ export class UserModel extends BaseModel implements User {
   @OneToMany(() => ChangePasswordTokenModel, (token) => token.user)
   changePasswordTokens: ChangePasswordTokenModel[];
 
-  @OneToMany(() => EmailVerificationToken, (notification) => notification.user)
-  emailVerificationTokens: EmailVerificationToken[];
+  @OneToMany(
+    () => EmailVerificationTokenModel,
+    (notification) => notification.user,
+  )
+  emailVerificationTokens: EmailVerificationTokenModel[];
 }
