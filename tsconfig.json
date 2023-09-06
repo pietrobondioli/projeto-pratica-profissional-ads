@@ -25,7 +25,9 @@
 		"jsx": "react-jsx",
 		"baseUrl": ".",
 		"paths": {
-			"@/domain": ["./packages/domain/src/index.ts"]
+			"@/*": ["./packages/*"],
+			"#/backend/*": ["./apps/backend/src/*"],
+			"#/frontend/*": ["./apps/frontend/src/*"]
 		}
 	},
 	"exclude": ["node_modules", "build", "dist", "**/*.spec*"]
