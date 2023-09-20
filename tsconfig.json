@@ -22,13 +22,7 @@
 		"resolveJsonModule": true,
 		"isolatedModules": true,
 		"noEmit": false,
-		"jsx": "react-jsx",
-		"baseUrl": ".",
-		"paths": {
-			"@/*": ["./packages/*"],
-			"#/backend/*": ["./apps/backend/src/*"],
-			"#/frontend/*": ["./apps/frontend/src/*"]
-		}
+		"jsx": "react-jsx"
 	},
 	"exclude": ["node_modules", "build", "dist", "**/*.spec*"]
 }
