@@ -1,22 +1,35 @@
+import { EventEmitter2 } from '@nestjs/event-emitter';
+
 import { DomainEventBase } from './domain-event.base';
 
-export class Aggregate<T> {
-  private domainEvents: DomainEventBase<T>[] = [];
+export class AggregateBase {
+  private static domainEvents: DomainEventBase<unknown>[] = [];
 
-  public getEvents() {
+  public static getEvents() {
     return this.domainEvents;
   }
 
-  public clearEvents() {
+  public static clearEvents() {
     this.domainEvents.splice(0, this.domainEvents.length);
   }
 
-  public addDomainEvent(event: DomainEventBase<T>) {
+  public static addDomainEvent(event: DomainEventBase<unknown>) {
     this.domainEvents.push(event);
   }
 
-  public removeDomainEvent(event: DomainEventBase<T>) {
+  public static removeDomainEvent(event: DomainEventBase<unknown>) {
     const index = this.domainEvents.findIndex((e) => e === event);
     this.domainEvents.splice(index, 1);
+  }
+
+  public static async publishEvents(
+    eventEmitter: EventEmitter2,
+  ): Promise<void> {
+    await Promise.all(
+      this.domainEvents.map(async (event) => {
+        return eventEmitter.emitAsync(event.constructor.name, event);
+      }),
+    );
+    this.clearEvents();
   }
 }

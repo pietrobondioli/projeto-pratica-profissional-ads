@@ -1,5 +1,7 @@
+export type EntityID = string;
+
 export class AppEntityBase {
-  id: string;
+  id: EntityID;
 
   createdAt: Date;
 
