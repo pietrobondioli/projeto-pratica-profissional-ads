@@ -1,8 +1,8 @@
-import { AppBaseEntity } from '#/be/lib/ddd/base.entity';
-import { ChatMessage } from '#/be/modules/chat-message/domain/chat-message.entity';
+import { AppEntityBase } from '#/be/lib/ddd/entity.base';
+import { ChatMessage } from '#/be/modules/chat/domain/chat-message.entity';
 import { User } from '#/be/modules/user/domain/user.entity';
 
-export class Chat extends AppBaseEntity {
+export class Chat extends AppEntityBase {
   user1: User;
 
   user2: User;

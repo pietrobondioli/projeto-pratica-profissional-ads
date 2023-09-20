@@ -1,14 +1,14 @@
 import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
 
 import { BaseModel } from '#/be/lib/db/base.model';
-import { ChangeEmailTokenModel } from '#/be/modules/change-email-token/db/change-email-token.model';
-import { ChangePasswordTokenModel } from '#/be/modules/change-password-token/db/change-password-token.model';
-import { EmailVerificationTokenModel } from '#/be/modules/email-verification-token/db/email-verification-token.model';
 import { EquipmentModel } from '#/be/modules/equipment/db/equipment.model';
 import { FeedbackModel } from '#/be/modules/feedback/db/feedback.model';
 import { NotificationModel } from '#/be/modules/notification/db/notification.model';
 import { ReservationModel } from '#/be/modules/reservation/db/reservation.model';
-import { UserProfileModel } from '#/be/modules/user-profile/db/user-profile.model';
+import { ChangeEmailTokenModel } from '#/be/modules/user/db/change-email-token.model';
+import { ChangePasswordTokenModel } from '#/be/modules/user/db/change-password-token.model';
+import { EmailVerificationTokenModel } from '#/be/modules/user/db/email-verification-token.model';
+import { UserProfileModel } from '#/be/modules/user/db/user-profile.model';
 
 import { User } from '../domain/user.entity';
 

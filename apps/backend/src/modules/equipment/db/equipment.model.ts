@@ -1,8 +1,8 @@
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 
 import { BaseModel } from '#/be/lib/db/base.model';
-import { UserModel } from '#/be/modules/user/db/user.model';
 import { ReservationModel } from '#/be/modules/reservation/db/reservation.model';
+import { UserModel } from '#/be/modules/user/db/user.model';
 
 import { Equipment } from '../domain/equipment.entity';
 

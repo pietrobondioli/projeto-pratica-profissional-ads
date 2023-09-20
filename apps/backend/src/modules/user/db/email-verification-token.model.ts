@@ -1,9 +1,9 @@
 import { Column, Entity, ManyToOne } from 'typeorm';
 
+import { EmailVerificationToken } from '../domain/email-verification-token.entity';
+
 import { BaseModel } from '#/be/lib/db/base.model';
 import { UserModel } from '#/be/modules/user/db/user.model';
-
-import { EmailVerificationToken } from '../domain/email-verification-token.entity';
 
 @Entity()
 export class EmailVerificationTokenModel

@@ -1,7 +1,7 @@
-import { AppBaseEntity } from '#/be/lib/ddd/base.entity';
+import { AppEntityBase } from '#/be/lib/ddd/entity.base';
 import { User } from '#/be/modules/user/domain/user.entity';
 
-export class EmailVerificationToken extends AppBaseEntity {
+export class EmailVerificationToken extends AppEntityBase {
   user: User;
 
   token: string;

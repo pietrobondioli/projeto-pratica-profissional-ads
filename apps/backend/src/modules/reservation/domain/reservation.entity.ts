@@ -1,4 +1,4 @@
-import { AppBaseEntity } from '#/be/lib/ddd/base.entity';
+import { AppEntityBase } from '#/be/lib/ddd/entity.base';
 import { Equipment } from '#/be/modules/equipment/domain/equipment.entity';
 import { Feedback } from '#/be/modules/feedback/domain/feedback.entity';
 import { Payment } from '#/be/modules/payment/domain/payment.entity';
@@ -10,7 +10,7 @@ export enum PaymentStatus {
   FAILED = 'Failed',
 }
 
-export class Reservation extends AppBaseEntity {
+export class Reservation extends AppEntityBase {
   equipment: Equipment;
 
   renter: User;

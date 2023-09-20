@@ -1,4 +1,4 @@
-import { AppBaseEntity } from '#/be/lib/ddd/base.entity';
+import { AppEntityBase } from '#/be/lib/ddd/entity.base';
 import { User } from '#/be/modules/user/domain/user.entity';
 
 export enum NotificationStatus {
@@ -6,7 +6,7 @@ export enum NotificationStatus {
   UNREAD = 'Unread',
 }
 
-export class Notification extends AppBaseEntity {
+export class Notification extends AppEntityBase {
   user: User;
 
   message: string;

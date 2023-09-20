@@ -1,32 +1,38 @@
 {
-  "name": "projeto-pratica-profissional-ads",
-  "private": true,
-  "version": "0.0.0",
-  "description": "",
-  "main": "index.js",
-  "author": "Pietro Bondioli",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
-  "scripts": {
-    "prepare": "husky install",
-    "start:dev": "turbo run start:dev --parallel --no-cache",
-    "build": "turbo run build",
-    "frontend": "yarn workspace frontend start:dev",
-    "frontend:build": "yarn workspace frontend build",
-    "backend": "yarn workspace backend start:dev",
-    "backend:build": "yarn workspace backend build",
-    "test": "turbo run test",
-    "prettier": "prettier --write *"
-  },
-  "devDependencies": {
-    "husky": "^8.0.3",
-    "lint-staged": "^14.0.1",
-    "prettier": "^3.0.3",
-    "turbo": "^1.10.13"
-  },
-  "lint-staged": {
-    "**/*": "prettier --write --ignore-unknown"
-  }
+	"name": "projeto-pratica-profissional-ads",
+	"private": true,
+	"version": "0.0.0",
+	"description": "",
+	"main": "index.js",
+	"author": "Pietro Bondioli",
+	"workspaces": [
+		"apps/*",
+		"packages/*"
+	],
+	"scripts": {
+		"prepare": "husky install",
+		"start:dev": "turbo run start:dev --parallel --no-cache",
+		"build": "turbo run build",
+		"frontend": "yarn workspace frontend start:dev",
+		"frontend:build": "yarn workspace frontend build",
+		"backend": "yarn workspace backend start:dev",
+		"backend:build": "yarn workspace backend build",
+		"test": "turbo run test",
+		"prettier": "prettier --write *",
+		"lint:backend": "yarn workspace @/backend lint",
+		"lint:frontend": "yarn workspace @/frontend lint",
+		"lint": "yarn lint:backend && yarn lint:frontend",
+		"lint:backend:fix": "yarn workspace @/backend lint:fix",
+		"lint:frontend:fix": "yarn workspace @/frontend lint:fix",
+		"lint:fix": "yarn lint:backend:fix && yarn lint:frontend:fix"
+	},
+	"devDependencies": {
+		"husky": "^8.0.3",
+		"lint-staged": "^14.0.1",
+		"prettier": "^3.0.3",
+		"turbo": "^1.10.13"
+	},
+	"lint-staged": {
+		"**/*": "prettier --write --ignore-unknown"
+	}
 }

@@ -1,6 +1,6 @@
-import { AppBaseEntity } from '#/be/lib/ddd/base.entity';
+import { AppEntityBase } from '#/be/lib/ddd/entity.base';
 
-export class Media extends AppBaseEntity {
+export class Media extends AppEntityBase {
   key: string;
 
   bucket: string;

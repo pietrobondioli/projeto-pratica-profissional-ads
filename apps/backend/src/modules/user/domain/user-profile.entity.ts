@@ -1,8 +1,8 @@
-import { AppBaseEntity } from '#/be/lib/ddd/base.entity';
+import { AppEntityBase } from '#/be/lib/ddd/entity.base';
 import { Media } from '#/be/modules/media/domain/media.entity';
 import { User } from '#/be/modules/user/domain/user.entity';
 
-export class UserProfile extends AppBaseEntity {
+export class UserProfile extends AppEntityBase {
   firstName: string;
 
   lastName: string;

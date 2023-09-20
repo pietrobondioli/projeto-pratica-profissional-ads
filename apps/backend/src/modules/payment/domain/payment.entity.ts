@@ -1,4 +1,4 @@
-import { AppBaseEntity } from '#/be/lib/ddd/base.entity';
+import { AppEntityBase } from '#/be/lib/ddd/entity.base';
 import { Reservation } from '#/be/modules/reservation/domain/reservation.entity';
 
 export enum PaymentMethod {
@@ -6,7 +6,7 @@ export enum PaymentMethod {
   PIX = 'Pix',
 }
 
-export class Payment extends AppBaseEntity {
+export class Payment extends AppEntityBase {
   reservation: Reservation;
 
   paymentMethod: PaymentMethod;

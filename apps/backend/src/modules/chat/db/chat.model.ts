@@ -1,8 +1,8 @@
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 
 import { BaseModel } from '#/be/lib/db/base.model';
+import { ChatMessageModel } from '#/be/modules/chat/db/chat-message.model';
 import { UserModel } from '#/be/modules/user/db/user.model';
-import { ChatMessageModel } from '#/be/modules/chat-message/db/chat-message.model';
 
 import { Chat } from '../domain/chat.entity';
 

@@ -1,8 +1,10 @@
-import { AppBaseEntity } from '#/be/lib/ddd/base.entity';
+import { AppEntityBase } from '#/be/lib/ddd/entity.base';
 import { User } from '#/be/modules/user/domain/user.entity';
 
-export class ChangePasswordToken extends AppBaseEntity {
+export class ChangeEmailToken extends AppEntityBase {
   user: User;
+
+  newEmail: string;
 
   token: string;
 
