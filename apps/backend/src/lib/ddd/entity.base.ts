@@ -1,4 +1,4 @@
-export class AppBaseEntity {
+export class AppEntityBase {
   id: string;
 
   createdAt: Date;

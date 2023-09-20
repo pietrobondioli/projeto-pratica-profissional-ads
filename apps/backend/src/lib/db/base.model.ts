@@ -5,9 +5,10 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { AppBaseEntity } from '#/be/lib/ddd/base.entity';
 
-export abstract class BaseModel extends BaseEntity implements AppBaseEntity {
+import { AppEntityBase } from '#/be/lib/ddd/entity.base';
+
+export abstract class BaseModel extends BaseEntity implements AppEntityBase {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
