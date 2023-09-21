@@ -7,13 +7,13 @@ import { v4 } from 'uuid';
 
 import { EntityID } from '#/be/lib/ddd/entity.base';
 
+import { EmailVerificationTokenModel } from '../../db/email-verification-token.model';
 import { UserModel } from '../../db/user.model';
+import { EmailVerificationToken } from '../../domain/email-verification-token.entity';
 import { UserNotFoundError } from '../../domain/errors/user-not-found.error';
 import { UserAggregate } from '../../domain/user.aggregate';
 import { CHANGE_PASSWORD_TOKEN_REPO } from '../../user.di-tokens';
 
-import { EmailVerificationTokenModel } from '../../db/email-verification-token.model';
-import { EmailVerificationToken } from '../../domain/email-verification-token.entity';
 import { ReqConfirmAccountTokenCommand } from './req-confirm-account-token.command';
 
 @CommandHandler(ReqConfirmAccountTokenCommand)

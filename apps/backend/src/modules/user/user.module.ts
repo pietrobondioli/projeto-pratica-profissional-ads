@@ -4,6 +4,9 @@ import { DataSource } from 'typeorm';
 
 import { CreateUserHttpController } from './commands/create-user/create-user.http.controller';
 import { CreateUserService } from './commands/create-user/create-user.service';
+import { ReqChangeEmailHttpController } from './commands/req-change-email/req-change-email.http.controller';
+import { ReqChangePasswordHttpController } from './commands/req-change-password/req-change-password.http.controller';
+import { ReqConfirmAccountTokenHttpController } from './commands/req-confirm-account-token/req-confirm-account-token.http.controller';
 import { ChangeEmailTokenModel } from './db/change-email-token.model';
 import { ChangePasswordTokenModel } from './db/change-password-token.model';
 import { EmailVerificationTokenModel } from './db/email-verification-token.model';
@@ -59,7 +62,12 @@ const repositories: Provider[] = [
 
 @Module({
   imports: [CqrsModule],
-  controllers: [CreateUserHttpController],
+  controllers: [
+    CreateUserHttpController,
+    ReqChangeEmailHttpController,
+    ReqChangePasswordHttpController,
+    ReqConfirmAccountTokenHttpController,
+  ],
   providers: [
     Logger,
     ...repositories,

@@ -6,14 +6,14 @@ import { Repository } from 'typeorm';
 import { v4 } from 'uuid';
 
 import { EntityID } from '#/be/lib/ddd/entity.base';
+import { PasswordHelper } from '#/be/lib/utils/password-helper';
 
 import { UserModel } from '../../db/user.model';
 import { UserAlreadyExistsError } from '../../domain/errors/user-already-exists.error';
 import { UserAggregate } from '../../domain/user.aggregate';
+import { User } from '../../domain/user.entity';
 import { USER_REPO } from '../../user.di-tokens';
 
-import { PasswordHelper } from '#/be/lib/utils/password-helper';
-import { User } from '../../domain/user.entity';
 import { CreateUserCommand } from './create-user.command';
 
 @CommandHandler(CreateUserCommand)

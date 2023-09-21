@@ -16,6 +16,7 @@ import { EntityID } from '#/be/lib/ddd/entity.base';
 
 import { UserAlreadyExistsError } from '../../domain/errors/user-already-exists.error';
 import { UserNotFoundError } from '../../domain/errors/user-not-found.error';
+
 import { ReqConfirmAccountTokenCommand } from './req-confirm-account-token.command';
 import { ReqChangePasswordRequestDto } from './req-confirm-account-token.req.dto';
 

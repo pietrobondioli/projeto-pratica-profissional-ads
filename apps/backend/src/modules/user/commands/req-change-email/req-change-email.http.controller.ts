@@ -12,11 +12,12 @@ import { Result } from 'neverthrow';
 import { routesV1 } from '#/be/config/routes/app.routes';
 import { ApiErrorResponse } from '#/be/lib/api/api-error.response.dto';
 import { IdResponse } from '#/be/lib/api/id.response.dto';
+import { ReqContextProvider } from '#/be/lib/application/request/req.context';
 import { EntityID } from '#/be/lib/ddd/entity.base';
 
-import { ReqContextProvider } from '#/be/lib/application/request/req.context';
 import { UserAlreadyExistsError } from '../../domain/errors/user-already-exists.error';
 import { UserNotFoundError } from '../../domain/errors/user-not-found.error';
+
 import { ReqChangeEmailCommand } from './req-change-email.command';
 import { ReqChangeEmailRequestDto } from './req-change-email.req.dto';
 

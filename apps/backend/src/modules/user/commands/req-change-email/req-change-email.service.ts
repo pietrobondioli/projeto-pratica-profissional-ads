@@ -7,13 +7,13 @@ import { v4 } from 'uuid';
 
 import { EntityID } from '#/be/lib/ddd/entity.base';
 
-import { UserModel } from '../../db/user.model';
-import { UserAggregate } from '../../domain/user.aggregate';
-
 import { ChangeEmailTokenModel } from '../../db/change-email-token.model';
+import { UserModel } from '../../db/user.model';
 import { ChangeEmailToken } from '../../domain/change-email-token.entity';
 import { UserNotFoundError } from '../../domain/errors/user-not-found.error';
+import { UserAggregate } from '../../domain/user.aggregate';
 import { CHANGE_EMAIL_TOKEN_REPO, USER_REPO } from '../../user.di-tokens';
+
 import { ReqChangeEmailCommand } from './req-change-email.command';
 
 @CommandHandler(ReqChangeEmailCommand)
@@ -43,7 +43,7 @@ export class ReqChangeEmailService implements ICommandHandler {
       token.user = user;
       token.newEmail = command.payload.newEmail;
       token.token = v4();
-      token.expiresAt = new Date(Date.now() + 1000 * 60 * 60 * 24 * 7); // 7 days
+      token.expiresAt = new Date(Date.now() + 1000 * 60 * 60 * 24 * 3); // 3 days
 
       UserAggregate.user(user).requestedEmailChange(token);
 
