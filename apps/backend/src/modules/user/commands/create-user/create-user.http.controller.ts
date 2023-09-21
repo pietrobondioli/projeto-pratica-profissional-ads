@@ -6,7 +6,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Result } from 'neverthrow';
 
 import { routesV1 } from '#/be/config/routes/app.routes';
@@ -19,6 +19,7 @@ import { UserAlreadyExistsError } from '../../domain/errors/user-already-exists.
 import { CreateUserCommand } from './create-user.command';
 import { CreateUserRequestDto } from './create-user.req.dto';
 
+@ApiTags(...routesV1.user.tags)
 @Controller(routesV1.version)
 export class CreateUserHttpController {
   constructor(private readonly commandBus: CommandBus) {}

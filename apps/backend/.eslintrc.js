@@ -7,7 +7,7 @@ module.exports = {
     'import/resolver': {
       typescript: {
         alwaysTryTypes: true,
-        project: './tsconfig.json',
+        project: ['apps/backend/tsconfig.json'],
         paths: true,
       },
     },
@@ -17,8 +17,15 @@ module.exports = {
     tsconfigRootDir: __dirname,
     sourceType: 'module',
   },
-  plugins: ['@typescript-eslint/eslint-plugin', 'import', 'prettier'],
+  plugins: [
+    'neverthrow',
+    '@darraghor/nestjs-typed',
+    '@typescript-eslint/eslint-plugin',
+    'import',
+    'prettier',
+  ],
   extends: [
+    'plugin:@darraghor/nestjs-typed/recommended',
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:import/recommended',
@@ -30,8 +37,9 @@ module.exports = {
     node: true,
     jest: true,
   },
-  ignorePatterns: ['.eslintrc.js'],
+  ignorePatterns: ['dist', '.eslintrc.js'],
   rules: {
+    'neverthrow/must-use-result': 'error',
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',

@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class ApiErrorResponse {
   @ApiProperty({ example: 400 })
@@ -10,11 +10,12 @@ export class ApiErrorResponse {
   @ApiProperty({ example: 'Bad Request' })
   readonly error: string;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     example: ['incorrect email'],
     description: 'Optional list of sub-errors',
     nullable: true,
     required: false,
+    isArray: true,
   })
   readonly subErrors?: string[];
 

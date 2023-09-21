@@ -7,6 +7,7 @@ const v1 = 'v1';
 export const routesV1 = {
   version: v1,
   user: {
+    tags: ['User'],
     root: usersRoot,
     create: `/${usersRoot}`,
     confirm_account: `/${usersRoot}/confirm-account`,

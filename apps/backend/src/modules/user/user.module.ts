@@ -7,7 +7,7 @@ import { CreateUserService } from './commands/create-user/create-user.service';
 import { UserModel } from './db/user.model';
 import { USER_REPOSITORY } from './user.di-tokens';
 
-const httpControllers = [CreateUserHttpController];
+// const httpControllers = [];
 
 const commandHandlers: Provider[] = [CreateUserService];
 
@@ -25,7 +25,7 @@ const repositories: Provider[] = [
 
 @Module({
   imports: [CqrsModule],
-  controllers: [...httpControllers],
+  controllers: [CreateUserHttpController],
   providers: [
     Logger,
     ...repositories,
