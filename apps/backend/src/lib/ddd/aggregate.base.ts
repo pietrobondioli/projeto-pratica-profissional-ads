@@ -25,11 +25,14 @@ export class AggregateBase {
   public static async publishEvents(
     eventEmitter: EventEmitter2,
   ): Promise<void> {
-    await Promise.all(
-      this.domainEvents.map(async (event) => {
-        return eventEmitter.emitAsync(event.constructor.name, event);
-      }),
-    );
-    this.clearEvents();
+    try {
+      await Promise.all(
+        this.domainEvents.map(async (event) => {
+          return eventEmitter.emitAsync(event.constructor.name, event);
+        }),
+      );
+    } finally {
+      this.clearEvents();
+    }
   }
 }
