@@ -9,6 +9,7 @@ import { EntityID } from '#/be/lib/ddd/entity.base';
 
 import { ChangeEmailTokenModel } from '../../db/change-email-token.model';
 import { UserModel } from '../../db/user.model';
+import { ChangeEmailToken } from '../../domain/change-email-token.entity';
 import { TokenInvalidError } from '../../domain/errors/token-invalid.error';
 import { TokenNotFoundError } from '../../domain/errors/token-not-found.error';
 import { UserAggregate } from '../../domain/user.aggregate';
@@ -62,7 +63,7 @@ export class ChangeEmailService implements ICommandHandler {
     }
   }
 
-  private isTokenValid(token: ChangeEmailTokenModel) {
+  private isTokenValid(token: ChangeEmailToken) {
     return (
       !isPast(token.expiresAt) &&
       !isPast(token.invalidatedAt) &&
@@ -70,7 +71,7 @@ export class ChangeEmailService implements ICommandHandler {
     );
   }
 
-  private async consumeToken(token: ChangeEmailTokenModel) {
+  private async consumeToken(token: ChangeEmailToken) {
     token.consumedAt = new Date();
 
     await this.changeEmailTokenRepo.save(token);
