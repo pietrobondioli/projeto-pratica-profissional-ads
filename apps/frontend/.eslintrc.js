@@ -7,7 +7,7 @@ module.exports = {
 		'import/resolver': {
 			typescript: {
 				alwaysTryTypes: true,
-				project: ['apps/backend/tsconfig.json'],
+				project: ['apps/frontend/tsconfig.json'],
 				paths: true,
 			},
 		},
@@ -30,8 +30,14 @@ module.exports = {
 		'plugin:react-hooks/recommended',
 		'plugin:prettier/recommended',
 	],
+	root: true,
+	env: {
+		node: true,
+		jest: true,
+	},
 	ignorePatterns: ['dist', '.eslintrc.js'],
 	rules: {
+		'@typescript-eslint/no-unused-vars': 'warn',
 		'react-refresh/only-export-components': [
 			'warn',
 			{

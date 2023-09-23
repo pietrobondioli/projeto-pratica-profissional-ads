@@ -11,6 +11,6 @@
 	},
 	"aliases": {
 		"components": "#/fe/shared/components",
-		"utils": "#/fe/shared/utils"
+		"utils": "#/fe/shared/utils/shadcn"
 	}
 }
