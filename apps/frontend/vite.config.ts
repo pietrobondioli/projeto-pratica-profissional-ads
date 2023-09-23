@@ -6,7 +6,7 @@ export default defineConfig({
 	plugins: [react()],
 	resolve: {
 		alias: {
-			'#/fe/': path.resolve(__dirname, './src'),
+			'#/fe': path.resolve(__dirname, './src'),
 		},
 	},
 });
