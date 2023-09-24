@@ -15,22 +15,28 @@ import { useToast } from '#/fe/shared/components/ui/use-toast';
 import { Input } from '#/fe/shared/components/ui/input';
 import { ROUTES } from '#/fe/config/routes';
 
-const registerSchema = z.object({
-	firstName: z.string().nonempty({ message: 'O nome é obrigatório.' }),
-	lastName: z.string().nonempty({ message: 'O sobrenome é obrigatório.' }),
-	email: z.string().email({ message: 'Formato de email inválido.' }),
-	password: z.string().min(6, {
-		message: 'A senha deve ter no mínimo 6 caracteres.',
-	}),
-	confirmPassword: z
-		.string()
-		.min(6, {
+const registerSchema = z
+	.object({
+		firstName: z.string().nonempty({ message: 'O nome é obrigatório.' }),
+		lastName: z
+			.string()
+			.nonempty({ message: 'O sobrenome é obrigatório.' }),
+		email: z.string().email({ message: 'Formato de email inválido.' }),
+		password: z.string().min(6, {
 			message: 'A senha deve ter no mínimo 6 caracteres.',
-		})
-		.refine((val, obj) => val === obj.password, {
-			message: 'As senhas não coincidem.',
 		}),
-});
+		confirmPassword: z.string().min(6, {
+			message: 'A senha deve ter no mínimo 6 caracteres.',
+		}),
+	})
+	.superRefine((data, ctx) => {
+		if (data.password !== data.confirmPassword) {
+			ctx.addIssue({
+				code: z.ZodIssueCode.custom,
+				message: 'As senhas devem ser iguais.',
+			});
+		}
+	});
 
 export function RegisterPage() {
 	const form = useForm<z.infer<typeof registerSchema>>({
