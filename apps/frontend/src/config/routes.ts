@@ -1,6 +1,7 @@
 export const ROUTES = {
 	HOME: '/',
 	LOGIN: '/login',
+	LOGOUT: '/logout',
 	REGISTER: '/register',
 	EQUIPMENT: {
 		ROOT: '/equipment/:equipmentId',
@@ -15,6 +16,7 @@ export const ROUTES = {
 		ROOT: '/user',
 		MY_PROFILE: '/user/my-profile',
 		PROFILE: '/user/:userId/profile',
+		FAVORITES: '/user/:userId/favorites',
 		EQUIPMENT: '/user/:userId/equipment',
 		RESERVATIONS: '/user/:userId/reservations',
 		GIVEN_FEEDBACKS: '/user/:userId/given-feedbacks',
