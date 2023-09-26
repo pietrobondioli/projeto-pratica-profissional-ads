@@ -13,10 +13,10 @@ import { Response } from 'express';
 
 import { routesV1 } from '#/be/config/routes/app.routes';
 import { ApiErrorResponse } from '#/be/lib/api/api-error.response.dto';
-import { IdResponse } from '#/be/lib/api/id.response.dto';
 
 import { TokenInvalidError } from '../../domain/errors/token-invalid.error';
 import { TokenNotFoundError } from '../../domain/errors/token-not-found.error';
+
 import { ChangeEmailCommand } from './change-email.command';
 import { ChangeEmailRequestDto } from './change-email.req.dto';
 
@@ -29,7 +29,6 @@ export class ChangeEmailHttpController {
   @ApiOperation({ summary: 'Change email, using token' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: IdResponse,
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,

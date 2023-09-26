@@ -1,14 +1,14 @@
 import { Inject } from '@nestjs/common';
 import { IInferredQueryHandler, QueryHandler } from '@nestjs/cqrs';
+import { QueryResult } from '@nestjs-architects/typed-cqrs';
 import { Err, Ok } from 'neverthrow';
 import { Repository } from 'typeorm';
 
 import { EquipmentModel } from '../../db/equipment.model';
+import { EquipmentNotFoundError } from '../../domain/errors/equipment-not-found.error';
 import { EQUIPMENT_REPO } from '../../equipment.di-tokens';
 
-import { QueryResult } from '@nestjs-architects/typed-cqrs';
-import { EquipmentNotFoundError } from '../../domain/errors/equipment-not-found.error';
-import { GetEquipmentQuery } from './get-equipments.query';
+import { GetEquipmentQuery } from './get-equipment.query';
 
 @QueryHandler(GetEquipmentQuery)
 export class GetEquipmentQueryHandler

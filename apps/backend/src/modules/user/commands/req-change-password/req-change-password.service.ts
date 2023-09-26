@@ -1,7 +1,8 @@
 import { Inject } from '@nestjs/common';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { Err, Ok, Result } from 'neverthrow';
+import { CommandResult } from '@nestjs-architects/typed-cqrs';
+import { Err, Ok } from 'neverthrow';
 import { Repository } from 'typeorm';
 import { v4 } from 'uuid';
 
@@ -15,7 +16,7 @@ import { CHANGE_PASSWORD_TOKEN_REPO, USER_REPO } from '../../user.di-tokens';
 import { ReqChangePasswordCommand } from './req-change-password.command';
 
 @CommandHandler(ReqChangePasswordCommand)
-export class ReqChangePasswordService
+export class ReqChangePasswordCommandHandler
   implements IInferredCommandHandler<ReqChangePasswordCommand>
 {
   constructor(
@@ -28,7 +29,7 @@ export class ReqChangePasswordService
 
   async execute(
     command: ReqChangePasswordCommand,
-  ): Promise<Result<true, UserNotFoundError>> {
+  ): Promise<CommandResult<ReqChangePasswordCommand>> {
     try {
       const user = await this.userRepo.findOneBy({
         email: command.payload.email,

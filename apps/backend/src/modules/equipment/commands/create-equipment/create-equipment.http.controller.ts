@@ -5,6 +5,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { routesV1 } from '#/be/config/routes/app.routes';
 import { ApiErrorResponse } from '#/be/lib/api/api-error.response.dto';
 import { IdResponse } from '#/be/lib/api/id.response.dto';
+
 import { CreateEquipmentCommand } from './create-equipment.command';
 import { CreateEquipmentRequestDto } from './create-equipment.req.dto';
 

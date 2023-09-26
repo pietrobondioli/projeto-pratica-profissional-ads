@@ -3,7 +3,7 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { DataSource } from 'typeorm';
 
 import { CreateUserHttpController } from './commands/create-user/create-user.http.controller';
-import { CreateUserService } from './commands/create-user/create-user.service';
+import { CreateUserCommandHandler } from './commands/create-user/create-user.service';
 import { ReqChangeEmailHttpController } from './commands/req-change-email/req-change-email.http.controller';
 import { ReqChangePasswordHttpController } from './commands/req-change-password/req-change-password.http.controller';
 import { ReqConfirmAccountTokenHttpController } from './commands/req-confirm-account-token/req-confirm-account-token.http.controller';
@@ -22,7 +22,7 @@ import {
 
 // const httpControllers = [];
 
-const commandHandlers: Provider[] = [CreateUserService];
+const commandHandlers: Provider[] = [CreateUserCommandHandler];
 
 const queryHandlers: Provider[] = [];
 

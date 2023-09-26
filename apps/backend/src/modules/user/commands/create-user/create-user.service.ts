@@ -1,11 +1,11 @@
 import { ConflictException, Inject } from '@nestjs/common';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { Err, Ok, Result } from 'neverthrow';
+import { CommandResult } from '@nestjs-architects/typed-cqrs';
+import { Err, Ok } from 'neverthrow';
 import { Repository } from 'typeorm';
 import { v4 } from 'uuid';
 
-import { EntityID } from '#/be/lib/ddd/entity.base';
 import { PasswordHelper } from '#/be/lib/utils/password-helper';
 
 import { UserModel } from '../../db/user.model';
@@ -17,7 +17,7 @@ import { USER_REPO } from '../../user.di-tokens';
 import { CreateUserCommand } from './create-user.command';
 
 @CommandHandler(CreateUserCommand)
-export class CreateUserService
+export class CreateUserCommandHandler
   implements IInferredCommandHandler<CreateUserCommand>
 {
   constructor(
@@ -28,7 +28,7 @@ export class CreateUserService
 
   async execute(
     command: CreateUserCommand,
-  ): Promise<Result<EntityID, UserAlreadyExistsError>> {
+  ): Promise<CommandResult<CreateUserCommand>> {
     try {
       const user = new User();
       user.id = v4();

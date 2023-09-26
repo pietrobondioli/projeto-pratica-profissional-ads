@@ -1,11 +1,10 @@
 import { Inject } from '@nestjs/common';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { Err, Ok, Result } from 'neverthrow';
+import { CommandResult } from '@nestjs-architects/typed-cqrs';
+import { Err, Ok } from 'neverthrow';
 import { Repository } from 'typeorm';
 import { v4 } from 'uuid';
-
-import { EntityID } from '#/be/lib/ddd/entity.base';
 
 import { EmailVerificationTokenModel } from '../../db/email-verification-token.model';
 import { UserModel } from '../../db/user.model';
@@ -17,7 +16,7 @@ import { CHANGE_PASSWORD_TOKEN_REPO } from '../../user.di-tokens';
 import { ReqConfirmAccountTokenCommand } from './req-confirm-account-token.command';
 
 @CommandHandler(ReqConfirmAccountTokenCommand)
-export class ReqConfirmAccountTokenService
+export class ReqConfirmAccountTokenCommandHandler
   implements IInferredCommandHandler<ReqConfirmAccountTokenCommand>
 {
   constructor(
@@ -29,7 +28,7 @@ export class ReqConfirmAccountTokenService
 
   async execute(
     command: ReqConfirmAccountTokenCommand,
-  ): Promise<Result<EntityID, UserNotFoundError>> {
+  ): Promise<CommandResult<ReqConfirmAccountTokenCommand>> {
     try {
       const user = await this.userRepo.findOneBy({
         email: command.payload.email,

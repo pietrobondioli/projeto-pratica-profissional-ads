@@ -5,9 +5,11 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { routesV1 } from '#/be/config/routes/app.routes';
 import { ApiErrorResponse } from '#/be/lib/api/api-error.response.dto';
 import { IdResponse } from '#/be/lib/api/id.response.dto';
+
 import { Equipment } from '../../domain/equipment.entity';
-import { GetEquipmentQuery } from './get-equipments.query';
-import { GetEquipmentResDto } from './get-equipments.res.dto';
+
+import { GetEquipmentQuery } from './get-equipment.query';
+import { GetEquipmentResDto } from './get-equipment.res.dto';
 
 @ApiTags(...routesV1.equipment.tags)
 @Controller(routesV1.version)

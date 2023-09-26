@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+
 import { Equipment } from '../../domain/equipment.entity';
 
 export class GetEquipmentResDto {

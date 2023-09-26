@@ -1,5 +1,6 @@
-import { CommandBase } from '#/be/lib/ddd/command.base';
 import { Result } from 'neverthrow';
+
+import { CommandBase } from '#/be/lib/ddd/command.base';
 
 class Payload {
   readonly token: string;

@@ -1,11 +1,13 @@
 import { Inject } from '@nestjs/common';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { isPast } from 'date-fns';
-import { Err, Ok, Result } from 'neverthrow';
+import { Err, Ok } from 'neverthrow';
 import { Repository } from 'typeorm';
 
 import { PasswordHelper } from '#/be/lib/utils/password-helper';
+
 import { ChangePasswordTokenModel } from '../../db/change-password-token.model';
 import { UserModel } from '../../db/user.model';
 import { ChangePasswordToken } from '../../domain/change-password-token.entity';
@@ -13,10 +15,11 @@ import { TokenInvalidError } from '../../domain/errors/token-invalid.error';
 import { TokenNotFoundError } from '../../domain/errors/token-not-found.error';
 import { UserAggregate } from '../../domain/user.aggregate';
 import { CHANGE_PASSWORD_TOKEN_REPO } from '../../user.di-tokens';
+
 import { ChangePasswordCommand } from './change-password.command';
 
 @CommandHandler(ChangePasswordCommand)
-export class ChangePasswordService
+export class ChangePasswordCommandHandler
   implements IInferredCommandHandler<ChangePasswordCommand>
 {
   constructor(
@@ -28,7 +31,7 @@ export class ChangePasswordService
 
   async execute(
     command: ChangePasswordCommand,
-  ): Promise<Result<true, TokenNotFoundError | TokenInvalidError>> {
+  ): Promise<CommandResult<ChangePasswordCommand>> {
     try {
       const token = await this.changePasswordTokenRepo.findOne({
         where: {

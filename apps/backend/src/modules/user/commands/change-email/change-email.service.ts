@@ -1,8 +1,9 @@
 import { Inject } from '@nestjs/common';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { isPast } from 'date-fns';
-import { Err, Ok, Result } from 'neverthrow';
+import { Err, Ok } from 'neverthrow';
 import { Repository } from 'typeorm';
 
 import { ChangeEmailTokenModel } from '../../db/change-email-token.model';
@@ -12,10 +13,11 @@ import { TokenInvalidError } from '../../domain/errors/token-invalid.error';
 import { TokenNotFoundError } from '../../domain/errors/token-not-found.error';
 import { UserAggregate } from '../../domain/user.aggregate';
 import { CHANGE_EMAIL_TOKEN_REPO, USER_REPO } from '../../user.di-tokens';
+
 import { ChangeEmailCommand } from './change-email.command';
 
 @CommandHandler(ChangeEmailCommand)
-export class ChangeEmailService
+export class ChangeEmailCommandHandler
   implements IInferredCommandHandler<ChangeEmailCommand>
 {
   constructor(
@@ -28,7 +30,7 @@ export class ChangeEmailService
 
   async execute(
     command: ChangeEmailCommand,
-  ): Promise<Result<true, TokenNotFoundError | TokenInvalidError>> {
+  ): Promise<CommandResult<ChangeEmailCommand>> {
     try {
       const token = await this.changeEmailTokenRepo.findOne({
         where: {

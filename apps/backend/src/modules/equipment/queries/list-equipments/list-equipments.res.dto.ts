@@ -1,5 +1,7 @@
-import { PaginatedResponseDto } from '#/be/lib/api/paginated.response.base';
 import { ApiProperty } from '@nestjs/swagger';
+
+import { PaginatedResponseDto } from '#/be/lib/api/paginated.response.base';
+
 import { Equipment } from '../../domain/equipment.entity';
 
 class EquipmentResDto {

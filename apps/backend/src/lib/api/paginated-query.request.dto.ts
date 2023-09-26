@@ -1,6 +1,7 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsInt, IsOptional, Max, Min } from 'class-validator';
+
 import { OrderBy } from '../ddd/query.base';
 
 export class PaginatedQueryRequestDto {
@@ -9,7 +10,7 @@ export class PaginatedQueryRequestDto {
   @Min(0)
   @Max(99999)
   @Type(() => Number)
-  @ApiProperty({
+  @ApiPropertyOptional({
     example: 10,
     description: 'Specifies a limit of returned records',
     required: false,
@@ -21,11 +22,15 @@ export class PaginatedQueryRequestDto {
   @Min(0)
   @Max(99999)
   @Type(() => Number)
-  @ApiProperty({ example: 0, description: 'Page number', required: false })
+  @ApiPropertyOptional({
+    example: 0,
+    description: 'Page number',
+    required: false,
+  })
   readonly page?: number;
 
   @IsOptional()
-  @ApiProperty({
+  @ApiPropertyOptional({
     example: { field: 'createdAt', param: 'asc' },
     description: 'Order by field and param',
     required: false,

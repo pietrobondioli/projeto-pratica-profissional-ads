@@ -17,6 +17,7 @@ import { IdResponse } from '#/be/lib/api/id.response.dto';
 
 import { TokenInvalidError } from '../../domain/errors/token-invalid.error';
 import { TokenNotFoundError } from '../../domain/errors/token-not-found.error';
+
 import { ChangePasswordCommand } from './change-password.command';
 import { ChangePasswordRequestDto } from './change-password.req.dto';
 

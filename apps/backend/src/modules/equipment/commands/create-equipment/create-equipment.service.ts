@@ -7,14 +7,16 @@ import { Repository } from 'typeorm';
 import { EntityID } from '#/be/lib/ddd/entity.base';
 import { MediaModel } from '#/be/modules/media/db/media.model';
 import { MEDIA_REPO } from '#/be/modules/media/media.di-tokens';
+
 import { EquipmentModel } from '../../db/equipment.model';
 import { Equipment } from '../../domain/equipment.entity';
 import { PhotoNotFoundError } from '../../domain/errors/photo-not-found.error';
 import { EQUIPMENT_REPO } from '../../equipment.di-tokens';
+
 import { CreateEquipmentCommand } from './create-equipment.command';
 
 @CommandHandler(CreateEquipmentCommand)
-export class CreateUserService
+export class CreateUserCommandHandler
   implements IInferredCommandHandler<CreateEquipmentCommand>
 {
   constructor(
