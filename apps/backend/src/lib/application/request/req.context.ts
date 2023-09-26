@@ -1,16 +1,20 @@
-import express from 'express';
+import { Request } from 'express';
 
 import { UserJwtPayload } from '../../temp/user.jwt.payload';
 
-export class ReqContextProvider {
-  private static request: express.Request;
+type AuthReq = Request & {
+  user: UserJwtPayload;
+};
 
-  static setRequest(request: express.Request) {
+export class ReqContextProvider {
+  private static request: AuthReq;
+
+  static setRequest(request: AuthReq) {
     this.request = request;
   }
 
   static getAuthUser() {
-    const user = <UserJwtPayload>this.request.user;
+    const user = this.request.user;
 
     return user;
   }
