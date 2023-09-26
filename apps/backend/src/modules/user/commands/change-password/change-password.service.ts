@@ -1,11 +1,9 @@
 import { Inject } from '@nestjs/common';
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { isPast } from 'date-fns';
 import { Err, Ok, Result } from 'neverthrow';
 import { Repository } from 'typeorm';
-
-import { EntityID } from '#/be/lib/ddd/entity.base';
 
 import { PasswordHelper } from '#/be/lib/utils/password-helper';
 import { ChangePasswordTokenModel } from '../../db/change-password-token.model';
@@ -18,7 +16,9 @@ import { CHANGE_PASSWORD_TOKEN_REPO } from '../../user.di-tokens';
 import { ChangePasswordCommand } from './change-password.command';
 
 @CommandHandler(ChangePasswordCommand)
-export class ChangePasswordService implements ICommandHandler {
+export class ChangePasswordService
+  implements IInferredCommandHandler<ChangePasswordCommand>
+{
   constructor(
     @Inject(CHANGE_PASSWORD_TOKEN_REPO)
     protected readonly changePasswordTokenRepo: Repository<ChangePasswordTokenModel>,
@@ -28,7 +28,7 @@ export class ChangePasswordService implements ICommandHandler {
 
   async execute(
     command: ChangePasswordCommand,
-  ): Promise<Result<EntityID, TokenNotFoundError | TokenInvalidError>> {
+  ): Promise<Result<true, TokenNotFoundError | TokenInvalidError>> {
     try {
       const token = await this.changePasswordTokenRepo.findOne({
         where: {
@@ -55,7 +55,7 @@ export class ChangePasswordService implements ICommandHandler {
 
       UserAggregate.publishEvents(this.eventEmitter);
 
-      return new Ok(token.id);
+      return new Ok(true);
     } catch (error: any) {
       UserAggregate.clearEvents();
 

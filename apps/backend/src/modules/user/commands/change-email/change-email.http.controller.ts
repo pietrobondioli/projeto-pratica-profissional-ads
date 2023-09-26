@@ -5,19 +5,18 @@ import {
   HttpStatus,
   NotFoundException,
   Post,
+  Res,
 } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Result } from 'neverthrow';
+import { Response } from 'express';
 
 import { routesV1 } from '#/be/config/routes/app.routes';
 import { ApiErrorResponse } from '#/be/lib/api/api-error.response.dto';
 import { IdResponse } from '#/be/lib/api/id.response.dto';
-import { EntityID } from '#/be/lib/ddd/entity.base';
 
 import { TokenInvalidError } from '../../domain/errors/token-invalid.error';
 import { TokenNotFoundError } from '../../domain/errors/token-not-found.error';
-import { UserAlreadyExistsError } from '../../domain/errors/user-already-exists.error';
 import { ChangeEmailCommand } from './change-email.command';
 import { ChangeEmailRequestDto } from './change-email.req.dto';
 
@@ -26,6 +25,7 @@ import { ChangeEmailRequestDto } from './change-email.req.dto';
 export class ChangeEmailHttpController {
   constructor(private readonly commandBus: CommandBus) {}
 
+  @Post(routesV1.user.change_email)
   @ApiOperation({ summary: 'Change email, using token' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -45,17 +45,15 @@ export class ChangeEmailHttpController {
     status: HttpStatus.BAD_REQUEST,
     type: ApiErrorResponse,
   })
-  @Post(routesV1.user.change_email)
-  async create(@Body() body: ChangeEmailRequestDto): Promise<IdResponse> {
+  async execute(@Body() body: ChangeEmailRequestDto, @Res() res: Response) {
     const command = new ChangeEmailCommand({
       token: body.token,
     });
 
-    const result: Result<EntityID, UserAlreadyExistsError> =
-      await this.commandBus.execute(command);
+    const result = await this.commandBus.execute(command);
 
     return result.match(
-      (id: string) => new IdResponse(id),
+      () => res.status(HttpStatus.OK).send(),
       (error: Error) => {
         if (error instanceof TokenNotFoundError)
           throw new NotFoundException(error.message);

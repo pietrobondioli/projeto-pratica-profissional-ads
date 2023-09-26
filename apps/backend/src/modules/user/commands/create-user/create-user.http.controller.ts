@@ -7,12 +7,10 @@ import {
 } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Result } from 'neverthrow';
 
 import { routesV1 } from '#/be/config/routes/app.routes';
 import { ApiErrorResponse } from '#/be/lib/api/api-error.response.dto';
 import { IdResponse } from '#/be/lib/api/id.response.dto';
-import { EntityID } from '#/be/lib/ddd/entity.base';
 
 import { UserAlreadyExistsError } from '../../domain/errors/user-already-exists.error';
 
@@ -39,11 +37,10 @@ export class CreateUserHttpController {
     type: ApiErrorResponse,
   })
   @Post(routesV1.user.create)
-  async create(@Body() body: CreateUserRequestDto): Promise<IdResponse> {
+  async execute(@Body() body: CreateUserRequestDto) {
     const command = new CreateUserCommand(body);
 
-    const result: Result<EntityID, UserAlreadyExistsError> =
-      await this.commandBus.execute(command);
+    const result = await this.commandBus.execute(command);
 
     return result.match(
       (id: string) => new IdResponse(id),

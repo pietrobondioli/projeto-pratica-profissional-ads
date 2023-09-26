@@ -1,5 +1,5 @@
 import { ConflictException, Inject } from '@nestjs/common';
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Err, Ok, Result } from 'neverthrow';
 import { Repository } from 'typeorm';
@@ -17,7 +17,9 @@ import { USER_REPO } from '../../user.di-tokens';
 import { CreateUserCommand } from './create-user.command';
 
 @CommandHandler(CreateUserCommand)
-export class CreateUserService implements ICommandHandler {
+export class CreateUserService
+  implements IInferredCommandHandler<CreateUserCommand>
+{
   constructor(
     @Inject(USER_REPO)
     protected readonly userRepo: Repository<UserModel>,
@@ -35,7 +37,7 @@ export class CreateUserService implements ICommandHandler {
 
       UserAggregate.user(user).created();
 
-      await this.userRepo.insert(user);
+      await this.userRepo.save(user);
 
       UserAggregate.publishEvents(this.eventEmitter);
 

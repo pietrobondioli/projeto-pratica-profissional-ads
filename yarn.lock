@@ -885,6 +885,11 @@
     semver "^7.3.5"
     tar "^6.1.11"
 
+"@nestjs-architects/typed-cqrs@^1.1.2-alpha.0":
+  version "1.1.2-alpha.0"
+  resolved "https://registry.yarnpkg.com/@nestjs-architects/typed-cqrs/-/typed-cqrs-1.1.2-alpha.0.tgz#f834932819d825634b8ed3d577cc67d153ccf623"
+  integrity sha512-QjiZcnhgMsyWveDysG7zf2Jk4FUvBHv3/PNspTeQG846xdlVcDx5HcZMpt/1/dsiPQcE5u2018NlzkuIucE0MQ==
+
 "@nestjs/axios@>= 0.1.0":
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@nestjs/axios/-/axios-3.0.0.tgz#a2e70b118e3058f3d4b9c3deacd496ec4e3ee69e"

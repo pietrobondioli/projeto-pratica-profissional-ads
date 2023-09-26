@@ -1,11 +1,9 @@
 import { Inject } from '@nestjs/common';
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { isPast } from 'date-fns';
 import { Err, Ok, Result } from 'neverthrow';
 import { Repository } from 'typeorm';
-
-import { EntityID } from '#/be/lib/ddd/entity.base';
 
 import { ChangeEmailTokenModel } from '../../db/change-email-token.model';
 import { UserModel } from '../../db/user.model';
@@ -17,7 +15,9 @@ import { CHANGE_EMAIL_TOKEN_REPO, USER_REPO } from '../../user.di-tokens';
 import { ChangeEmailCommand } from './change-email.command';
 
 @CommandHandler(ChangeEmailCommand)
-export class ChangeEmailService implements ICommandHandler {
+export class ChangeEmailService
+  implements IInferredCommandHandler<ChangeEmailCommand>
+{
   constructor(
     @Inject(CHANGE_EMAIL_TOKEN_REPO)
     protected readonly changeEmailTokenRepo: Repository<ChangeEmailTokenModel>,
@@ -28,7 +28,7 @@ export class ChangeEmailService implements ICommandHandler {
 
   async execute(
     command: ChangeEmailCommand,
-  ): Promise<Result<EntityID, TokenNotFoundError | TokenInvalidError>> {
+  ): Promise<Result<true, TokenNotFoundError | TokenInvalidError>> {
     try {
       const token = await this.changeEmailTokenRepo.findOne({
         where: {
@@ -55,7 +55,7 @@ export class ChangeEmailService implements ICommandHandler {
 
       UserAggregate.publishEvents(this.eventEmitter);
 
-      return new Ok(token.id);
+      return new Ok(true);
     } catch (error: any) {
       UserAggregate.clearEvents();
 

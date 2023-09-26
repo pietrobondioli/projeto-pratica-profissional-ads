@@ -1,5 +1,5 @@
 import { Inject } from '@nestjs/common';
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Err, Ok, Result } from 'neverthrow';
 import { Repository } from 'typeorm';
@@ -17,7 +17,9 @@ import { CHANGE_PASSWORD_TOKEN_REPO } from '../../user.di-tokens';
 import { ReqConfirmAccountTokenCommand } from './req-confirm-account-token.command';
 
 @CommandHandler(ReqConfirmAccountTokenCommand)
-export class ReqConfirmAccountTokenService implements ICommandHandler {
+export class ReqConfirmAccountTokenService
+  implements IInferredCommandHandler<ReqConfirmAccountTokenCommand>
+{
   constructor(
     @Inject(CHANGE_PASSWORD_TOKEN_REPO)
     protected readonly emailVerificationTokenRepo: Repository<EmailVerificationTokenModel>,
