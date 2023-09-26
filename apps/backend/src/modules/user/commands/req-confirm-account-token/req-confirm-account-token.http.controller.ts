@@ -40,7 +40,7 @@ export class ReqConfirmAccountTokenHttpController {
     status: HttpStatus.BAD_REQUEST,
     type: ApiErrorResponse,
   })
-  @Post(routesV1.user.req_change_password)
+  @Post(routesV1.user.commands.req_change_password)
   async execute(
     @Body() body: ReqChangePasswordRequestDto,
     @Res() res: Response,

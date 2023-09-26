@@ -3,6 +3,8 @@ const usersRoot = 'users';
 const equipmentRoot = 'equipments';
 const reservationRoot = 'reservations';
 const feedbackRoot = 'feedbacks';
+const chatRoot = 'chats';
+const notificationRoot = 'notifications';
 const mediaRoot = 'media';
 
 // Api Versions
@@ -13,51 +15,88 @@ export const routesV1 = {
   user: {
     tags: ['User'],
     root: usersRoot,
-    create: `/${usersRoot}`,
-    get: `/${usersRoot}/:id`,
-    list: `/${usersRoot}`,
-    confirm_account: `/${usersRoot}/confirm-account`,
-    req_change_password: `/${usersRoot}/request-change-password`,
-    change_password: `/${usersRoot}/change-password`,
-    req_change_email: `/${usersRoot}/request-change-email`,
-    change_email: `/${usersRoot}/change-email`,
+    commands: {
+      create: `/${usersRoot}`,
+      confirm_account: `/${usersRoot}/confirm-account`,
+      req_change_password: `/${usersRoot}/request-change-password`,
+      change_password: `/${usersRoot}/change-password`,
+      req_change_email: `/${usersRoot}/request-change-email`,
+      change_email: `/${usersRoot}/change-email`,
+    },
+    queries: {
+      get: `/${usersRoot}/:id`,
+      list: `/${usersRoot}`,
+    },
   },
   equipment: {
     tags: ['Equipment'],
     root: equipmentRoot,
-    create: `/${equipmentRoot}`,
-    update: `/${equipmentRoot}/:id`,
-    update_photo: `/${equipmentRoot}/:id/photo`,
-    delete: `/${equipmentRoot}/:id`,
-    get: `/${equipmentRoot}/:id`,
-    list: `/${equipmentRoot}`,
-  },
-  media: {
-    tags: ['Media'],
-    root: mediaRoot,
-    upload: `/${mediaRoot}`,
-    get: `/${mediaRoot}/:id`,
+    commands: {
+      create: `/${equipmentRoot}`,
+      update: `/${equipmentRoot}/:id`,
+      update_photo: `/${equipmentRoot}/:id/photo`,
+      delete: `/${equipmentRoot}/:id`,
+    },
+    queries: {
+      get: `/${equipmentRoot}/:id`,
+      list: `/${equipmentRoot}`,
+    },
   },
   reservation: {
     tags: ['Reservation'],
     root: reservationRoot,
-    create: `/${reservationRoot}`,
-    cancel: `/${reservationRoot}/:id/cancel`,
-    get: `/${reservationRoot}/:id`,
-    list: `/${reservationRoot}`,
+    commands: {
+      create: `/${reservationRoot}`,
+      cancel: `/${reservationRoot}/:id/cancel`,
+    },
+    queries: {
+      get: `/${reservationRoot}/:id`,
+      list: `/${reservationRoot}`,
+    },
   },
   feedback: {
     tags: ['Feedback'],
     root: feedbackRoot,
-    create: `/${feedbackRoot}`,
-    update: `/${feedbackRoot}/:id`,
-    get: `/${feedbackRoot}/:id`,
-    list: `/${feedbackRoot}`,
+    commands: {
+      create: `/${feedbackRoot}`,
+      update: `/${feedbackRoot}/:id`,
+    },
+    queries: {
+      get: `/${feedbackRoot}/:id`,
+      list: `/${feedbackRoot}`,
+    },
+  },
+  chat: {
+    tags: ['Chat'],
+    root: chatRoot,
+    commands: {
+      create: `/${chatRoot}`,
+      send_message: `/${chatRoot}/:id/send-message`,
+      read_message: `/${chatRoot}/:id/read-message`,
+    },
+    queries: {
+      get: `/${chatRoot}/:id`,
+      list: `/${chatRoot}`,
+    },
   },
   notification: {
     tags: ['Notification'],
-    root: 'notifications',
-    list: '/notifications',
-    read: '/notifications/:id/read',
+    root: notificationRoot,
+    queries: {
+      list: `/${notificationRoot}`,
+    },
+    commands: {
+      read: `/${notificationRoot}/:id/read`,
+    },
+  },
+  media: {
+    tags: ['Media'],
+    root: mediaRoot,
+    commands: {
+      upload: `/${mediaRoot}`,
+    },
+    queries: {
+      get: `/${mediaRoot}/:id`,
+    },
   },
 } as const;

@@ -39,7 +39,7 @@ export class ReqChangeEmailHttpController {
     status: HttpStatus.BAD_REQUEST,
     type: ApiErrorResponse,
   })
-  @Post(routesV1.user.req_change_email)
+  @Post(routesV1.user.commands.req_change_email)
   async execute(@Body() body: ReqChangeEmailRequestDto, @Res() res: Response) {
     const loggedUser = ReqContextProvider.getAuthUser();
 

@@ -15,7 +15,7 @@ import { ListEquipmentResDto } from './list-equipments.res.dto';
 export class GetEquipmentHttpController {
   constructor(private readonly queryBus: QueryBus<ListEquipmentQuery>) {}
 
-  @Get(routesV1.equipment.list)
+  @Get(routesV1.equipment.queries.list)
   @ApiOperation({ summary: 'Get a list of equipments' })
   @ApiResponse({
     status: HttpStatus.OK,

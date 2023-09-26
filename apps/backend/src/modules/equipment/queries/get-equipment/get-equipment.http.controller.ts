@@ -4,7 +4,6 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { routesV1 } from '#/be/config/routes/app.routes';
 import { ApiErrorResponse } from '#/be/lib/api/api-error.response.dto';
-import { IdResponse } from '#/be/lib/api/id.response.dto';
 
 import { Equipment } from '../../domain/equipment.entity';
 
@@ -16,11 +15,11 @@ import { GetEquipmentResDto } from './get-equipment.res.dto';
 export class GetEquipmentHttpController {
   constructor(private readonly queryBus: QueryBus<GetEquipmentQuery>) {}
 
-  @Get(routesV1.equipment.get)
+  @Get(routesV1.equipment.queries.get)
   @ApiOperation({ summary: 'Get an equipment given its id.' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: IdResponse,
+    type: GetEquipmentResDto,
   })
   @ApiResponse({
     status: HttpStatus.BAD_REQUEST,

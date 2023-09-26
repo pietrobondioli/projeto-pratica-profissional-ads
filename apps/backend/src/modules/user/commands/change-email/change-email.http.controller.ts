@@ -25,7 +25,7 @@ import { ChangeEmailRequestDto } from './change-email.req.dto';
 export class ChangeEmailHttpController {
   constructor(private readonly commandBus: CommandBus) {}
 
-  @Post(routesV1.user.change_email)
+  @Post(routesV1.user.commands.change_email)
   @ApiOperation({ summary: 'Change email, using token' })
   @ApiResponse({
     status: HttpStatus.OK,

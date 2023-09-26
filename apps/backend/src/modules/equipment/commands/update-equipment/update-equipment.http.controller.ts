@@ -23,7 +23,7 @@ export class UpdateEquipmentHttpController {
     status: HttpStatus.BAD_REQUEST,
     type: ApiErrorResponse,
   })
-  @Patch(routesV1.equipment.update)
+  @Patch(routesV1.equipment.commands.update)
   async update(@Param('id') id: string, @Body() body: UpdateEquipmentDto) {
     const command = new UpdateEquipmentCommand({
       id,

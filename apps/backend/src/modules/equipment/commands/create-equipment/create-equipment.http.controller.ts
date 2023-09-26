@@ -23,7 +23,7 @@ export class CreateEquipmentHttpController {
     status: HttpStatus.BAD_REQUEST,
     type: ApiErrorResponse,
   })
-  @Post(routesV1.equipment.create)
+  @Post(routesV1.equipment.commands.create)
   async execute(@Body() body: CreateEquipmentRequestDto) {
     const command = new CreateEquipmentCommand(body);
 
