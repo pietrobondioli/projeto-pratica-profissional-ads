@@ -1,0 +1,1 @@
+export const EQUIPMENT_REPO = Symbol('EQUIPMENT_REPOSITORY');
