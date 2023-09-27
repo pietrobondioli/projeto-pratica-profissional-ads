@@ -16,7 +16,4 @@ export class ChatMessageModel extends BaseModel implements ChatMessage {
 
   @Column()
   content: string;
-
-  @Column()
-  timestamp: Date;
 }

@@ -7,7 +7,5 @@ export class Chat extends AppEntityBase {
 
   user2: User;
 
-  lastUpdated: Date;
-
   messages: ChatMessage[];
 }

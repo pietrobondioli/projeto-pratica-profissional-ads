@@ -8,6 +8,4 @@ export class ChatMessage extends AppEntityBase {
   sender: User;
 
   content: string;
-
-  timestamp: Date;
 }
