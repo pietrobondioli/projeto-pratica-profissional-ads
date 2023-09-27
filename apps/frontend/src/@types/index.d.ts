@@ -125,5 +125,4 @@ type ChatMessage = {
 	chat: Chat;
 	sender: User;
 	content: string;
-	timestamp: Date;
 } & AppEntityBase;

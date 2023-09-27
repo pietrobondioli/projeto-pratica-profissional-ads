@@ -1,8 +1,8 @@
-import { useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 
-import { Input } from '#/fe/shared/components/ui/input';
 import { Button } from '#/fe/shared/components/ui/button';
+import { Input } from '#/fe/shared/components/ui/input';
 import { useLoggedUser } from '#/fe/shared/state/logged-user';
 
 function ChatList({
@@ -54,7 +54,7 @@ function ChatBox({
 						}`}
 					>
 						<div>{message.content}</div>
-						<small>{message.timestamp.toLocaleTimeString()}</small>
+						<small>{message.createdAt.toLocaleTimeString()}</small>
 					</div>
 				))}
 			</div>

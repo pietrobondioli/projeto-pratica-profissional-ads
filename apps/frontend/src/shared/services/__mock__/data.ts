@@ -220,7 +220,6 @@ function createRandomMessages(user1: User, user2: User) {
 			chat: null!,
 			sender: i % 2 === 0 ? user1 : user2,
 			content: `This is mock message ${i}`,
-			timestamp: new Date(),
 		});
 	}
 	return messages;

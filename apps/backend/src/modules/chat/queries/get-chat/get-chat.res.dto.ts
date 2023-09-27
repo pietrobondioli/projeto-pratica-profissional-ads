@@ -27,12 +27,6 @@ class ChatMessageDto extends ResponseBase {
     description: 'User who sent the message',
   })
   sender: UserDto;
-
-  @ApiProperty({
-    example: '2023-09-24T14:15:22Z',
-    description: 'Timestamp when the message was sent',
-  })
-  timestamp: Date;
 }
 
 export class GetChatResDto extends ResponseBase {

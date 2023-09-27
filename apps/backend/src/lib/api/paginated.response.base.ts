@@ -1,12 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export abstract class PaginatedResponseDto<T> {
-  constructor(props: { total: number; limit: number; page: number }) {
-    this.total = props.total;
-    this.limit = props.limit;
-    this.page = props.page;
-  }
-
   @ApiProperty({
     example: 5312,
     description: 'Total number of items',
@@ -23,5 +17,5 @@ export abstract class PaginatedResponseDto<T> {
   readonly page: number;
 
   @ApiProperty({ isArray: true })
-  abstract readonly items: readonly T[];
+  readonly items: readonly T[];
 }
