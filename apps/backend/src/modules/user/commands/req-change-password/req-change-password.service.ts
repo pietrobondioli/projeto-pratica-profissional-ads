@@ -1,18 +1,17 @@
+import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Err, Ok } from 'neverthrow';
-import { Repository } from 'typeorm';
 import { v4 } from 'uuid';
 
-import { ChangePasswordTokenModel } from '../../db/change-password-token.model';
-import { UserModel } from '../../db/user.model';
+import { UserModel, UserRepo } from '../../db/user.model';
 import { ChangePasswordToken } from '../../domain/change-password-token.entity';
 import { UserNotFoundError } from '../../domain/errors/user-not-found.error';
 import { UserAggregate } from '../../domain/user.aggregate';
 import { CHANGE_PASSWORD_TOKEN_REPO, USER_REPO } from '../../user.di-tokens';
 
+import { ChangePasswordTokenRepo } from '../../db/change-password-token.model';
 import { ReqChangePasswordCommand } from './req-change-password.command';
 
 @CommandHandler(ReqChangePasswordCommand)
@@ -21,9 +20,9 @@ export class ReqChangePasswordCommandHandler
 {
   constructor(
     @Inject(CHANGE_PASSWORD_TOKEN_REPO)
-    protected readonly changePasswordTokenRepo: Repository<ChangePasswordTokenModel>,
+    protected readonly changePasswordTokenRepo: ChangePasswordTokenRepo,
     @Inject(USER_REPO)
-    protected readonly userRepo: Repository<UserModel>,
+    protected readonly userRepo: UserRepo,
     protected readonly eventEmitter: EventEmitter2,
   ) {}
 

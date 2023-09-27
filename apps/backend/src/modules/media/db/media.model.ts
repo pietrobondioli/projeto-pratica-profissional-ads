@@ -1,4 +1,4 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, Repository } from 'typeorm';
 
 import { BaseModel } from '#/be/lib/db/base.model';
 
@@ -15,3 +15,5 @@ export class MediaModel extends BaseModel implements Media {
   @Column()
   mimeType: string;
 }
+
+export type MediaRepo = Repository<MediaModel>;

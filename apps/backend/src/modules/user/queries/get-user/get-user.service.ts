@@ -2,8 +2,7 @@ import { QueryResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { IInferredQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Err, Ok } from 'neverthrow';
-import { Repository } from 'typeorm';
-import { UserModel } from '../../db/user.model';
+import { UserRepo } from '../../db/user.model';
 import { UserNotFoundError } from '../../domain/errors/user-not-found.error';
 import { USER_REPO } from '../../user.di-tokens';
 import { GetUserQuery } from './get-user.query';
@@ -14,7 +13,7 @@ export class GetUserQueryHandler
 {
   constructor(
     @Inject(USER_REPO)
-    private readonly userRepo: Repository<UserModel>,
+    private readonly userRepo: UserRepo,
   ) {}
 
   async execute(query: GetUserQuery): Promise<QueryResult<GetUserQuery>> {

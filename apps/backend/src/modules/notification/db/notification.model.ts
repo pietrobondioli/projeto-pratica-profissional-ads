@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, Repository } from 'typeorm';
 
 import { BaseModel } from '#/be/lib/db/base.model';
 import { UserModel } from '#/be/modules/user/db/user.model';
@@ -19,3 +19,5 @@ export class NotificationModel extends BaseModel implements Notification {
   @Column({ type: 'enum', enum: NotificationStatus })
   status: NotificationStatus;
 }
+
+export type NotificationRepo = Repository<NotificationModel>;

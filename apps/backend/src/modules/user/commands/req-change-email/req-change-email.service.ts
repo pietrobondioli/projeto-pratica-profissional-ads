@@ -1,18 +1,17 @@
+import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Err, Ok } from 'neverthrow';
-import { Repository } from 'typeorm';
 import { v4 } from 'uuid';
 
-import { ChangeEmailTokenModel } from '../../db/change-email-token.model';
-import { UserModel } from '../../db/user.model';
+import { UserModel, UserRepo } from '../../db/user.model';
 import { ChangeEmailToken } from '../../domain/change-email-token.entity';
 import { UserNotFoundError } from '../../domain/errors/user-not-found.error';
 import { UserAggregate } from '../../domain/user.aggregate';
 import { CHANGE_EMAIL_TOKEN_REPO, USER_REPO } from '../../user.di-tokens';
 
+import { ChangeEmailTokenRepo } from '../../db/change-email-token.model';
 import { ReqChangeEmailCommand } from './req-change-email.command';
 
 @CommandHandler(ReqChangeEmailCommand)
@@ -21,9 +20,9 @@ export class ReqChangeEmailCommandHandler
 {
   constructor(
     @Inject(CHANGE_EMAIL_TOKEN_REPO)
-    protected readonly changeEmailTokenRepo: Repository<ChangeEmailTokenModel>,
+    protected readonly changeEmailTokenRepo: ChangeEmailTokenRepo,
     @Inject(USER_REPO)
-    protected readonly userRepo: Repository<UserModel>,
+    protected readonly userRepo: UserRepo,
     protected readonly eventEmitter: EventEmitter2,
   ) {}
 

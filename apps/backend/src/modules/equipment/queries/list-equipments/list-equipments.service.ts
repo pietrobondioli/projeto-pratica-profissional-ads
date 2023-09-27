@@ -2,11 +2,11 @@ import { QueryResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { IInferredQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Ok } from 'neverthrow';
-import { Like, Repository } from 'typeorm';
+import { Like } from 'typeorm';
 
-import { EquipmentModel } from '../../db/equipment.model';
 import { EQUIPMENT_REPO } from '../../equipment.di-tokens';
 
+import { EquipmentRepo } from '../../db/equipment.model';
 import { ListEquipmentsQuery } from './list-equipments.query';
 
 @QueryHandler(ListEquipmentsQuery)
@@ -15,7 +15,7 @@ export class ListEquipmentsQueryHandler
 {
   constructor(
     @Inject(EQUIPMENT_REPO)
-    private readonly equipmentRepo: Repository<EquipmentModel>,
+    private readonly equipmentRepo: EquipmentRepo,
   ) {}
 
   async execute(

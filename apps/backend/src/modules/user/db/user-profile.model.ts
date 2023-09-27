@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne, Repository } from 'typeorm';
 
 import { BaseModel } from '#/be/lib/db/base.model';
 import { MediaModel } from '#/be/modules/media/db/media.model';
@@ -30,3 +30,5 @@ export class UserProfileModel extends BaseModel implements UserProfile {
   @OneToOne(() => UserModel, (user) => user.userProfile)
   user: UserModel;
 }
+
+export type UserProfileRepo = Repository<UserProfileModel>;

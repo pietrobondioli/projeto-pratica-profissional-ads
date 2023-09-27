@@ -1,5 +1,7 @@
 import { AggregateBase } from '#/be/lib/ddd/aggregate.base';
 import { FeedbackCreatedEvent } from './events/feedback-created.event';
+import { FeedbackDeletedEvent } from './events/feedback-deleted.event';
+import { FeedbackUpdatedEvent } from './events/feedback-updated.event';
 import { Feedback } from './feedback.entity';
 
 export class FeedbackAggregate extends AggregateBase {
@@ -21,7 +23,7 @@ export class FeedbackAggregate extends AggregateBase {
 
   static updated() {
     this.addDomainEvent(
-      new FeedbackCreatedEvent({
+      new FeedbackUpdatedEvent({
         feedbackId: this._feedback.id,
       }),
     );
@@ -29,7 +31,7 @@ export class FeedbackAggregate extends AggregateBase {
 
   static deleted() {
     this.addDomainEvent(
-      new FeedbackCreatedEvent({
+      new FeedbackDeletedEvent({
         feedbackId: this._feedback.id,
       }),
     );

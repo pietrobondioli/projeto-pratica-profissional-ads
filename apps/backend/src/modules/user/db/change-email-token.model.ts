@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, Repository } from 'typeorm';
 
 import { BaseModel } from '#/be/lib/db/base.model';
 import { UserModel } from '#/be/modules/user/db/user.model';
@@ -31,3 +31,5 @@ export class ChangeEmailTokenModel
   @Column({ nullable: true })
   consumerIp?: string;
 }
+
+export type ChangeEmailTokenRepo = Repository<ChangeEmailTokenModel>;

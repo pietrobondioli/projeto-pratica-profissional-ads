@@ -1,6 +1,6 @@
 import {
   Body,
-  ConflictException as ConflictHttpException,
+  ConflictException,
   Controller,
   HttpStatus,
   Post,
@@ -46,7 +46,7 @@ export class CreateUserHttpController {
       (id: string) => new IdResponse(id),
       (error) => {
         if (error instanceof UserAlreadyExistsError)
-          throw new ConflictHttpException(error.message);
+          throw new ConflictException(error.message);
         throw error;
       },
     );

@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, Repository } from 'typeorm';
 
 import { BaseModel } from '#/be/lib/db/base.model';
 import { ChatModel } from '#/be/modules/chat/db/chat.model';
@@ -17,3 +17,5 @@ export class ChatMessageModel extends BaseModel implements ChatMessage {
   @Column()
   content: string;
 }
+
+export type ChatMessageRepo = Repository<ChatMessageModel>;

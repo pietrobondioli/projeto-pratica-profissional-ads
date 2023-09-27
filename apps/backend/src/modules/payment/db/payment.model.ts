@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, Repository } from 'typeorm';
 
 import { BaseModel } from '#/be/lib/db/base.model';
 import { ReservationModel } from '#/be/modules/reservation/db/reservation.model';
@@ -19,3 +19,5 @@ export class PaymentModel extends BaseModel implements Payment {
   @Column()
   paymentDate: Date;
 }
+
+export type PaymentRepo = Repository<PaymentModel>;

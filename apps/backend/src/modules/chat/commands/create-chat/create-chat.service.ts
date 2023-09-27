@@ -1,20 +1,19 @@
 import { ReqContextProvider } from '#/be/lib/application/request/req.context';
-import { UserModel } from '#/be/modules/user/db/user.model';
 import { USER_REPO } from '#/be/modules/user/user.di-tokens';
 import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Err, Ok } from 'neverthrow';
-import { Repository } from 'typeorm';
 import { CHAT_MESSAGE_REPO, CHAT_REPO } from '../../chat.di-tokens';
-import { ChatMessageModel } from '../../db/chat-message.model';
-import { ChatModel } from '../../db/chat.model';
 import { ChatMessage } from '../../domain/chat-message.entity';
 import { ChatAggregate } from '../../domain/chat.aggregate';
 import { Chat } from '../../domain/chat.entity';
 import { TargetUserNotFoundError } from '../../domain/errors/target-user-not-found.error';
 import { CreateChatCommand } from './create-chat.command';
+import { UserRepo } from '#/be/modules/user/db/user.model';
+import { ChatRepo } from '../../db/chat.model';
+import { ChatMessageRepo } from '../../db/chat-message.model';
 
 @CommandHandler(CreateChatCommand)
 export class CreateChatCommandHandler
@@ -22,11 +21,11 @@ export class CreateChatCommandHandler
 {
   constructor(
     @Inject(USER_REPO)
-    protected readonly userRepo: Repository<UserModel>,
+    protected readonly userRepo: UserRepo,
     @Inject(CHAT_REPO)
-    protected readonly chatRepo: Repository<ChatModel>,
+    protected readonly chatRepo: ChatRepo,
     @Inject(CHAT_MESSAGE_REPO)
-    protected readonly chatMessageRepo: Repository<ChatMessageModel>,
+    protected readonly chatMessageRepo: ChatMessageRepo,
     protected readonly eventEmitter: EventEmitter2,
   ) {}
 

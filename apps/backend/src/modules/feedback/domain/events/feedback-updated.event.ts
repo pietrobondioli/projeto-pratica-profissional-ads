@@ -4,6 +4,6 @@ type Payload = {
   readonly feedbackId: string;
 };
 
-export class FeedbackDeletedEvent extends DomainEventBase<Payload> {
+export class FeedbackUpdatedEvent extends DomainEventBase<Payload> {
   public readonly eventName = 'feedback-deleted';
 }
