@@ -8,4 +8,6 @@ type Payload = {
   token: EmailVerificationToken;
 };
 
-export class UserRequestedEmailConfirmationToken extends DomainEventBase<Payload> {}
+export class UserRequestedEmailConfirmationToken extends DomainEventBase<Payload> {
+  public readonly eventName = 'user-requested-email-confirmation-token';
+}

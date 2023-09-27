@@ -8,4 +8,6 @@ type Payload = {
   token: ChangeEmailToken;
 };
 
-export class UserRequestedEmailChange extends DomainEventBase<Payload> {}
+export class UserRequestedEmailChange extends DomainEventBase<Payload> {
+  public readonly eventName = 'user-requested-email-change';
+}

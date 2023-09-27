@@ -15,9 +15,15 @@ export class ResponseBase extends IdResponse {
     this.updatedAt = new Date(props.updatedAt).toISOString();
   }
 
-  @ApiProperty({ example: '2020-11-24T17:43:15.970Z' })
+  @ApiProperty({
+    example: '2020-11-24T17:43:15.970Z',
+    description: 'Date of creation',
+  })
   readonly createdAt: string;
 
-  @ApiProperty({ example: '2020-11-24T17:43:15.970Z' })
+  @ApiProperty({
+    example: '2020-11-24T17:43:15.970Z',
+    description: 'Date of last update',
+  })
   readonly updatedAt: string;
 }
