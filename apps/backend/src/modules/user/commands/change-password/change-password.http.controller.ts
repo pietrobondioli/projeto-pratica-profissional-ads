@@ -56,7 +56,7 @@ export class ChangePasswordHttpController {
 
     return result.match(
       () => res.status(HttpStatus.OK).send(),
-      (error: Error) => {
+      (error) => {
         if (error instanceof TokenNotFoundError)
           throw new NotFoundException(error.message);
         if (error instanceof TokenInvalidError)

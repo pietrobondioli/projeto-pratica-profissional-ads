@@ -53,7 +53,7 @@ export class ReqConfirmAccountTokenHttpController {
 
     return result.match(
       () => res.status(HttpStatus.OK).send(),
-      (error: Error) => {
+      (error) => {
         if (error instanceof UserNotFoundError)
           throw new NotFoundException(error.message);
         throw error;

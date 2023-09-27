@@ -44,7 +44,7 @@ export class CreateUserHttpController {
 
     return result.match(
       (id: string) => new IdResponse(id),
-      (error: Error) => {
+      (error) => {
         if (error instanceof UserAlreadyExistsError)
           throw new ConflictHttpException(error.message);
         throw error;

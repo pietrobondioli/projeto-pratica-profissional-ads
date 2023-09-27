@@ -34,7 +34,7 @@ export class GetEquipmentHttpController {
 
     return result.match(
       (eq: Equipment) => new GetEquipmentResDto(eq),
-      (error: Error) => {
+      (error) => {
         throw error;
       },
     );

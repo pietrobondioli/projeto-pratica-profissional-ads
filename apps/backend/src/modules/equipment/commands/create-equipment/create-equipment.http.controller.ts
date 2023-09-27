@@ -31,7 +31,7 @@ export class CreateEquipmentHttpController {
 
     return result.match(
       (id: string) => new IdResponse(id),
-      (error: Error) => {
+      (error) => {
         throw error;
       },
     );

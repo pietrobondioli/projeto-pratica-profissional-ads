@@ -33,7 +33,7 @@ export class GetEquipmentHttpController {
     return result.match(
       (res) =>
         new ListEquipmentResDto(res.items, res.total, res.limit, res.page),
-      (error: Error) => {
+      (error) => {
         throw error;
       },
     );
