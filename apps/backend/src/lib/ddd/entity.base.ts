@@ -1,7 +1,7 @@
 export type EntityID = string;
 
 export class AppEntityBase {
-  constructor(userID?: string) {
+  constructor(userID: string) {
     this.createdAt = new Date();
     this.updatedAt = new Date();
     this.createdBy = userID;

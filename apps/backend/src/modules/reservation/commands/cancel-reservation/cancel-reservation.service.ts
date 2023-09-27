@@ -6,6 +6,7 @@ import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Err, Ok } from 'neverthrow';
 import { ReservationRepo } from '../../db/reservation.model';
+import { ReservationNotFoundError } from '../../domain/errors/reservation-not-found.error';
 import { ReservationAggregate } from '../../domain/reservation.aggregate';
 import { RESERVATION_REPO } from '../../reservation.di-tokens';
 import { CancelReservationCommand } from './cancel-reservation.command';
@@ -36,6 +37,10 @@ export class CancelReservationCommandHandler
           renter: true,
         },
       });
+
+      if (!reservation) {
+        return new Err(new ReservationNotFoundError());
+      }
 
       if (reservation.renter.id !== authUser.id) {
         return new Err(new NotAuthorizedError());

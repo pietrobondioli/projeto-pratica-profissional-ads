@@ -30,15 +30,17 @@ export class ReqConfirmAccountTokenCommandHandler
     command: ReqConfirmAccountTokenCommand,
   ): Promise<CommandResult<ReqConfirmAccountTokenCommand>> {
     try {
+      const { email } = command.payload;
+
       const user = await this.userRepo.findOneBy({
-        email: command.payload.email,
+        email: email,
       });
 
       if (!user) {
         return new Err(new UserNotFoundError());
       }
 
-      const token = new EmailVerificationToken();
+      const token = new EmailVerificationToken(user.id);
       token.id = v4();
       token.user = user;
       token.token = v4();

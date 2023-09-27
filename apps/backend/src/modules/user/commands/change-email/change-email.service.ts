@@ -67,7 +67,9 @@ export class ChangeEmailCommandHandler
   private isTokenValid(token: ChangeEmailToken) {
     return (
       !isPast(token.expiresAt) &&
+      token.invalidatedAt &&
       !isPast(token.invalidatedAt) &&
+      token.consumedAt &&
       !isPast(token.consumedAt)
     );
   }

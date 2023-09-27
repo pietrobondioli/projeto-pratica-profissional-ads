@@ -43,7 +43,8 @@ export class JwtAuthGuard {
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {
-    const [type, token] = request.headers['Authorization']?.split(' ') ?? [];
+    const [type, token] =
+      request.headers.get('Authorization')?.split(' ') ?? [];
     return type === 'Bearer' ? token : undefined;
   }
 }

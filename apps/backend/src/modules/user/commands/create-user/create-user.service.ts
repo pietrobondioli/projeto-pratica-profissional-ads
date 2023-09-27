@@ -29,7 +29,7 @@ export class CreateUserCommandHandler
     command: CreateUserCommand,
   ): Promise<CommandResult<CreateUserCommand>> {
     try {
-      const user = new User();
+      const user = new User('admin');
       user.id = v4();
       user.email = command.payload.email;
       user.passwordHash = PasswordHelper.hashPassword(command.payload.password);

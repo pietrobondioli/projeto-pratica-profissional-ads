@@ -11,12 +11,12 @@ export class QueryBase<P, R extends Result<any, any>> extends Query<R> {
   }
 }
 
-export type OrderBy = { field: string | true; param: 'asc' | 'desc' };
+export type OrderBy = { field: string; param: 'asc' | 'desc' };
 
 export abstract class PaginatedQueryPayloadBase {
-  readonly page?: number;
-  readonly limit?: number;
-  readonly order?: OrderBy;
+  readonly page: number;
+  readonly limit: number;
+  readonly order: OrderBy;
 }
 
 export class PaginatedQueryResultBase<T = unknown> {

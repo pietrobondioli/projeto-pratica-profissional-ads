@@ -3,6 +3,7 @@ import { ReservationRepo } from '#/be/modules/reservation/db/reservation.model';
 import { ReservationNotFoundError } from '#/be/modules/reservation/domain/errors/reservation-not-found.error';
 import { RESERVATION_REPO } from '#/be/modules/reservation/reservation.di-tokens';
 import { UserRepo } from '#/be/modules/user/db/user.model';
+import { UserNotFoundError } from '#/be/modules/user/domain/errors/user-not-found.error';
 import { USER_REPO } from '#/be/modules/user/user.di-tokens';
 import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
@@ -41,6 +42,10 @@ export class CreateFeedbackCommandHandler
         id: authUser.id,
       });
 
+      if (!user) {
+        return new Err(new UserNotFoundError());
+      }
+
       const reservation = await this.reservationRepo.findOneBy({
         id: reservationId,
       });
@@ -49,7 +54,7 @@ export class CreateFeedbackCommandHandler
         return new Err(new ReservationNotFoundError());
       }
 
-      const feedback = new Feedback();
+      const feedback = new Feedback(authUser.id);
       feedback.reservation = reservation;
       feedback.rating = rating;
       feedback.comment = comment;

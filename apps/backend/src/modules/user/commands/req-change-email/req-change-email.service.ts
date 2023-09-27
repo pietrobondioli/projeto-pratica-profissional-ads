@@ -30,18 +30,20 @@ export class ReqChangeEmailCommandHandler
     command: ReqChangeEmailCommand,
   ): Promise<CommandResult<ReqChangeEmailCommand>> {
     try {
+      const { userId, newEmail } = command.payload;
+
       const user = await this.userRepo.findOneBy({
-        id: command.payload.userId,
+        id: userId,
       });
 
       if (!user) {
         return new Err(new UserNotFoundError());
       }
 
-      const token = new ChangeEmailToken();
+      const token = new ChangeEmailToken(userId);
       token.id = v4();
       token.user = user;
-      token.newEmail = command.payload.newEmail;
+      token.newEmail = newEmail;
       token.token = v4();
       token.expiresAt = new Date(Date.now() + 1000 * 60 * 60 * 24 * 3); // 3 days
 

@@ -10,7 +10,7 @@ import { Equipment } from '../../domain/equipment.entity';
 import { EquipmentNotFoundError } from '../../domain/errors/equipment-not-found.error';
 
 class Payload extends PaginatedQueryPayloadBase {
-  title?: string;
+  readonly title?: string;
 }
 
 export class ListEquipmentsQuery extends PaginatedQueryBase<

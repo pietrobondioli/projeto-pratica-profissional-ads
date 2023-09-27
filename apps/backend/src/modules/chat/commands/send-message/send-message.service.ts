@@ -1,5 +1,6 @@
 import { ReqContextProvider } from '#/be/lib/application/request/req.context';
 import { UserRepo } from '#/be/modules/user/db/user.model';
+import { UserNotFoundError } from '#/be/modules/user/domain/errors/user-not-found.error';
 import { USER_REPO } from '#/be/modules/user/user.di-tokens';
 import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
@@ -40,6 +41,10 @@ export class SendMessageCommandHandler
         id: authUser.id,
       });
 
+      if (!user) {
+        return new Err(new UserNotFoundError());
+      }
+
       const chat = await this.chatRepo.findOneBy({
         id: chatId,
       });
@@ -48,7 +53,7 @@ export class SendMessageCommandHandler
         return new Err(new ChatNotFoundError());
       }
 
-      const chatMessage = new ChatMessage();
+      const chatMessage = new ChatMessage(authUser.id);
       chatMessage.chat = chat;
       chatMessage.sender = user;
       chatMessage.content = message;

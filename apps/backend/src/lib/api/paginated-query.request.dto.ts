@@ -15,7 +15,7 @@ export class PaginatedQueryRequestDto {
     description: 'Specifies a limit of returned records',
     required: false,
   })
-  readonly limit?: number;
+  readonly limit: number = 10;
 
   @IsOptional()
   @IsInt()
@@ -27,7 +27,7 @@ export class PaginatedQueryRequestDto {
     description: 'Page number',
     required: false,
   })
-  readonly page?: number;
+  readonly page: number = 0;
 
   @IsOptional()
   @ApiPropertyOptional({
@@ -35,5 +35,5 @@ export class PaginatedQueryRequestDto {
     description: 'Order by field and param',
     required: false,
   })
-  readonly order?: OrderBy;
+  readonly order: OrderBy = { field: 'createdAt', param: 'asc' };
 }

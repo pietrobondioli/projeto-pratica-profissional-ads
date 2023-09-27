@@ -30,15 +30,17 @@ export class ReqChangePasswordCommandHandler
     command: ReqChangePasswordCommand,
   ): Promise<CommandResult<ReqChangePasswordCommand>> {
     try {
+      const { email } = command.payload;
+
       const user = await this.userRepo.findOneBy({
-        email: command.payload.email,
+        email: email,
       });
 
       if (!user) {
         return new Err(new UserNotFoundError());
       }
 
-      const token = new ChangePasswordToken();
+      const token = new ChangePasswordToken(user.id);
       token.id = v4();
       token.user = user;
       token.token = v4();

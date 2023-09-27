@@ -9,5 +9,5 @@ export class ListChatsReqDto extends PaginatedQueryRequestDto {
     example: 'John',
     description: 'User name to search for',
   })
-  readonly targetUserSearch;
+  readonly targetUserSearch: string;
 }

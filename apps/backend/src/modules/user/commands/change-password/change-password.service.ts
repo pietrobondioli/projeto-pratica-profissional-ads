@@ -69,7 +69,9 @@ export class ChangePasswordCommandHandler
   private isTokenValid(token: ChangePasswordToken) {
     return (
       !isPast(token.expiresAt) &&
+      token.invalidatedAt &&
       !isPast(token.invalidatedAt) &&
+      token.consumedAt &&
       !isPast(token.consumedAt)
     );
   }

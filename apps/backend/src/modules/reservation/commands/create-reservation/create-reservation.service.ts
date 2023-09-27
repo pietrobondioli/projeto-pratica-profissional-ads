@@ -3,6 +3,7 @@ import { EquipmentRepo } from '#/be/modules/equipment/db/equipment.model';
 import { EquipmentNotFoundError } from '#/be/modules/equipment/domain/errors/equipment-not-found.error';
 import { EQUIPMENT_REPO } from '#/be/modules/equipment/equipment.di-tokens';
 import { UserRepo } from '#/be/modules/user/db/user.model';
+import { UserNotFoundError } from '#/be/modules/user/domain/errors/user-not-found.error';
 import { USER_REPO } from '#/be/modules/user/user.di-tokens';
 import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
@@ -42,6 +43,10 @@ export class CreateReservationCommandHandler
         id: authUser.id,
       });
 
+      if (!user) {
+        return new Err(new UserNotFoundError());
+      }
+
       const equipment = await this.equipmentRepo.findOne({
         where: {
           id: equipmentId,
@@ -65,7 +70,7 @@ export class CreateReservationCommandHandler
         return new Err(new InvalidReservePeriodError());
       }
 
-      const reservation = new Reservation();
+      const reservation = new Reservation(authUser.id);
       reservation.equipment = equipment;
       reservation.renter = user;
       reservation.startDate = startDate;

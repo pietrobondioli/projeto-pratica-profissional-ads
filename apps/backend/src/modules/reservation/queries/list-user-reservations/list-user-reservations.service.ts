@@ -24,7 +24,7 @@ export class ListUserReservationsQueryHandler
       skip: (page - 1) * limit,
       take: limit,
       order: {
-        [order.field === true ? 'createdAt' : order.field]: order.param,
+        [order.field]: order.param,
       },
     });
 

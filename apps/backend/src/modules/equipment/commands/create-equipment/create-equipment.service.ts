@@ -10,6 +10,7 @@ import { Equipment } from '../../domain/equipment.entity';
 import { PhotoNotFoundError } from '../../domain/errors/photo-not-found.error';
 import { EQUIPMENT_REPO } from '../../equipment.di-tokens';
 
+import { ReqContextProvider } from '#/be/lib/application/request/req.context';
 import { MediaRepo } from '#/be/modules/media/db/media.model';
 import { EquipmentRepo } from '../../db/equipment.model';
 import { CreateEquipmentCommand } from './create-equipment.command';
@@ -33,11 +34,13 @@ export class CreateUserCommandHandler
       id: command.payload.photoId,
     });
 
+    const authUser = ReqContextProvider.getAuthUser();
+
     if (!photo) {
       return new Err(new PhotoNotFoundError());
     }
 
-    const equipment = new Equipment();
+    const equipment = new Equipment(authUser.id);
     equipment.description = command.payload.description;
     equipment.photo = photo;
     equipment.pricePerDay = command.payload.pricePerDay;
