@@ -60,6 +60,7 @@ export const routesV1 = {
     commands: {
       create: `/${feedbackRoot}`,
       update: `/${feedbackRoot}/:id`,
+      delete: `/${feedbackRoot}/:id`,
     },
     queries: {
       get: `/${feedbackRoot}/:id`,
@@ -82,11 +83,11 @@ export const routesV1 = {
   notification: {
     tags: ['Notification'],
     root: notificationRoot,
-    queries: {
-      list: `/${notificationRoot}`,
-    },
     commands: {
       read: `/${notificationRoot}/:id/read`,
+    },
+    queries: {
+      list: `/${notificationRoot}`,
     },
   },
   media: {

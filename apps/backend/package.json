@@ -22,7 +22,8 @@
     "schema:drop": "yarn run typeorm schema:drop",
     "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
-    "gen-command-files": "ts-node ./scripts/gen-command-files.ts"
+    "gen-command-files": "ts-node ./scripts/gen-command-files.ts",
+    "gen-query-files": "ts-node ./scripts/gen-query-files.ts"
   },
   "dependencies": {
     "@nestjs-architects/typed-cqrs": "^1.1.2-alpha.0",
