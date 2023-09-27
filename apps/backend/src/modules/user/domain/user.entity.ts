@@ -21,8 +21,6 @@ export class User extends AppEntityBase {
 
   givenFeedbacks: Feedback[];
 
-  receivedFeedbacks: Feedback[];
-
   notifications: Notification[];
 
   changeEmailTokens: ChangeEmailToken[];

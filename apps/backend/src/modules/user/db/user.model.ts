@@ -42,9 +42,6 @@ export class UserModel extends BaseModel implements User {
   @OneToMany(() => FeedbackModel, (feedback) => feedback.fromUser)
   givenFeedbacks: FeedbackModel[];
 
-  @OneToMany(() => FeedbackModel, (feedback) => feedback.toUser)
-  receivedFeedbacks: FeedbackModel[];
-
   @OneToMany(() => NotificationModel, (notification) => notification.user)
   notifications: NotificationModel[];
 
