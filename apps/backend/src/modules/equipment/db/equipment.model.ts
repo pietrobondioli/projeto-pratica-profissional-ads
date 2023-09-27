@@ -1,4 +1,11 @@
-import { Column, Entity, ManyToOne, OneToMany, Repository } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  Repository,
+} from 'typeorm';
 
 import { BaseModel } from '#/be/lib/db/base.model';
 import { MediaModel } from '#/be/modules/media/db/media.model';
@@ -15,7 +22,8 @@ export class EquipmentModel extends BaseModel implements Equipment {
   @Column()
   description: string;
 
-  @Column()
+  @ManyToOne(() => MediaModel)
+  @JoinColumn()
   photo: MediaModel;
 
   @Column()
