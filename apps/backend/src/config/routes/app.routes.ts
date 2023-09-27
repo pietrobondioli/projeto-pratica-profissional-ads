@@ -1,4 +1,5 @@
 // Root
+const authRoot = 'auth';
 const usersRoot = 'users';
 const equipmentRoot = 'equipments';
 const reservationRoot = 'reservations';
@@ -12,6 +13,13 @@ const v1 = 'v1';
 
 export const routesV1 = {
   version: v1,
+  auth: {
+    tags: ['Auth'],
+    root: authRoot,
+    commands: {
+      login: `/${authRoot}/login`,
+    },
+  },
   user: {
     tags: ['User'],
     root: usersRoot,

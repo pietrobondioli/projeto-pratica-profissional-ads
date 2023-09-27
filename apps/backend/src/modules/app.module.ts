@@ -5,6 +5,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { DatabaseModule } from '../config/database/database.module';
 import { EnvModule } from '../config/env/env.module';
 
+import { AuthModule } from './auth/auth.module';
 import { ChatModule } from './chat/chat.module';
 import { EquipmentModule } from './equipment/equipment.module';
 import { FeedbackModule } from './feedback/feedback.module';
@@ -27,6 +28,7 @@ const interceptors = [];
     CqrsModule,
 
     // Modules
+    AuthModule,
     UserModule,
     ChatModule,
     EquipmentModule,
