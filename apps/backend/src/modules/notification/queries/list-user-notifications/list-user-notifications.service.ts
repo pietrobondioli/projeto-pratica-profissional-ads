@@ -1,3 +1,4 @@
+import { ReqContextProvider } from '#/be/lib/application/request/req.context';
 import { QueryResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { IInferredQueryHandler, QueryHandler } from '@nestjs/cqrs';
@@ -18,12 +19,14 @@ export class ListUserNotificationsQueryHandler
   async execute(
     query: ListUserNotificationsQuery,
   ): Promise<QueryResult<ListUserNotificationsQuery>> {
-    const { userId, page, limit, order } = query.payload;
+    const { page, limit, order } = query.payload;
+
+    const authUser = ReqContextProvider.getAuthUser();
 
     const items = await this.notificationRepo.find({
       where: {
         user: {
-          id: userId,
+          id: authUser.id,
         },
       },
       skip: (page - 1) * limit,

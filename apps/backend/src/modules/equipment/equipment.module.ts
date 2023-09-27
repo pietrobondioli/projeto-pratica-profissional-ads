@@ -1,6 +1,7 @@
 import { Logger, Module, Provider } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { DataSource } from 'typeorm';
+
 import { CreateEquipmentCommand } from './commands/create-equipment/create-equipment.command';
 import { CreateEquipmentHttpController } from './commands/create-equipment/create-equipment.http.controller';
 import { UpdateEquipmentHttpController } from './commands/update-equipment/update-equipment.http.controller';
