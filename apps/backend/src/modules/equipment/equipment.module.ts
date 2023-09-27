@@ -2,6 +2,9 @@ import { Logger, Module, Provider } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { DataSource } from 'typeorm';
 
+import { DatabaseModule } from '#/be/config/database/database.module';
+import { TYPEORM_DATA_SOURCE } from '#/be/config/database/database.providers';
+import { MediaModule } from '../media/media.module';
 import { CreateEquipmentCommand } from './commands/create-equipment/create-equipment.command';
 import { CreateEquipmentHttpController } from './commands/create-equipment/create-equipment.http.controller';
 import { UpdateEquipmentHttpController } from './commands/update-equipment/update-equipment.http.controller';
@@ -30,12 +33,12 @@ const repositories: Provider[] = [
     provide: EQUIPMENT_REPO,
     useFactory: (dataSource: DataSource) =>
       dataSource.getRepository(EquipmentModel),
-    inject: ['DATA_SOURCE'],
+    inject: [TYPEORM_DATA_SOURCE],
   },
 ];
 
 @Module({
-  imports: [CqrsModule],
+  imports: [CqrsModule, DatabaseModule, MediaModule],
   controllers: [
     CreateEquipmentHttpController,
     UpdateEquipmentHttpController,

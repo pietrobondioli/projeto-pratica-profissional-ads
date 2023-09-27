@@ -11,7 +11,7 @@ export const databaseProviders = [
       const dataSource = new DataSource({
         type: 'mysql',
         url: rootConfig.database.uri,
-        entities: [__dirname + '/../**/*.model{.ts,.js}'],
+        entities: [__dirname + '/../../**/*.model{.ts,.js}'],
         synchronize: true,
       });
 

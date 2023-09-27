@@ -2,6 +2,10 @@ import { Logger, Module, Provider } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { DataSource } from 'typeorm';
 
+import { DatabaseModule } from '#/be/config/database/database.module';
+import { TYPEORM_DATA_SOURCE } from '#/be/config/database/database.providers';
+import { ReservationModule } from '../reservation/reservation.module';
+import { UserModule } from '../user/user.module';
 import { CreateFeedbackHttpController } from './commands/create-feedback/create-feedback.http.controller';
 import { CreateFeedbackCommandHandler } from './commands/create-feedback/create-feedback.service';
 import { DeleteFeedbackHttpController } from './commands/delete-feedback/delete-feedback.http.controller';
@@ -26,12 +30,12 @@ const repositories: Provider[] = [
     provide: FEEDBACK_REPO,
     useFactory: (dataSource: DataSource) =>
       dataSource.getRepository(FeedbackModel),
-    inject: ['DATA_SOURCE'],
+    inject: [TYPEORM_DATA_SOURCE],
   },
 ];
 
 @Module({
-  imports: [CqrsModule],
+  imports: [CqrsModule, DatabaseModule, UserModule, ReservationModule],
   controllers: [
     CreateFeedbackHttpController,
     DeleteFeedbackHttpController,

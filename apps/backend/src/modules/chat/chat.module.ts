@@ -1,6 +1,9 @@
+import { DatabaseModule } from '#/be/config/database/database.module';
+import { TYPEORM_DATA_SOURCE } from '#/be/config/database/database.providers';
 import { Logger, Module, Provider } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { DataSource } from 'typeorm';
+import { UserModule } from '../user/user.module';
 import { CHAT_MESSAGE_REPO, CHAT_REPO } from './chat.di-tokens';
 import { CreateChatHttpController } from './commands/create-chat/create-chat.http.controller';
 import { CreateChatCommandHandler } from './commands/create-chat/create-chat.service';
@@ -26,18 +29,18 @@ const repositories: Provider[] = [
   {
     provide: CHAT_REPO,
     useFactory: (dataSource: DataSource) => dataSource.getRepository(ChatModel),
-    inject: ['DATA_SOURCE'],
+    inject: [TYPEORM_DATA_SOURCE],
   },
   {
     provide: CHAT_MESSAGE_REPO,
     useFactory: (dataSource: DataSource) =>
       dataSource.getRepository(ChatMessageModel),
-    inject: ['DATA_SOURCE'],
+    inject: [TYPEORM_DATA_SOURCE],
   },
 ];
 
 @Module({
-  imports: [CqrsModule],
+  imports: [CqrsModule, DatabaseModule, UserModule],
   controllers: [
     CreateChatHttpController,
     SendMessageHttpController,

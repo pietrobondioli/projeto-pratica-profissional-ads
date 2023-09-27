@@ -2,6 +2,10 @@ import { Logger, Module, Provider } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { DataSource } from 'typeorm';
 
+import { DatabaseModule } from '#/be/config/database/database.module';
+import { TYPEORM_DATA_SOURCE } from '#/be/config/database/database.providers';
+import { EquipmentModule } from '../equipment/equipment.module';
+import { UserModule } from '../user/user.module';
 import { CancelReservationHttpController } from './commands/cancel-reservation/cancel-reservation.http.controller';
 import { CancelReservationCommandHandler } from './commands/cancel-reservation/cancel-reservation.service';
 import { CreateReservationHttpController } from './commands/create-reservation/create-reservation.http.controller';
@@ -30,12 +34,12 @@ const repositories: Provider[] = [
     provide: RESERVATION_REPO,
     useFactory: (dataSource: DataSource) =>
       dataSource.getRepository(ReservationModel),
-    inject: ['DATA_SOURCE'],
+    inject: [TYPEORM_DATA_SOURCE],
   },
 ];
 
 @Module({
-  imports: [CqrsModule],
+  imports: [CqrsModule, DatabaseModule, UserModule, EquipmentModule],
   controllers: [
     CreateReservationHttpController,
     CancelReservationHttpController,

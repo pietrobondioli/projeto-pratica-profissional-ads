@@ -9,7 +9,7 @@ import { UserModel, UserRepo } from '../../db/user.model';
 import { EmailVerificationToken } from '../../domain/email-verification-token.entity';
 import { UserNotFoundError } from '../../domain/errors/user-not-found.error';
 import { UserAggregate } from '../../domain/user.aggregate';
-import { CHANGE_PASSWORD_TOKEN_REPO } from '../../user.di-tokens';
+import { CHANGE_PASSWORD_TOKEN_REPO, USER_REPO } from '../../user.di-tokens';
 
 import { EmailVerificationTokenRepo } from '../../db/email-verification-token.model';
 import { ReqConfirmAccountTokenCommand } from './req-confirm-account-token.command';
@@ -21,6 +21,7 @@ export class ReqConfirmAccountTokenCommandHandler
   constructor(
     @Inject(CHANGE_PASSWORD_TOKEN_REPO)
     protected readonly emailVerificationTokenRepo: EmailVerificationTokenRepo,
+    @Inject(USER_REPO)
     protected readonly userRepo: UserRepo,
     protected readonly eventEmitter: EventEmitter2,
   ) {}

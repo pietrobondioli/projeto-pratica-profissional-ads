@@ -12,7 +12,7 @@ import { ChangePasswordToken } from '../../domain/change-password-token.entity';
 import { TokenInvalidError } from '../../domain/errors/token-invalid.error';
 import { TokenNotFoundError } from '../../domain/errors/token-not-found.error';
 import { UserAggregate } from '../../domain/user.aggregate';
-import { CHANGE_PASSWORD_TOKEN_REPO } from '../../user.di-tokens';
+import { CHANGE_PASSWORD_TOKEN_REPO, USER_REPO } from '../../user.di-tokens';
 
 import { ChangePasswordTokenRepo } from '../../db/change-password-token.model';
 import { ChangePasswordCommand } from './change-password.command';
@@ -24,6 +24,7 @@ export class ChangePasswordCommandHandler
   constructor(
     @Inject(CHANGE_PASSWORD_TOKEN_REPO)
     protected readonly changePasswordTokenRepo: ChangePasswordTokenRepo,
+    @Inject(USER_REPO)
     protected readonly userRepo: UserRepo,
     protected readonly eventEmitter: EventEmitter2,
   ) {}

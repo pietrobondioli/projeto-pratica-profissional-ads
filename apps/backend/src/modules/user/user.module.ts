@@ -2,6 +2,8 @@ import { Logger, Module, Provider } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { DataSource } from 'typeorm';
 
+import { DatabaseModule } from '#/be/config/database/database.module';
+import { TYPEORM_DATA_SOURCE } from '#/be/config/database/database.providers';
 import { ChangeEmailHttpController } from './commands/change-email/change-email.http.controller';
 import { ChangeEmailCommandHandler } from './commands/change-email/change-email.service';
 import { ChangePasswordHttpController } from './commands/change-password/change-password.http.controller';
@@ -46,36 +48,36 @@ const repositories: Provider[] = [
   {
     provide: USER_REPO,
     useFactory: (dataSource: DataSource) => dataSource.getRepository(UserModel),
-    inject: ['DATA_SOURCE'],
+    inject: [TYPEORM_DATA_SOURCE],
   },
   {
     provide: USER_PROFILE_REPO,
     useFactory: (dataSource: DataSource) =>
       dataSource.getRepository(UserProfileModel),
-    inject: ['DATA_SOURCE'],
+    inject: [TYPEORM_DATA_SOURCE],
   },
   {
     provide: CHANGE_EMAIL_TOKEN_REPO,
     useFactory: (dataSource: DataSource) =>
       dataSource.getRepository(ChangeEmailTokenModel),
-    inject: ['DATA_SOURCE'],
+    inject: [TYPEORM_DATA_SOURCE],
   },
   {
     provide: CHANGE_PASSWORD_TOKEN_REPO,
     useFactory: (dataSource: DataSource) =>
       dataSource.getRepository(ChangePasswordTokenModel),
-    inject: ['DATA_SOURCE'],
+    inject: [TYPEORM_DATA_SOURCE],
   },
   {
     provide: EMAIL_VERIFICATION_TOKEN_REPO,
     useFactory: (dataSource: DataSource) =>
       dataSource.getRepository(EmailVerificationTokenModel),
-    inject: ['DATA_SOURCE'],
+    inject: [TYPEORM_DATA_SOURCE],
   },
 ];
 
 @Module({
-  imports: [CqrsModule],
+  imports: [CqrsModule, DatabaseModule],
   controllers: [
     ChangeEmailHttpController,
     ChangePasswordHttpController,

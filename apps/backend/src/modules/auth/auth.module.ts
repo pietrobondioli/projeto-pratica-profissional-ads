@@ -3,10 +3,11 @@ import { JwtModule } from '@nestjs/jwt';
 
 import { UserModule } from '../user/user.module';
 
+import { CqrsModule } from '@nestjs/cqrs';
 import { LoginHttpController } from './commands/login/login.http.controller';
 
 @Module({
-  imports: [JwtModule, UserModule],
+  imports: [CqrsModule, JwtModule, UserModule],
   providers: [JwtModule],
   controllers: [LoginHttpController],
 })
