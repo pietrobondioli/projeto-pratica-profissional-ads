@@ -26,7 +26,7 @@ export class GetUserHttpController {
   })
   async execute(@Param('id') id: string) {
     const query = new GetUserQuery({
-      id,
+      userId: id,
     });
 
     const result = await this.queryBus.execute(query);

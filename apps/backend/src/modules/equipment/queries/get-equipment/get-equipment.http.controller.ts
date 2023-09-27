@@ -27,7 +27,7 @@ export class GetEquipmentHttpController {
   })
   async execute(@Param('id') id: string) {
     const query = new GetEquipmentQuery({
-      id,
+      equipmentId: id,
     });
 
     const result = await this.queryBus.execute(query);

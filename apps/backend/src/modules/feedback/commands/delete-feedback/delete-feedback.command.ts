@@ -4,7 +4,7 @@ import { CommandBase } from '#/be/lib/ddd/command.base';
 import { ExceptionBase } from '#/be/lib/exceptions/exception.base';
 
 class Payload {
-  readonly id: string;
+  readonly feedbackId: string;
 }
 
 export class DeleteFeedbackCommand extends CommandBase<

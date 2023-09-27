@@ -25,7 +25,7 @@ export class GetChatHttpController {
   })
   async execute(@Param('id') id: string) {
     const query = new GetChatQuery({
-      id,
+      chatId: id,
     });
 
     const result = await this.queryBus.execute(query);

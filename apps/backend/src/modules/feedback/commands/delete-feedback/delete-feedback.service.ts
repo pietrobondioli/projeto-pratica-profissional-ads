@@ -24,21 +24,21 @@ export class DeleteFeedbackCommandHandler
     command: DeleteFeedbackCommand,
   ): Promise<CommandResult<DeleteFeedbackCommand>> {
     try {
-      const { id } = command.payload;
+      const { feedbackId } = command.payload;
 
       const authUser = ReqContextProvider.getAuthUser();
 
       const feedback = await this.feedbackRepo.findOneBy({
-        id,
+        id: feedbackId,
       });
 
       if (feedback.fromUser.id !== authUser.id) {
         return new Err(new NotAuthorizedError());
       }
 
-      await this.feedbackRepo.delete(id);
+      await this.feedbackRepo.delete(feedback.id);
 
-      FeedbackAggregate.entityID(id).deleted();
+      FeedbackAggregate.entityID(feedback.id).deleted();
 
       FeedbackAggregate.publishEvents(this.eventEmitter);
 

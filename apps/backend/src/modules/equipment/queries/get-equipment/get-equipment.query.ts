@@ -6,7 +6,7 @@ import { Equipment } from '../../domain/equipment.entity';
 import { EquipmentNotFoundError } from '../../domain/errors/equipment-not-found.error';
 
 class Payload {
-  readonly id: string;
+  readonly equipmentId: string;
 }
 
 export class GetEquipmentQuery extends QueryBase<

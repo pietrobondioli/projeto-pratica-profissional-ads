@@ -5,7 +5,7 @@ import { Chat } from '../../domain/chat.entity';
 import { ChatNotFoundError } from '../../domain/errors/chat-not-found.error';
 
 class Payload {
-  readonly id: string;
+  readonly chatId: string;
 }
 
 export class GetChatQuery extends QueryBase<

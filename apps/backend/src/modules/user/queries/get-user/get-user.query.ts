@@ -5,7 +5,7 @@ import { ExceptionBase } from '#/be/lib/exceptions/exception.base';
 import { User } from '../../domain/user.entity';
 
 class Payload {
-  readonly id: string;
+  readonly userId: string;
 }
 
 export class GetUserQuery extends QueryBase<

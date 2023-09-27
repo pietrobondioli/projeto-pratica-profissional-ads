@@ -24,7 +24,7 @@ export class DeleteFeedbackHttpController {
   })
   async execute(@Param() params: DeleteFeedbackReqDto, @Res() res: Response) {
     const command = new DeleteFeedbackCommand({
-      id: params.id,
+      feedbackId: params.feedbackId,
     });
 
     const result = await this.commandBus.execute(command);

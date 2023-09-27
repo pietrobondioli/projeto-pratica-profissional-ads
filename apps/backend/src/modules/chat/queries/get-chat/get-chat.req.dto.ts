@@ -8,5 +8,5 @@ export class GetChatReqDto {
   })
   @IsString()
   @IsNotEmpty()
-  readonly id: string;
+  readonly chatId: string;
 }

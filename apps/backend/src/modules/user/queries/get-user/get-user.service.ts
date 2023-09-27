@@ -17,8 +17,10 @@ export class GetUserQueryHandler
   ) {}
 
   async execute(query: GetUserQuery): Promise<QueryResult<GetUserQuery>> {
+    const { userId } = query.payload;
+
     const user = await this.userRepo.findOneBy({
-      id: query.payload.id,
+      id: userId,
     });
 
     if (!user) {

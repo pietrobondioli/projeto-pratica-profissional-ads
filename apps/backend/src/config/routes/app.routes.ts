@@ -24,8 +24,7 @@ export const routesV1 = {
       change_email: `/${usersRoot}/change-email`,
     },
     queries: {
-      get: `/${usersRoot}/:id`,
-      list: `/${usersRoot}`,
+      get: `/${usersRoot}/:userId`,
     },
   },
   equipment: {
@@ -33,12 +32,12 @@ export const routesV1 = {
     root: equipmentRoot,
     commands: {
       create: `/${equipmentRoot}`,
-      update: `/${equipmentRoot}/:id`,
-      update_photo: `/${equipmentRoot}/:id/photo`,
-      delete: `/${equipmentRoot}/:id`,
+      update: `/${equipmentRoot}/:equipmentId`,
+      update_photo: `/${equipmentRoot}/:equipmentId/photo`,
+      delete: `/${equipmentRoot}/:equipmentId`,
     },
     queries: {
-      get: `/${equipmentRoot}/:id`,
+      get: `/${equipmentRoot}/:equipmentId`,
       list: `/${equipmentRoot}`,
     },
   },
@@ -47,10 +46,10 @@ export const routesV1 = {
     root: reservationRoot,
     commands: {
       create: `/${reservationRoot}`,
-      cancel: `/${reservationRoot}/:id/cancel`,
+      cancel: `/${reservationRoot}/:reservationId/cancel`,
     },
     queries: {
-      get: `/${reservationRoot}/:id`,
+      get: `/${reservationRoot}/:reservationId`,
       list: `/${reservationRoot}`,
     },
   },
@@ -59,11 +58,11 @@ export const routesV1 = {
     root: feedbackRoot,
     commands: {
       create: `/${feedbackRoot}`,
-      update: `/${feedbackRoot}/:id`,
-      delete: `/${feedbackRoot}/:id`,
+      update: `/${feedbackRoot}/:feedbackId`,
+      delete: `/${feedbackRoot}/:feedbackId`,
     },
     queries: {
-      get: `/${feedbackRoot}/:id`,
+      get: `/${feedbackRoot}/:feedbackId`,
       list: `/${feedbackRoot}`,
     },
   },
@@ -72,11 +71,11 @@ export const routesV1 = {
     root: chatRoot,
     commands: {
       create: `/${chatRoot}`,
-      send_message: `/${chatRoot}/:id/send-message`,
-      read_message: `/${chatRoot}/:id/read-message`,
+      send_message: `/${chatRoot}/:chatId/send-message`,
+      read_message: `/${chatRoot}/:chatId/read-message`,
     },
     queries: {
-      get: `/${chatRoot}/:id`,
+      get: `/${chatRoot}/:chatId`,
       list: `/${chatRoot}`,
     },
   },
@@ -84,7 +83,7 @@ export const routesV1 = {
     tags: ['Notification'],
     root: notificationRoot,
     commands: {
-      read: `/${notificationRoot}/:id/read`,
+      read: `/${notificationRoot}/:notificationId/read`,
     },
     queries: {
       list: `/${notificationRoot}`,
@@ -97,7 +96,7 @@ export const routesV1 = {
       upload: `/${mediaRoot}`,
     },
     queries: {
-      get: `/${mediaRoot}/:id`,
+      get: `/${mediaRoot}/:mediaId`,
     },
   },
 } as const;

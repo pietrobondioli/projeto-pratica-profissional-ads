@@ -19,8 +19,10 @@ export class GetChatQueryHandler
   ) {}
 
   async execute(query: GetChatQuery): Promise<QueryResult<GetChatQuery>> {
+    const { chatId } = query.payload;
+
     const chat = await this.chatRepo.findOneBy({
-      id: query.payload.id,
+      id: chatId,
     });
 
     if (!chat) {

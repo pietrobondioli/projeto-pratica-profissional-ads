@@ -26,7 +26,7 @@ export class UpdateEquipmentHttpController {
   @Patch(routesV1.equipment.commands.update)
   async update(@Param('id') id: string, @Body() body: UpdateEquipmentDto) {
     const command = new UpdateEquipmentCommand({
-      id,
+      equipmentId: id,
       ...body,
     });
 

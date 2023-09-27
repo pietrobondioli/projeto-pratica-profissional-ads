@@ -5,5 +5,5 @@ export class DeleteFeedbackReqDto {
     example: 'feedback-id-1',
     description: 'Feedback ID',
   })
-  readonly id: string;
+  readonly feedbackId: string;
 }

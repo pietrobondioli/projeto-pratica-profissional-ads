@@ -21,8 +21,10 @@ export class GetEquipmentQueryHandler
   async execute(
     query: GetEquipmentQuery,
   ): Promise<QueryResult<GetEquipmentQuery>> {
+    const { equipmentId } = query.payload;
+
     const equipment = await this.equipmentRepo.findOneBy({
-      id: query.payload.id,
+      id: equipmentId,
     });
 
     if (!equipment) {

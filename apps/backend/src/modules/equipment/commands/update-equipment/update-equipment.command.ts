@@ -7,7 +7,7 @@ import { EquipmentNotFoundError } from '../../domain/errors/equipment-not-found.
 import { PhotoNotFoundError } from '../../domain/errors/photo-not-found.error';
 
 class Payload {
-  readonly id: string;
+  readonly equipmentId: string;
   readonly title: string;
   readonly description: string;
   readonly photoId: string;
