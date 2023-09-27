@@ -6,6 +6,4 @@ export class Media extends AppEntityBase {
   bucket: string;
 
   mimeType: string;
-
-  lastUpdated: Date;
 }

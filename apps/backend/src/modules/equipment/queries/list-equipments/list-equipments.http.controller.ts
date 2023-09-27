@@ -7,14 +7,14 @@ import { ApiErrorResponse } from '#/be/lib/api/api-error.response.dto';
 import { IdResponse } from '#/be/lib/api/id.response.dto';
 
 import { plainToInstance } from 'class-transformer';
-import { ListEquipmentQuery } from './list-equipments.query';
+import { ListEquipmentsQuery } from './list-equipments.query';
 import { ListEquipmentsReqDto } from './list-equipments.req.dto';
 import { ListEquipmentResDto } from './list-equipments.res.dto';
 
 @ApiTags(...routesV1.equipment.tags)
 @Controller(routesV1.version)
-export class GetEquipmentHttpController {
-  constructor(private readonly queryBus: QueryBus<ListEquipmentQuery>) {}
+export class ListEquipmentsHttpController {
+  constructor(private readonly queryBus: QueryBus<ListEquipmentsQuery>) {}
 
   @Get(routesV1.equipment.queries.list)
   @ApiOperation({ summary: 'Get a list of equipments' })
@@ -27,7 +27,7 @@ export class GetEquipmentHttpController {
     type: ApiErrorResponse,
   })
   async execute(@Query() qry: ListEquipmentsReqDto) {
-    const query = new ListEquipmentQuery(qry);
+    const query = new ListEquipmentsQuery(qry);
 
     const result = await this.queryBus.execute(query);
 

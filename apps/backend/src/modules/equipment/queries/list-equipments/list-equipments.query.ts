@@ -13,7 +13,7 @@ class Payload extends PaginatedQueryPayloadBase {
   title?: string;
 }
 
-export class ListEquipmentQuery extends PaginatedQueryBase<
+export class ListEquipmentsQuery extends PaginatedQueryBase<
   Payload,
   Result<PaginatedQueryResultBase<Equipment>, EquipmentNotFoundError>
 > {}

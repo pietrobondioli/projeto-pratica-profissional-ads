@@ -14,7 +14,4 @@ export class MediaModel extends BaseModel implements Media {
 
   @Column()
   mimeType: string;
-
-  @Column()
-  lastUpdated: Date;
 }

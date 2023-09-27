@@ -1,17 +1,17 @@
+import { QueryResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { IInferredQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { QueryResult } from '@nestjs-architects/typed-cqrs';
 import { Ok } from 'neverthrow';
 import { Like, Repository } from 'typeorm';
 
 import { EquipmentModel } from '../../db/equipment.model';
 import { EQUIPMENT_REPO } from '../../equipment.di-tokens';
 
-import { ListEquipmentQuery } from './list-equipments.query';
+import { ListEquipmentsQuery } from './list-equipments.query';
 
-@QueryHandler(ListEquipmentQuery)
-export class ListEquipmentQueryHandler
-  implements IInferredQueryHandler<ListEquipmentQuery>
+@QueryHandler(ListEquipmentsQuery)
+export class ListEquipmentsQueryHandler
+  implements IInferredQueryHandler<ListEquipmentsQuery>
 {
   constructor(
     @Inject(EQUIPMENT_REPO)
@@ -19,8 +19,8 @@ export class ListEquipmentQueryHandler
   ) {}
 
   async execute(
-    query: ListEquipmentQuery,
-  ): Promise<QueryResult<ListEquipmentQuery>> {
+    query: ListEquipmentsQuery,
+  ): Promise<QueryResult<ListEquipmentsQuery>> {
     const { title, page, limit, order } = query.payload;
 
     const equipments = await this.equipmentRepo.find({
