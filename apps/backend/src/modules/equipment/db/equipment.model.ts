@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, Repository } from 'typeorm';
 
 import { BaseModel } from '#/be/lib/db/base.model';
 import { MediaModel } from '#/be/modules/media/db/media.model';
@@ -30,3 +30,5 @@ export class EquipmentModel extends BaseModel implements Equipment {
   @OneToMany(() => ReservationModel, (reservation) => reservation.equipment)
   reservations: ReservationModel[];
 }
+
+export type EquipmentRepo = Repository<EquipmentModel>;

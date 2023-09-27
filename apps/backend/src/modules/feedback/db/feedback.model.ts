@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, Repository } from 'typeorm';
 
 import { BaseModel } from '#/be/lib/db/base.model';
 import { ReservationModel } from '#/be/modules/reservation/db/reservation.model';
@@ -23,3 +23,5 @@ export class FeedbackModel extends BaseModel implements Feedback {
   @Column()
   comment: string;
 }
+
+export type FeedbackRepo = Repository<FeedbackModel>;
