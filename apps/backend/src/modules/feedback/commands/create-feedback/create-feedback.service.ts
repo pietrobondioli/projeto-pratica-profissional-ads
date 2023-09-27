@@ -1,6 +1,9 @@
+import { ReqContextProvider } from '#/be/lib/application/request/req.context';
 import { ReservationRepo } from '#/be/modules/reservation/db/reservation.model';
 import { ReservationNotFoundError } from '#/be/modules/reservation/domain/errors/reservation-not-found.error';
 import { RESERVATION_REPO } from '#/be/modules/reservation/reservation.di-tokens';
+import { UserRepo } from '#/be/modules/user/db/user.model';
+import { USER_REPO } from '#/be/modules/user/user.di-tokens';
 import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
@@ -21,6 +24,8 @@ export class CreateFeedbackCommandHandler
     protected readonly feedbackRepo: FeedbackRepo,
     @Inject(RESERVATION_REPO)
     protected readonly reservationRepo: ReservationRepo,
+    @Inject(USER_REPO)
+    protected readonly userRepo: UserRepo,
     protected readonly eventEmitter: EventEmitter2,
   ) {}
 
@@ -29,6 +34,12 @@ export class CreateFeedbackCommandHandler
   ): Promise<CommandResult<CreateFeedbackCommand>> {
     try {
       const { reservationId, rating, comment } = command.payload;
+
+      const authUser = ReqContextProvider.getAuthUser();
+
+      const user = await this.userRepo.findOneBy({
+        id: authUser.id,
+      });
 
       const reservation = await this.reservationRepo.findOneBy({
         id: reservationId,
@@ -42,10 +53,11 @@ export class CreateFeedbackCommandHandler
       feedback.reservation = reservation;
       feedback.rating = rating;
       feedback.comment = comment;
+      feedback.fromUser = user;
 
       const createdFeedback = await this.feedbackRepo.save(feedback);
 
-      FeedbackAggregate.entity(createdFeedback).created();
+      FeedbackAggregate.entityID(createdFeedback.id).created();
 
       return new Ok(createdFeedback.id);
     } finally {

@@ -11,9 +11,6 @@ export class FeedbackModel extends BaseModel implements Feedback {
   @ManyToOne(() => UserModel)
   fromUser: UserModel;
 
-  @ManyToOne(() => UserModel)
-  toUser: UserModel;
-
   @ManyToOne(() => ReservationModel, (reservation) => reservation.feedbacks)
   reservation: ReservationModel;
 
