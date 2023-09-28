@@ -1,6 +1,6 @@
+import { QueryResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { IInferredQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { QueryResult } from '@nestjs-architects/typed-cqrs';
 import { Ok } from 'neverthrow';
 import { Like } from 'typeorm';
 
@@ -25,13 +25,14 @@ export class ListEquipmentsQueryHandler
 
     const equipments = await this.equipmentRepo.find({
       where: {
-        title: Like(`%${title}%`),
+        ...(title && { title: Like(`%${title}%`) }),
       },
-      skip: (page - 1) * limit,
+      skip: Math.max(0, (page - 1) * limit),
       take: limit,
       order: {
         [order.field]: order.param,
       },
+      relations: ['photo'],
     });
 
     return new Ok({

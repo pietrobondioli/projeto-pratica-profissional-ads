@@ -1,6 +1,6 @@
+import { QueryResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { IInferredQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { QueryResult } from '@nestjs-architects/typed-cqrs';
 import { Ok } from 'neverthrow';
 
 import { ReservationRepo } from '../../db/reservation.model';
@@ -23,7 +23,7 @@ export class ListUserReservationsQueryHandler
     const { page, limit, order } = query.payload;
 
     const items = await this.reservationRepo.find({
-      skip: (page - 1) * limit,
+      skip: Math.max(0, (page - 1) * limit),
       take: limit,
       order: {
         [order.field]: order.param,

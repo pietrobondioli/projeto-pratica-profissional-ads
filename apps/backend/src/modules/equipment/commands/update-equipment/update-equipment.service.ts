@@ -31,8 +31,14 @@ export class UpdateEquipmentCommandHandler
     command: UpdateEquipmentCommand,
   ): Promise<Result<EntityID, PhotoNotFoundError | EquipmentNotFoundError>> {
     try {
-      const { equipmentId, photoId, description, title, pricePerDay } =
-        command.payload;
+      const {
+        equipmentId,
+        photoId,
+        description,
+        title,
+        pricePerDay,
+        availabilityStatus,
+      } = command.payload;
 
       const photo = await this.mediaRepo.findOneBy({
         id: photoId,
@@ -54,12 +60,13 @@ export class UpdateEquipmentCommandHandler
       equipment.description = description;
       equipment.photo = photo;
       equipment.pricePerDay = pricePerDay;
+      equipment.availabilityStatus = availabilityStatus;
 
       await this.equipmentRepo.save(equipment);
 
       EquipmentAggregate.publishEvents(this.eventEmitter);
 
-      return new Ok('');
+      return new Ok(equipment.id);
     } finally {
       EquipmentAggregate.clearEvents();
     }

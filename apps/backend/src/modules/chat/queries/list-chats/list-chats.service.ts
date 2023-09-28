@@ -28,10 +28,14 @@ export class ListChatsQueryHandler
           user2: {
             userProfile: [
               {
-                firstName: Like(`%${targetUserSearch}%`),
+                ...(targetUserSearch && {
+                  firstName: Like(`%${targetUserSearch}%`),
+                }),
               },
               {
-                lastName: Like(`%${targetUserSearch}%`),
+                ...(targetUserSearch && {
+                  lastName: Like(`%${targetUserSearch}%`),
+                }),
               },
             ],
           },
@@ -41,10 +45,14 @@ export class ListChatsQueryHandler
           user1: {
             userProfile: [
               {
-                firstName: Like(`%${targetUserSearch}%`),
+                ...(targetUserSearch && {
+                  firstName: Like(`%${targetUserSearch}%`),
+                }),
               },
               {
-                lastName: Like(`%${targetUserSearch}%`),
+                ...(targetUserSearch && {
+                  lastName: Like(`%${targetUserSearch}%`),
+                }),
               },
             ],
           },

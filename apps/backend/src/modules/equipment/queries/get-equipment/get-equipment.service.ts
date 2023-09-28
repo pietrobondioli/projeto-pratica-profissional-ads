@@ -1,6 +1,6 @@
+import { QueryResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { IInferredQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { QueryResult } from '@nestjs-architects/typed-cqrs';
 import { Err, Ok } from 'neverthrow';
 
 import { EquipmentRepo } from '../../db/equipment.model';
@@ -23,8 +23,11 @@ export class GetEquipmentQueryHandler
   ): Promise<QueryResult<GetEquipmentQuery>> {
     const { equipmentId } = query.payload;
 
-    const equipment = await this.equipmentRepo.findOneBy({
-      id: equipmentId,
+    const equipment = await this.equipmentRepo.findOne({
+      where: {
+        id: equipmentId,
+      },
+      relations: ['photo'],
     });
 
     if (!equipment) {

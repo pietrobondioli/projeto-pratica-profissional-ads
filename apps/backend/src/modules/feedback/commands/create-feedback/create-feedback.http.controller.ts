@@ -26,7 +26,7 @@ export class CreateFeedbackHttpController {
     summary: 'Creates a new feedback given the reservation, rating and comment',
   })
   @ApiResponse({
-    status: HttpStatus.OK,
+    status: HttpStatus.CREATED,
     type: IdResponse,
   })
   @ApiResponse({
@@ -48,7 +48,7 @@ export class CreateFeedbackHttpController {
     const result = await this.commandBus.execute(command);
 
     return result.match(
-      (id) => res.status(HttpStatus.OK).send(new IdResponse(id)),
+      (id) => res.status(HttpStatus.CREATED).send(new IdResponse(id)),
       (error) => {
         throw error;
       },

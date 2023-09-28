@@ -22,7 +22,7 @@ export class CreateEquipmentHttpController {
 
   @ApiOperation({ summary: 'Creates a new equipment.' })
   @ApiResponse({
-    status: HttpStatus.OK,
+    status: HttpStatus.CREATED,
     type: IdResponse,
   })
   @ApiResponse({

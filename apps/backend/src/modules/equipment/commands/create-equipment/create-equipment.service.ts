@@ -1,7 +1,7 @@
+import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Err, Ok } from 'neverthrow';
 
 import { MediaRepo } from '#/be/modules/media/db/media.model';
@@ -15,7 +15,7 @@ import { EQUIPMENT_REPO } from '../../equipment.di-tokens';
 import { CreateEquipmentCommand } from './create-equipment.command';
 
 @CommandHandler(CreateEquipmentCommand)
-export class CreateUserCommandHandler
+export class CreateEquipmentCommandHandler
   implements IInferredCommandHandler<CreateEquipmentCommand>
 {
   constructor(
@@ -29,7 +29,8 @@ export class CreateUserCommandHandler
   async execute(
     command: CreateEquipmentCommand,
   ): Promise<CommandResult<CreateEquipmentCommand>> {
-    const { loggedUser, photoId, description, pricePerDay } = command.payload;
+    const { loggedUser, title, photoId, description, pricePerDay } =
+      command.payload;
 
     const photo = await this.mediaRepo.findOneBy({
       id: photoId,
@@ -40,6 +41,7 @@ export class CreateUserCommandHandler
     }
 
     const equipment = new Equipment(loggedUser.id);
+    equipment.title = title;
     equipment.description = description;
     equipment.photo = photo;
     equipment.pricePerDay = pricePerDay;

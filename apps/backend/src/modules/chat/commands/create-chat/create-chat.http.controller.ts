@@ -26,7 +26,7 @@ export class CreateChatHttpController {
     summary: 'Create a chat with a given user with a given initial message',
   })
   @ApiResponse({
-    status: HttpStatus.OK,
+    status: HttpStatus.CREATED,
     type: IdResponse,
   })
   @ApiResponse({

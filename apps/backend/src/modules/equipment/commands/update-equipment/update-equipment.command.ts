@@ -12,6 +12,7 @@ class Payload {
   readonly description: string;
   readonly photoId: string;
   readonly pricePerDay: number;
+  readonly availabilityStatus: boolean;
 }
 
 export class UpdateEquipmentCommand extends CommandBase<

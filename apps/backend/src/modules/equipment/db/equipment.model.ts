@@ -31,7 +31,9 @@ export class EquipmentModel extends BaseModel implements Equipment {
   @Column()
   pricePerDay: number;
 
-  @Column()
+  @Column({
+    default: true,
+  })
   availabilityStatus: boolean;
 
   @ManyToOne(() => UserModel, (user) => user.equipment)

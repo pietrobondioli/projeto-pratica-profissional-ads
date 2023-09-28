@@ -6,8 +6,8 @@ import { TYPEORM_DATA_SOURCE } from '#/be/config/database/database.providers';
 
 import { MediaModule } from '../media/media.module';
 
-import { CreateEquipmentCommand } from './commands/create-equipment/create-equipment.command';
 import { CreateEquipmentHttpController } from './commands/create-equipment/create-equipment.http.controller';
+import { CreateEquipmentCommandHandler } from './commands/create-equipment/create-equipment.service';
 import { UpdateEquipmentHttpController } from './commands/update-equipment/update-equipment.http.controller';
 import { UpdateEquipmentCommandHandler } from './commands/update-equipment/update-equipment.service';
 import { EquipmentModel } from './db/equipment.model';
@@ -18,7 +18,7 @@ import { ListEquipmentsHttpController } from './queries/list-equipments/list-equ
 import { ListEquipmentsQueryHandler } from './queries/list-equipments/list-equipments.service';
 
 const commandHandlers: Provider[] = [
-  CreateEquipmentCommand,
+  CreateEquipmentCommandHandler,
   UpdateEquipmentCommandHandler,
 ];
 

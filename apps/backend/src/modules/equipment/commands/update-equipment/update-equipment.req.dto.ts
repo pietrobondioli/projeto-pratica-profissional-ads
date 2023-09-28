@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
+  IsBoolean,
   IsNotEmpty,
   IsNumber,
   IsString,
@@ -8,35 +9,43 @@ import {
 } from 'class-validator';
 
 export class UpdateEquipmentDto {
+  @MaxLength(128)
+  @MinLength(5)
   @ApiProperty({
     example: 'Lorem ipsum',
     description: 'Equipment title',
   })
-  @MaxLength(128)
-  @MinLength(5)
   readonly title: string;
 
+  @MaxLength(512)
+  @MinLength(5)
   @ApiProperty({
     example: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     description: 'Equipment description',
   })
-  @MaxLength(512)
-  @MinLength(5)
   readonly description: string;
 
+  @IsString()
+  @IsNotEmpty()
   @ApiProperty({
     example: 'Abc1234-',
     description: 'Id of the uploaded photo',
   })
-  @IsString()
-  @IsNotEmpty()
   readonly photoId: string;
 
+  @IsNotEmpty()
+  @IsNumber()
   @ApiProperty({
     example: 100,
     description: 'Price per day',
   })
-  @IsNotEmpty()
-  @IsNumber()
   readonly pricePerDay: number;
+
+  @IsNotEmpty()
+  @IsBoolean()
+  @ApiProperty({
+    example: true,
+    description: 'Availability status',
+  })
+  readonly availabilityStatus: boolean;
 }
