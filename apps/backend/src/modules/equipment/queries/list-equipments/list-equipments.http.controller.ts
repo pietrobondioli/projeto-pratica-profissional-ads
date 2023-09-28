@@ -10,9 +10,11 @@ import { plainToInstance } from 'class-transformer';
 import { ListEquipmentsQuery } from './list-equipments.query';
 import { ListEquipmentsReqDto } from './list-equipments.req.dto';
 import { ListEquipmentResDto } from './list-equipments.res.dto';
+import { Authenticated } from '#/be/modules/auth/guards/jwt-auth.guard';
 
 @ApiTags(...routesV1.equipment.tags)
 @Controller(routesV1.version)
+@Authenticated()
 export class ListEquipmentsHttpController {
   constructor(private readonly queryBus: QueryBus<ListEquipmentsQuery>) {}
 

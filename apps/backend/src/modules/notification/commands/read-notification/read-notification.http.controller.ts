@@ -5,11 +5,13 @@ import { Response } from 'express';
 
 import { routesV1 } from '#/be/config/routes/app.routes';
 import { ApiErrorResponse } from '#/be/lib/api/api-error.response.dto';
+import { Authenticated } from '#/be/modules/auth/guards/jwt-auth.guard';
 import { ReadNotificationCommand } from './read-notification.command';
 import { ReadNotificationReqParamsDto } from './read-notification.req.params.dto';
 
 @ApiTags(...routesV1.notification.tags)
 @Controller(routesV1.version)
+@Authenticated()
 export class ReadNotificationHttpController {
   constructor(private readonly commandBus: CommandBus) {}
 

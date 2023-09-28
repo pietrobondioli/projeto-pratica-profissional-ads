@@ -6,11 +6,13 @@ import { routesV1 } from '#/be/config/routes/app.routes';
 import { ApiErrorResponse } from '#/be/lib/api/api-error.response.dto';
 import { IdResponse } from '#/be/lib/api/id.response.dto';
 
+import { Authenticated } from '#/be/modules/auth/guards/jwt-auth.guard';
 import { UpdateEquipmentCommand } from './update-equipment.command';
 import { UpdateEquipmentDto } from './update-equipment.req.dto';
 
 @ApiTags(...routesV1.equipment.tags)
 @Controller(routesV1.version)
+@Authenticated()
 export class UpdateEquipmentHttpController {
   constructor(private readonly commandBus: CommandBus) {}
 

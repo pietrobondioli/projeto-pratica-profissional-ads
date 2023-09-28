@@ -5,11 +5,13 @@ import { plainToInstance } from 'class-transformer';
 
 import { routesV1 } from '#/be/config/routes/app.routes';
 import { ApiErrorResponse } from '#/be/lib/api/api-error.response.dto';
+import { Authenticated } from '#/be/modules/auth/guards/jwt-auth.guard';
 import { GetReservationQuery } from './get-reservation.query';
 import { GetReservationResDto } from './get-reservation.res.dto';
 
 @ApiTags(...routesV1.reservation.tags)
 @Controller(routesV1.version)
+@Authenticated()
 export class GetReservationHttpController {
   constructor(private readonly queryBus: QueryBus) {}
 

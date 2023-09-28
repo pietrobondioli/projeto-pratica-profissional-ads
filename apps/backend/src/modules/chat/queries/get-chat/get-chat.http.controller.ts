@@ -4,12 +4,14 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { routesV1 } from '#/be/config/routes/app.routes';
 import { ApiErrorResponse } from '#/be/lib/api/api-error.response.dto';
+import { Authenticated } from '#/be/modules/auth/guards/jwt-auth.guard';
 import { plainToInstance } from 'class-transformer';
 import { GetChatQuery } from './get-chat.query';
 import { GetChatResDto } from './get-chat.res.dto';
 
 @ApiTags(...routesV1.chat.tags)
 @Controller(routesV1.version)
+@Authenticated()
 export class GetChatHttpController {
   constructor(private readonly queryBus: QueryBus<GetChatQuery>) {}
 

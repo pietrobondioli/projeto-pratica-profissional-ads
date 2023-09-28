@@ -7,11 +7,13 @@ import { ApiErrorResponse } from '#/be/lib/api/api-error.response.dto';
 
 import { Equipment } from '../../domain/equipment.entity';
 
+import { Authenticated } from '#/be/modules/auth/guards/jwt-auth.guard';
 import { GetEquipmentQuery } from './get-equipment.query';
 import { GetEquipmentResDto } from './get-equipment.res.dto';
 
 @ApiTags(...routesV1.equipment.tags)
 @Controller(routesV1.version)
+@Authenticated()
 export class GetEquipmentHttpController {
   constructor(private readonly queryBus: QueryBus<GetEquipmentQuery>) {}
 
