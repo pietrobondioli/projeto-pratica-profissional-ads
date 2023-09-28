@@ -6,6 +6,9 @@ import { JwtModule } from '@nestjs/jwt';
 import { DatabaseModule } from '../config/database/database.module';
 import { EnvModule, rootConfig } from '../config/env/env.module';
 
+import { MailModule } from '../lib/services/mail/mail.module';
+import { MediaStorageModule } from '../lib/services/media-storage/media-storage.module';
+
 import { AuthModule } from './auth/auth.module';
 import { ChatModule } from './chat/chat.module';
 import { EquipmentModule } from './equipment/equipment.module';
@@ -30,6 +33,8 @@ import { UserModule } from './user/user.module';
     // Libraries
     EventEmitterModule.forRoot(),
     CqrsModule,
+    MediaStorageModule,
+    MailModule,
 
     // Modules
     AuthModule,
