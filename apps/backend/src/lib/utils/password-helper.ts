@@ -6,7 +6,7 @@ export class PasswordHelper {
     return bcrypt.hashSync(password, salt);
   }
 
-  static async comparePassword(password: string, passwordHash: string) {
-    return bcrypt.compare(password, passwordHash);
+  static comparePassword(password: string, passwordHash: string) {
+    return bcrypt.compareSync(password, passwordHash);
   }
 }
