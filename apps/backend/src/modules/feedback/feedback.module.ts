@@ -17,6 +17,8 @@ import { FeedbackModel } from './db/feedback.model';
 import { FEEDBACK_REPO } from './feedback.di-tokens';
 import { GetFeedbackHttpController } from './queries/get-feedback/get-feedback.http.controller';
 import { GetFeedbackQueryHandler } from './queries/get-feedback/get-feedback.service';
+import { ListUserFeedbacksHttpController } from './queries/list-user-feedbacks/list-user-feedbacks.http.controller';
+import { ListUserFeedbacksQueryHandler } from './queries/list-user-feedbacks/list-user-feedbacks.service';
 
 const commandHandlers: Provider[] = [
   CreateFeedbackCommandHandler,
@@ -24,7 +26,10 @@ const commandHandlers: Provider[] = [
   UpdateFeedbackCommandHandler,
 ];
 
-const queryHandlers: Provider[] = [GetFeedbackQueryHandler];
+const queryHandlers: Provider[] = [
+  GetFeedbackQueryHandler,
+  ListUserFeedbacksQueryHandler,
+];
 
 const mappers: Provider[] = [];
 
@@ -44,6 +49,7 @@ const repositories: Provider[] = [
     DeleteFeedbackHttpController,
     UpdateFeedbackHttpController,
     GetFeedbackHttpController,
+    ListUserFeedbacksHttpController,
   ],
   providers: [
     Logger,
