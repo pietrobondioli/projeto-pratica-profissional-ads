@@ -10,7 +10,7 @@ import {
   AuthUser,
   UserPayload,
 } from '#/be/lib/application/decorators/auth-user.decorator';
-import { Authenticated } from '#/be/lib/application/guards/authenticated.guard';
+import { Authenticated } from '#/be/lib/application/decorators/authenticated.decorator';
 
 import { CreateChatCommand } from './create-chat.command';
 import { CreateChatReqDto } from './create-chat.req.dto';

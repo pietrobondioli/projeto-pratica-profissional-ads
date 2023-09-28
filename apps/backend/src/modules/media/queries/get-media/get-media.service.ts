@@ -1,3 +1,4 @@
+import { AwsS3MediaService } from '#/be/lib/services/media-storage/aws-s3-media.service';
 import { QueryResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { IInferredQueryHandler, QueryHandler } from '@nestjs/cqrs';
@@ -14,6 +15,7 @@ export class GetMediaQueryHandler
   constructor(
     @Inject(MEDIA_REPO)
     private readonly mediaRepo: MediaRepo,
+    private readonly awsS3MediaService: AwsS3MediaService,
   ) {}
 
   async execute(query: GetMediaQuery): Promise<QueryResult<GetMediaQuery>> {
@@ -27,6 +29,11 @@ export class GetMediaQueryHandler
       return new Err(new MediaNotFoundError());
     }
 
-    return new Ok(media);
+    const mediaUrl = this.awsS3MediaService.getFileUrl(media.key, media.bucket);
+
+    return new Ok({
+      media,
+      url: mediaUrl,
+    });
   }
 }

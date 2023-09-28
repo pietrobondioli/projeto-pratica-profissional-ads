@@ -22,4 +22,11 @@ export class GetMediaResDto {
     description: 'Media mime type',
   })
   readonly mimeType: string;
+
+  @Expose()
+  @ApiProperty({
+    example: 'https://bucket-name.s3.region.amazonaws.com/media-key',
+    description: 'Media URL',
+  })
+  readonly url: string;
 }

@@ -1,4 +1,4 @@
-import { ExecutionContext, SetMetadata } from '@nestjs/common';
+import { ExecutionContext, Injectable, SetMetadata } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 
 import { AuthRequest } from '#/be/lib/application/decorators/auth-user.decorator';
@@ -9,6 +9,7 @@ export const ALLOW_UNVERIFIED_USER_KEY = 'allowUnverifiedUser';
 export const AllowUnverifiedUser = () =>
   SetMetadata(ALLOW_UNVERIFIED_USER_KEY, true);
 
+@Injectable()
 export class VerifiedUserGuard {
   constructor(private readonly reflector: Reflector) {}
 

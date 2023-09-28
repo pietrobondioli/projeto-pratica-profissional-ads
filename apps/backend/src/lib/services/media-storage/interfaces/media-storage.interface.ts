@@ -17,4 +17,6 @@ export interface Media {
 
 export interface MediaStorageService {
   uploadFile(file: MediaFile): Promise<Media>;
+
+  deleteFile(key: string, bucket: string): Promise<void>;
 }

@@ -5,7 +5,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { routesV1 } from '#/be/config/routes/app.routes';
 import { ApiErrorResponse } from '#/be/lib/api/api-error.response.dto';
 import { IdResponse } from '#/be/lib/api/id.response.dto';
-import { Authenticated } from '#/be/lib/application/guards/authenticated.guard';
+import { Authenticated } from '#/be/lib/application/decorators/authenticated.decorator';
 
 import { UpdateEquipmentCommand } from './update-equipment.command';
 import { UpdateEquipmentDto } from './update-equipment.req.dto';

@@ -1,7 +1,7 @@
+import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Ok } from 'neverthrow';
 
 import { AwsS3MediaService } from '#/be/lib/services/media-storage/aws-s3-media.service';
@@ -40,11 +40,11 @@ export class UploadMediaCommandHandler
       media.bucket = uploadedMedia.bucket;
       media.mimeType = uploadedMedia.mimeType;
 
-      await this.mediaRepo.save(media);
+      const createdMedia = await this.mediaRepo.save(media);
 
       MediaAggregate.publishEvents(this.eventEmitter);
 
-      return new Ok('');
+      return new Ok(createdMedia.id);
     } finally {
       MediaAggregate.clearEvents();
     }

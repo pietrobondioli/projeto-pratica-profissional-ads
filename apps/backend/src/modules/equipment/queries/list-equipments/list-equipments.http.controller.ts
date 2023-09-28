@@ -6,7 +6,7 @@ import { plainToInstance } from 'class-transformer';
 import { routesV1 } from '#/be/config/routes/app.routes';
 import { ApiErrorResponse } from '#/be/lib/api/api-error.response.dto';
 import { IdResponse } from '#/be/lib/api/id.response.dto';
-import { Authenticated } from '#/be/lib/application/guards/authenticated.guard';
+import { Authenticated } from '#/be/lib/application/decorators/authenticated.decorator';
 
 import { ListEquipmentsQuery } from './list-equipments.query';
 import { ListEquipmentsReqDto } from './list-equipments.req.dto';

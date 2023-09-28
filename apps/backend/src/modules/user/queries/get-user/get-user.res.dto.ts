@@ -3,28 +3,7 @@ import { Expose, Type } from 'class-transformer';
 
 import { ResponseBase } from '#/be/lib/api/response.dto.base';
 
-class MediaDto extends ResponseBase {
-  @Expose()
-  @ApiProperty({
-    example: 'key',
-    description: 'The key of the media',
-  })
-  readonly key: string;
-
-  @Expose()
-  @ApiProperty({
-    example: 'bucket',
-    description: 'The bucket of the media',
-  })
-  readonly bucket: string;
-
-  @Expose()
-  @ApiProperty({
-    example: 'image/png',
-    description: 'The mime type of the media',
-  })
-  readonly mimeType: string;
-}
+class MediaDto extends ResponseBase {}
 
 class UserProfileDto {
   @Expose()

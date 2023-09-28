@@ -31,10 +31,14 @@ export class GetMediaHttpController {
     const result = await this.queryBus.execute(query);
 
     return result.match(
-      (media) =>
-        plainToInstance(GetMediaResDto, media, {
-          excludeExtraneousValues: true,
-        }),
+      ({ media, url }) =>
+        plainToInstance(
+          GetMediaResDto,
+          { ...media, url },
+          {
+            excludeExtraneousValues: true,
+          },
+        ),
       (error) => {
         throw error;
       },

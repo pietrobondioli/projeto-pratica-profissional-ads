@@ -24,11 +24,13 @@ import {
   AuthUser,
   UserPayload,
 } from '#/be/lib/application/decorators/auth-user.decorator';
+import { Authenticated } from '#/be/lib/application/decorators/authenticated.decorator';
 
 import { UploadMediaCommand } from './upload-media.command';
 
 @ApiTags(...routesV1.media.tags)
 @Controller(routesV1.version)
+@Authenticated()
 export class UploadMediaHttpController {
   constructor(private readonly commandBus: CommandBus) {}
 

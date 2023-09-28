@@ -9,7 +9,7 @@ import {
   AuthUser,
   UserPayload,
 } from '#/be/lib/application/decorators/auth-user.decorator';
-import { Authenticated } from '#/be/lib/application/guards/authenticated.guard';
+import { Authenticated } from '#/be/lib/application/decorators/authenticated.decorator';
 
 import { CancelReservationCommand } from './cancel-reservation.command';
 import { CancelReservationReqParamsDto } from './cancel-reservation.req.params.dto';

@@ -9,10 +9,12 @@ import { UploadMediaHttpController } from './commands/upload-media/upload-media.
 import { UploadMediaCommandHandler } from './commands/upload-media/upload-media.service';
 import { MediaModel } from './db/media.model';
 import { MEDIA_REPO } from './media.di-tokens';
+import { GetMediaHttpController } from './queries/get-media/get-media.http.controller';
+import { GetMediaQueryHandler } from './queries/get-media/get-media.service';
 
 const commandHandlers: Provider[] = [UploadMediaCommandHandler];
 
-const queryHandlers: Provider[] = [];
+const queryHandlers: Provider[] = [GetMediaQueryHandler];
 
 const mappers: Provider[] = [];
 
@@ -27,7 +29,7 @@ const repositories: Provider[] = [
 
 @Module({
   imports: [CqrsModule, MediaStorageModule],
-  controllers: [UploadMediaHttpController],
+  controllers: [UploadMediaHttpController, GetMediaHttpController],
   providers: [
     Logger,
     ...repositories,

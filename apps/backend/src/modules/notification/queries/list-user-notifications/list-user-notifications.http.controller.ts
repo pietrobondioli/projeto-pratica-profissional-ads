@@ -9,7 +9,7 @@ import {
   AuthUser,
   UserPayload,
 } from '#/be/lib/application/decorators/auth-user.decorator';
-import { Authenticated } from '#/be/lib/application/guards/authenticated.guard';
+import { Authenticated } from '#/be/lib/application/decorators/authenticated.decorator';
 
 import { ListUserNotificationsQuery } from './list-user-notifications.query';
 import { ListUserNotificationsReqDto } from './list-user-notifications.req.dto';

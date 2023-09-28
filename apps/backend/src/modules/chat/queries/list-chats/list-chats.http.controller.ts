@@ -9,7 +9,7 @@ import {
   AuthUser,
   UserPayload,
 } from '#/be/lib/application/decorators/auth-user.decorator';
-import { Authenticated } from '#/be/lib/application/guards/authenticated.guard';
+import { Authenticated } from '#/be/lib/application/decorators/authenticated.decorator';
 
 import { ListChatsQuery } from './list-chats.query';
 import { ListChatsReqDto } from './list-chats.req.dto';

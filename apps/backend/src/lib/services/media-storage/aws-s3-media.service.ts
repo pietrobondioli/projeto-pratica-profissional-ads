@@ -54,4 +54,8 @@ export class AwsS3MediaService implements MediaStorageService {
       Key: key,
     });
   }
+
+  getFileUrl(key: string, bucket: string): string {
+    return `https://${bucket}.s3.${this.awsConfig.s3.region}.amazonaws.com/${key}`;
+  }
 }

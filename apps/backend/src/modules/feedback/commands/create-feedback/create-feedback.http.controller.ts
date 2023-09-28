@@ -10,7 +10,7 @@ import {
   AuthUser,
   UserPayload,
 } from '#/be/lib/application/decorators/auth-user.decorator';
-import { Authenticated } from '#/be/lib/application/guards/authenticated.guard';
+import { Authenticated } from '#/be/lib/application/decorators/authenticated.decorator';
 
 import { CreateFeedbackCommand } from './create-feedback.command';
 import { CreateFeedbackReqDto } from './create-feedback.req.dto';

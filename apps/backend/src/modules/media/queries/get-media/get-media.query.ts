@@ -10,5 +10,11 @@ class Payload {
 
 export class GetMediaQuery extends QueryBase<
   Payload,
-  Result<Media, ExceptionBase>
+  Result<
+    {
+      readonly media: Media;
+      readonly url: string;
+    },
+    ExceptionBase
+  >
 > {}
