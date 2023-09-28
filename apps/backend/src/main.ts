@@ -33,7 +33,11 @@ async function bootstrap() {
   SwaggerModule.setup('/docs/api', app, document);
 
   console.log(`Environment: ${process.env.NODE_ENV}`);
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+    }),
+  );
   console.log(`Environment: ${process.env.PORT}`);
   await app.listen(process.env.PORT ?? 3000);
   console.log(`Environment: ${process.env.PORT}`);

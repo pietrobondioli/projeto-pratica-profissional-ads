@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 
 import { PaginatedResponseDto } from '#/be/lib/api/paginated.response.base';
 import { ResponseBase } from '#/be/lib/api/response.dto.base';
@@ -39,4 +39,13 @@ class ReservationDto extends ResponseBase {
   readonly paymentStatus: PaymentStatus;
 }
 
-export class ListUserReservationsResDto extends PaginatedResponseDto<ReservationDto> {}
+export class ListUserReservationsResDto extends PaginatedResponseDto<ReservationDto> {
+  @Expose()
+  @Type(() => ReservationDto)
+  @ApiProperty({
+    description: 'Array of notifications',
+    type: () => [ReservationDto],
+    isArray: true,
+  })
+  readonly items: ReservationDto[];
+}

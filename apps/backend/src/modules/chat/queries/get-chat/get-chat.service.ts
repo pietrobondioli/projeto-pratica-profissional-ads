@@ -1,6 +1,6 @@
+import { QueryResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { IInferredQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { QueryResult } from '@nestjs-architects/typed-cqrs';
 import { Err, Ok } from 'neverthrow';
 
 import { CHAT_REPO } from '../../chat.di-tokens';
@@ -21,8 +21,11 @@ export class GetChatQueryHandler
   async execute(query: GetChatQuery): Promise<QueryResult<GetChatQuery>> {
     const { chatId } = query.payload;
 
-    const chat = await this.chatRepo.findOneBy({
-      id: chatId,
+    const chat = await this.chatRepo.findOne({
+      where: {
+        id: chatId,
+      },
+      relations: ['user1', 'user2', 'messages', 'messages.sender'],
     });
 
     if (!chat) {

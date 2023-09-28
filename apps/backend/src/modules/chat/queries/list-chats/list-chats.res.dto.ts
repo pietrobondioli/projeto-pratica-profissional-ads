@@ -38,4 +38,13 @@ class ChatDto extends ResponseBase {
   readonly user2: UserDto;
 }
 
-export class ListChatsResDto extends PaginatedResponseDto<ChatDto> {}
+export class ListChatsResDto extends PaginatedResponseDto<ChatDto> {
+  @Expose()
+  @Type(() => ChatDto)
+  @ApiProperty({
+    description: 'Array of chats',
+    type: () => [ChatDto],
+    isArray: true,
+  })
+  readonly items: ChatDto[];
+}

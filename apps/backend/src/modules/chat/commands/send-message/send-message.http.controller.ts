@@ -11,6 +11,7 @@ import {
 } from '#/be/lib/application/decorators/auth-user.decorator';
 import { Authenticated } from '#/be/lib/application/decorators/authenticated.decorator';
 
+import { IdResponse } from '#/be/lib/api/id.response.dto';
 import { SendMessageCommand } from './send-message.command';
 import { SendMessageReqDto } from './send-message.req.dto';
 
@@ -24,6 +25,7 @@ export class SendMessageHttpController {
   @ApiOperation({ summary: 'Sends a message to a chat' })
   @ApiResponse({
     status: HttpStatus.OK,
+    type: IdResponse,
   })
   @ApiResponse({
     status: HttpStatus.BAD_REQUEST,
@@ -43,7 +45,7 @@ export class SendMessageHttpController {
     const result = await this.commandBus.execute(command);
 
     return result.match(
-      (id) => res.status(HttpStatus.CREATED).send(id),
+      (id) => res.status(HttpStatus.CREATED).send(new IdResponse(id)),
       (error) => {
         throw error;
       },

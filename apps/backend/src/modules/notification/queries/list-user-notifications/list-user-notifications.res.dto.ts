@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 
 import { PaginatedResponseDto } from '#/be/lib/api/paginated.response.base';
 import { ResponseBase } from '#/be/lib/api/response.dto.base';
@@ -22,4 +22,13 @@ class NotificationDto extends ResponseBase {
   status: NotificationStatus;
 }
 
-export class ListUserNotificationsResDto extends PaginatedResponseDto<NotificationDto> {}
+export class ListUserNotificationsResDto extends PaginatedResponseDto<NotificationDto> {
+  @Expose()
+  @Type(() => NotificationDto)
+  @ApiProperty({
+    description: 'Array of notifications',
+    type: () => [NotificationDto],
+    isArray: true,
+  })
+  readonly items: NotificationDto[];
+}

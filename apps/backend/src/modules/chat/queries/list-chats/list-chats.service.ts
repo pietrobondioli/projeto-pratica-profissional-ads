@@ -1,12 +1,12 @@
+import { QueryResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { IInferredQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { QueryResult } from '@nestjs-architects/typed-cqrs';
 import { Ok } from 'neverthrow';
-import { Like, Repository } from 'typeorm';
+import { Like } from 'typeorm';
 
 import { CHAT_REPO } from '../../chat.di-tokens';
-import { Chat } from '../../domain/chat.entity';
 
+import { ChatRepo } from '../../db/chat.model';
 import { ListChatsQuery } from './list-chats.query';
 
 @QueryHandler(ListChatsQuery)
@@ -15,13 +15,13 @@ export class ListChatsQueryHandler
 {
   constructor(
     @Inject(CHAT_REPO)
-    private readonly ChatRepo: Repository<Chat>,
+    private readonly chatRepo: ChatRepo,
   ) {}
 
   async execute(query: ListChatsQuery): Promise<QueryResult<ListChatsQuery>> {
     const { loggedUser, targetUserSearch, page, limit, order } = query.payload;
 
-    const items = await this.ChatRepo.find({
+    const items = await this.chatRepo.find({
       where: [
         {
           user1: { id: loggedUser.id },
@@ -50,11 +50,12 @@ export class ListChatsQueryHandler
           },
         },
       ],
-      skip: (page - 1) * limit,
+      skip: Math.max(0, (page - 1) * limit),
       take: limit,
       order: {
         [order.field]: order.param,
       },
+      relations: ['user1', 'user2', 'messages'],
     });
 
     return new Ok({
