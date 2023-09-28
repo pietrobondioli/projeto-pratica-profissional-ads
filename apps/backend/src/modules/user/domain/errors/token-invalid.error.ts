@@ -1,11 +1,7 @@
-import { ExceptionBase } from '#/be/lib/exceptions/exception.base';
+import { InvalidError } from '#/be/lib/exceptions/invalid.error';
 
-export class TokenInvalidError extends ExceptionBase {
-  static readonly message = 'Token invalid';
-
-  public readonly code = 'TOKEN.INVALID';
-
+export class TokenInvalidError extends InvalidError {
   constructor(cause?: Error, metadata?: unknown) {
-    super(TokenInvalidError.message, cause, metadata);
+    super('Token', cause, metadata);
   }
 }

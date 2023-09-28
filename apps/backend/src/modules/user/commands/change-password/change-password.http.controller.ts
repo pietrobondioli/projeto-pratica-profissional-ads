@@ -34,12 +34,10 @@ export class ChangePasswordHttpController {
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: TokenNotFoundError.message,
     type: ApiErrorResponse,
   })
   @ApiResponse({
     status: HttpStatus.BAD_REQUEST,
-    description: TokenInvalidError.message,
     type: ApiErrorResponse,
   })
   @ApiResponse({

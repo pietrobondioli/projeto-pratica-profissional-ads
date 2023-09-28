@@ -1,11 +1,7 @@
-import { ExceptionBase } from '#/be/lib/exceptions/exception.base';
+import { NotFoundError } from '#/be/lib/exceptions/not-found.error';
 
-export class FeedbackNotFoundError extends ExceptionBase {
-  static readonly message = 'Feedback not found';
-
-  public readonly code = 'FEEDBACK.NOT_FOUND';
-
+export class FeedbackNotFoundError extends NotFoundError {
   constructor(cause?: Error, metadata?: unknown) {
-    super(FeedbackNotFoundError.message, cause, metadata);
+    super('Feedback', cause, metadata);
   }
 }

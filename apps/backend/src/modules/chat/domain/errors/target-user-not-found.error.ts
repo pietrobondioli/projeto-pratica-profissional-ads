@@ -1,11 +1,7 @@
-import { ExceptionBase } from '#/be/lib/exceptions/exception.base';
+import { NotFoundError } from '#/be/lib/exceptions/not-found.error';
 
-export class TargetUserNotFoundError extends ExceptionBase {
-  static readonly message = 'Target user not found';
-
-  public readonly code = 'TARGET_USER.NOT_FOUND';
-
+export class TargetUserNotFoundError extends NotFoundError {
   constructor(cause?: Error, metadata?: unknown) {
-    super(TargetUserNotFoundError.message, cause, metadata);
+    super(`Target User`, cause, metadata);
   }
 }

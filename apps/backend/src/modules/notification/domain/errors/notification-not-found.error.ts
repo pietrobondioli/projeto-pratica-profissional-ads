@@ -1,11 +1,7 @@
-import { ExceptionBase } from '#/be/lib/exceptions/exception.base';
+import { NotFoundError } from '#/be/lib/exceptions/not-found.error';
 
-export class NotificationNotFoundError extends ExceptionBase {
-  static readonly message = 'Notification not found';
-
-  public readonly code = 'NOTIFICATION.NOT_FOUND';
-
+export class NotificationNotFoundError extends NotFoundError {
   constructor(cause?: Error, metadata?: unknown) {
-    super(NotificationNotFoundError.message, cause, metadata);
+    super('Notification', cause, metadata);
   }
 }

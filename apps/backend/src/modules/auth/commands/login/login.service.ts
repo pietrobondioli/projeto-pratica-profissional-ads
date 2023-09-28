@@ -1,3 +1,4 @@
+import { NotAuthorizedError } from '#/be/lib/exceptions/not-authorized.error';
 import { PasswordHelper } from '#/be/lib/utils/password-helper';
 import { UserRepo } from '#/be/modules/user/db/user.model';
 import { USER_REPO } from '#/be/modules/user/user.di-tokens';
@@ -7,7 +8,6 @@ import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { JwtService } from '@nestjs/jwt';
 import { Err, Ok } from 'neverthrow';
-import { InvalidCredentialsError } from '../../domain/errors/invalid-credentials.error';
 import { LoginCommand } from './login.command';
 
 @CommandHandler(LoginCommand)
@@ -31,11 +31,11 @@ export class LoginCommandHandler
     });
 
     if (!user) {
-      return new Err(new InvalidCredentialsError());
+      return new Err(new NotAuthorizedError());
     }
 
     if (!PasswordHelper.comparePassword(password, user.passwordHash)) {
-      return new Err(new InvalidCredentialsError());
+      return new Err(new NotAuthorizedError());
     }
 
     return new Ok({

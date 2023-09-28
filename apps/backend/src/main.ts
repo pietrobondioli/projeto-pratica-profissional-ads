@@ -1,13 +1,17 @@
-import { NestFactory } from '@nestjs/core';
-
 import { ValidationPipe } from '@nestjs/common';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+
+import { AllExceptionsFilter } from './lib/application/exceptions/all-exceptions.filter';
 import { AppModule } from './modules/app.module';
 
 async function bootstrap() {
   console.log(`Environment: ${process.env.NODE_ENV}`);
 
   const app = await NestFactory.create(AppModule);
+
+  app.useGlobalFilters(new AllExceptionsFilter(app.get(HttpAdapterHost)));
+
   app.setGlobalPrefix('api');
   console.log(`Environment: ${process.env.NODE_ENV}`);
 

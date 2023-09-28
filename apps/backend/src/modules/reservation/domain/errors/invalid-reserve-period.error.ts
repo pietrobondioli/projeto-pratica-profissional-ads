@@ -1,11 +1,7 @@
-import { ExceptionBase } from '#/be/lib/exceptions/exception.base';
+import { InvalidError } from '#/be/lib/exceptions/invalid.error';
 
-export class InvalidReservePeriodError extends ExceptionBase {
-  static readonly message = 'Invalid reserve period, please check the dates.';
-
-  public readonly code = 'RESERVATION.INVALID_RESERVE_PERIOD';
-
+export class InvalidReservePeriodError extends InvalidError {
   constructor(cause?: Error, metadata?: unknown) {
-    super(InvalidReservePeriodError.message, cause, metadata);
+    super('Reserve Period', cause, metadata);
   }
 }

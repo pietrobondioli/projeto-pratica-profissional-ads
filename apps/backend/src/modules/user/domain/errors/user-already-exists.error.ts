@@ -1,11 +1,7 @@
-import { ExceptionBase } from '#/be/lib/exceptions/exception.base';
+import { AlreadyExistsError } from '#/be/lib/exceptions/already-exists.error';
 
-export class UserAlreadyExistsError extends ExceptionBase {
-  static readonly message = 'User already exists';
-
-  public readonly code = 'USER.ALREADY_EXISTS';
-
+export class UserAlreadyExistsError extends AlreadyExistsError {
   constructor(cause?: Error, metadata?: unknown) {
-    super(UserAlreadyExistsError.message, cause, metadata);
+    super('User', cause, metadata);
   }
 }

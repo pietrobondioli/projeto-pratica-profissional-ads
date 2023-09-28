@@ -1,11 +1,7 @@
-import { ExceptionBase } from '#/be/lib/exceptions/exception.base';
+import { NotFoundError } from '#/be/lib/exceptions/not-found.error';
 
-export class PhotoNotFoundError extends ExceptionBase {
-  static readonly message = 'Photo not found';
-
-  public readonly code = 'PHOTO.NOT_FOUND';
-
+export class PhotoNotFoundError extends NotFoundError {
   constructor(cause?: Error, metadata?: unknown) {
-    super(PhotoNotFoundError.message, cause, metadata);
+    super('Photo', cause, metadata);
   }
 }

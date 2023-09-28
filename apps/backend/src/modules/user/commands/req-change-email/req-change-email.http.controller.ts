@@ -32,7 +32,6 @@ export class ReqChangeEmailHttpController {
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: UserNotFoundError.message,
     type: ApiErrorResponse,
   })
   @ApiResponse({

@@ -1,11 +1,7 @@
-import { ExceptionBase } from '#/be/lib/exceptions/exception.base';
+import { NotFoundError } from '#/be/lib/exceptions/not-found.error';
 
-export class ChatNotFoundError extends ExceptionBase {
-  static readonly message = 'Chat not found';
-
-  public readonly code = 'CHAT.NOT_FOUND';
-
+export class ChatNotFoundError extends NotFoundError {
   constructor(cause?: Error, metadata?: unknown) {
-    super(ChatNotFoundError.message, cause, metadata);
+    super('Chat', cause, metadata);
   }
 }

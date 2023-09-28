@@ -33,7 +33,6 @@ export class ReqConfirmAccountTokenHttpController {
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: UserNotFoundError.message,
     type: ApiErrorResponse,
   })
   @ApiResponse({

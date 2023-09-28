@@ -1,11 +1,7 @@
-import { ExceptionBase } from '#/be/lib/exceptions/exception.base';
+import { NotFoundError } from '#/be/lib/exceptions/not-found.error';
 
-export class TokenNotFoundError extends ExceptionBase {
-  static readonly message = 'Token not found';
-
-  public readonly code = 'TOKEN.NOT_FOUND';
-
+export class TokenNotFoundError extends NotFoundError {
   constructor(cause?: Error, metadata?: unknown) {
-    super(TokenNotFoundError.message, cause, metadata);
+    super('Token', cause, metadata);
   }
 }

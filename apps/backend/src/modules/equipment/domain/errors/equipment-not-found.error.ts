@@ -1,11 +1,7 @@
-import { ExceptionBase } from '#/be/lib/exceptions/exception.base';
+import { NotFoundError } from '#/be/lib/exceptions/not-found.error';
 
-export class EquipmentNotFoundError extends ExceptionBase {
-  static readonly message = 'Equipment not found';
-
-  public readonly code = 'EQUIPMENT.NOT_FOUND';
-
+export class EquipmentNotFoundError extends NotFoundError {
   constructor(cause?: Error, metadata?: unknown) {
-    super(EquipmentNotFoundError.message, cause, metadata);
+    super('Equipment', cause, metadata);
   }
 }
