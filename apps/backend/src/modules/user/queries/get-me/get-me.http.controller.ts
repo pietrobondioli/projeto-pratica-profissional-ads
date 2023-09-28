@@ -20,7 +20,7 @@ export class GetMeHttpController {
   constructor(private readonly queryBus: QueryBus) {}
 
   @Get(routesV1.user.queries.me)
-  @ApiOperation({ summary: "Get logged user' profile" })
+  @ApiOperation({ summary: "Get logged user's profile" })
   @ApiResponse({
     status: HttpStatus.OK,
     type: GetMeResDto,

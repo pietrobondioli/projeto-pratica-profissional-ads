@@ -1,7 +1,7 @@
+import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Err, Ok } from 'neverthrow';
 
 import { PasswordHelper } from '#/be/lib/utils/password-helper';
@@ -42,7 +42,7 @@ export class CreateUserCommandHandler
       user.passwordHash = PasswordHelper.hashPassword(password);
       user.userProfile = new UserProfile('admin');
 
-      UserAggregate.user(user).created();
+      UserAggregate.user(user.id).created();
 
       await this.userRepo.save(user);
 

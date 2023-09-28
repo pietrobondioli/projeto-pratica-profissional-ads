@@ -1,7 +1,7 @@
+import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Err, Ok } from 'neverthrow';
 import { v4 } from 'uuid';
 
@@ -45,7 +45,7 @@ export class ReqChangePasswordCommandHandler
       token.token = v4();
       token.expiresAt = new Date(Date.now() + 1000 * 60 * 60 * 24 * 3); // 3 days
 
-      UserAggregate.user(user).requestedPasswordChange(token);
+      UserAggregate.user(user.id).requestedPasswordChange(token);
 
       await this.invalidateOldTokens(user);
 

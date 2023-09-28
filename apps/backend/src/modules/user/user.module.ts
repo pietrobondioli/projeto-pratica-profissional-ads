@@ -18,6 +18,8 @@ import { ReqChangePasswordHttpController } from './commands/req-change-password/
 import { ReqChangePasswordCommandHandler } from './commands/req-change-password/req-change-password.service';
 import { ReqConfirmAccountTokenHttpController } from './commands/req-confirm-account-token/req-confirm-account-token.http.controller';
 import { ReqConfirmAccountTokenCommandHandler } from './commands/req-confirm-account-token/req-confirm-account-token.service';
+import { UpdateUserProfileHttpController } from './commands/update-user-profile/update-user-profile.http.controller';
+import { UpdateUserProfileCommandHandler } from './commands/update-user-profile/update-user-profile.service';
 import { ChangeEmailTokenModel } from './db/change-email-token.model';
 import { ChangePasswordTokenModel } from './db/change-password-token.model';
 import { EmailVerificationTokenModel } from './db/email-verification-token.model';
@@ -43,6 +45,7 @@ const commandHandlers: Provider[] = [
   ReqChangeEmailCommandHandler,
   ReqChangePasswordCommandHandler,
   ReqConfirmAccountTokenCommandHandler,
+  UpdateUserProfileCommandHandler,
 ];
 
 const queryHandlers: Provider[] = [GetMeQueryHandler, GetUserQueryHandler];
@@ -93,6 +96,7 @@ const repositories: Provider[] = [
     ReqConfirmAccountTokenHttpController,
     GetMeHttpController,
     GetUserHttpController,
+    UpdateUserProfileHttpController,
   ],
   providers: [
     Logger,

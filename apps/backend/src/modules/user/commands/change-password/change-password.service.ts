@@ -1,7 +1,7 @@
+import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { isPast } from 'date-fns';
 import { Err, Ok } from 'neverthrow';
 
@@ -52,7 +52,7 @@ export class ChangePasswordCommandHandler
         return new Err(new TokenInvalidError());
       }
 
-      UserAggregate.user(existingToken.user).changedPassword(existingToken);
+      UserAggregate.user(existingToken.user.id).changedPassword(existingToken);
 
       await this.consumeToken(existingToken);
 

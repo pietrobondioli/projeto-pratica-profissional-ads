@@ -31,6 +31,7 @@ export const routesV1 = {
       change_password: `/${usersRoot}/change-password`,
       req_change_email: `/${usersRoot}/request-change-email`,
       change_email: `/${usersRoot}/change-email`,
+      update_profile: `/${usersRoot}/update-profile`,
     },
     queries: {
       me: `/${usersRoot}/me`,

@@ -4,6 +4,6 @@ type Payload = {
   readonly userId: string;
 };
 
-export class UserCreatedEvent extends DomainEventBase<Payload> {
-  public readonly eventName = 'user-created';
+export class UpdatedProfileEvent extends DomainEventBase<Payload> {
+  public readonly eventName = 'updated-profile';
 }
