@@ -1,10 +1,32 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 
+import { ResponseBase } from '#/be/lib/api/response.dto.base';
 import { PaymentStatus } from '../../domain/reservation.entity';
 
-// TODO: Add more properties
-export class GetReservationResDto {
+class EquipmentDto extends ResponseBase {}
+
+class UserDto extends ResponseBase {}
+
+class PaymentDto extends ResponseBase {}
+
+export class GetReservationResDto extends ResponseBase {
+  @Expose()
+  @Type(() => EquipmentDto)
+  @ApiProperty({
+    type: EquipmentDto,
+    description: 'Equipment id object',
+  })
+  equipment: EquipmentDto;
+
+  @Expose()
+  @Type(() => UserDto)
+  @ApiProperty({
+    type: UserDto,
+    description: 'Renter id object',
+  })
+  renter: UserDto;
+
   @Expose()
   @ApiProperty({
     example: '2021-01-01T00:00:00.000Z',
@@ -34,4 +56,12 @@ export class GetReservationResDto {
     enumName: 'PaymentStatus',
   })
   readonly paymentStatus: PaymentStatus;
+
+  @Expose()
+  @Type(() => PaymentDto)
+  @ApiProperty({
+    type: PaymentDto,
+    description: 'Payment id object',
+  })
+  payment: PaymentDto;
 }

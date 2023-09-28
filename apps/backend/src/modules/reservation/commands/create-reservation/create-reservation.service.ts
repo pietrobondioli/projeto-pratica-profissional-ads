@@ -1,7 +1,7 @@
+import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Err, Ok } from 'neverthrow';
 
 import { EquipmentRepo } from '#/be/modules/equipment/db/equipment.model';
@@ -17,6 +17,7 @@ import { ReservationAggregate } from '../../domain/reservation.aggregate';
 import { Reservation } from '../../domain/reservation.entity';
 import { RESERVATION_REPO } from '../../reservation.di-tokens';
 
+import { isFuture, isWithinInterval } from 'date-fns';
 import { CreateReservationCommand } from './create-reservation.command';
 
 @CommandHandler(CreateReservationCommand)
@@ -60,6 +61,15 @@ export class CreateReservationCommandHandler
         return new Err(new EquipmentNotFoundError());
       }
 
+      const isReservationPeriodValid = this.checkReservationPeriodValidity(
+        startDate,
+        endDate,
+      );
+
+      if (!isReservationPeriodValid) {
+        return new Err(new InvalidReservePeriodError());
+      }
+
       const isAvailable = this.checkReservationAvailability(
         equipment.reservations,
         startDate,
@@ -93,6 +103,14 @@ export class CreateReservationCommandHandler
     }
   }
 
+  private checkReservationPeriodValidity(startDate: Date, endDate: Date) {
+    return (
+      isFuture(startDate) &&
+      isFuture(endDate) &&
+      startDate.getTime() < endDate.getTime()
+    );
+  }
+
   private checkReservationAvailability(
     reservations: Reservation[],
     startDate: Date,
@@ -100,8 +118,14 @@ export class CreateReservationCommandHandler
   ) {
     const isAvailable = reservations.every((reservation) => {
       return (
-        startDate.getTime() < reservation.startDate.getTime() &&
-        endDate.getTime() < reservation.startDate.getTime()
+        !isWithinInterval(startDate, {
+          start: reservation.startDate,
+          end: reservation.endDate,
+        }) &&
+        !isWithinInterval(endDate, {
+          start: reservation.startDate,
+          end: reservation.endDate,
+        })
       );
     });
 

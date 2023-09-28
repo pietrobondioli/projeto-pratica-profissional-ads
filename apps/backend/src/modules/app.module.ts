@@ -39,12 +39,12 @@ import { UserModule } from './user/user.module';
     AuthModule,
     UserModule,
     ChatModule,
-    EquipmentModule,
-    FeedbackModule,
     MediaModule,
-    NotificationModule,
-    PaymentModule,
+    EquipmentModule,
     ReservationModule,
+    FeedbackModule,
+    PaymentModule,
+    NotificationModule,
   ],
 })
 export class AppModule {}

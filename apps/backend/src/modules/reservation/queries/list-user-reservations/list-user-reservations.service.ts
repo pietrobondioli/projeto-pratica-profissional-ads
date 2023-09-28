@@ -28,6 +28,7 @@ export class ListUserReservationsQueryHandler
       order: {
         [order.field]: order.param,
       },
+      relations: ['equipment', 'renter', 'payment'],
     });
 
     return new Ok({

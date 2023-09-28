@@ -1,4 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
+import { IsDate } from 'class-validator';
 
 export class CreateReservationReqDto {
   @ApiProperty({
@@ -7,14 +9,18 @@ export class CreateReservationReqDto {
   })
   readonly equipmentId: string;
 
+  @Type(() => Date)
+  @IsDate()
   @ApiProperty({
-    example: '2021-01-01T00:00:00.000Z',
+    example: '2023-09-28T21:30:50.066Z',
     description: 'Start date',
   })
   readonly startDate: Date;
 
+  @Type(() => Date)
+  @IsDate()
   @ApiProperty({
-    example: '2021-01-02T00:00:00.000Z',
+    example: '2023-09-28T21:30:50.066Z',
     description: 'End date',
   })
   readonly endDate: Date;

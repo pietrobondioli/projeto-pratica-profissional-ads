@@ -1,6 +1,6 @@
+import { QueryResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { IInferredQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { QueryResult } from '@nestjs-architects/typed-cqrs';
 import { Err, Ok } from 'neverthrow';
 
 import { ReservationRepo } from '../../db/reservation.model';
@@ -23,8 +23,11 @@ export class GetReservationQueryHandler
   ): Promise<QueryResult<GetReservationQuery>> {
     const { reservationId } = query.payload;
 
-    const reservation = await this.reservationRepo.findOneBy({
-      id: reservationId,
+    const reservation = await this.reservationRepo.findOne({
+      where: {
+        id: reservationId,
+      },
+      relations: ['equipment', 'renter', 'payment'],
     });
 
     if (!reservation) {
