@@ -33,6 +33,7 @@ export const routesV1 = {
       change_email: `/${usersRoot}/change-email`,
     },
     queries: {
+      me: `/${usersRoot}/me`,
       get: `/${usersRoot}/:userId`,
     },
   },

@@ -23,6 +23,8 @@ import { ChangePasswordTokenModel } from './db/change-password-token.model';
 import { EmailVerificationTokenModel } from './db/email-verification-token.model';
 import { UserProfileModel } from './db/user-profile.model';
 import { UserModel } from './db/user.model';
+import { GetMeHttpController } from './queries/get-me/get-me.http.controller';
+import { GetMeQueryHandler } from './queries/get-me/get-me.service';
 import { GetUserHttpController } from './queries/get-user/get-user.http.controller';
 import { GetUserQueryHandler } from './queries/get-user/get-user.service';
 import {
@@ -43,7 +45,7 @@ const commandHandlers: Provider[] = [
   ReqConfirmAccountTokenCommandHandler,
 ];
 
-const queryHandlers: Provider[] = [GetUserQueryHandler];
+const queryHandlers: Provider[] = [GetMeQueryHandler, GetUserQueryHandler];
 
 const mappers: Provider[] = [];
 
@@ -89,6 +91,7 @@ const repositories: Provider[] = [
     ReqChangeEmailHttpController,
     ReqChangePasswordHttpController,
     ReqConfirmAccountTokenHttpController,
+    GetMeHttpController,
     GetUserHttpController,
   ],
   providers: [
