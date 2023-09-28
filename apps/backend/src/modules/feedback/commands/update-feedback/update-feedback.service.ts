@@ -4,8 +4,6 @@ import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Err, Ok } from 'neverthrow';
 
-import { NotAuthorizedError } from '#/be/lib/exceptions/not-authorized.error';
-
 import { FeedbackRepo } from '../../db/feedback.model';
 import { FeedbackNotFoundError } from '../../domain/errors/feedback-not-found.error';
 import { FeedbackAggregate } from '../../domain/feedback.aggregate';
@@ -32,6 +30,9 @@ export class UpdateFeedbackCommandHandler
       const feedback = await this.feedbackRepo.findOne({
         where: {
           id: feedbackId,
+          fromUser: {
+            id: loggedUser.id,
+          },
         },
         relations: ['fromUser'],
       });
@@ -40,22 +41,10 @@ export class UpdateFeedbackCommandHandler
         return new Err(new FeedbackNotFoundError());
       }
 
-      if (feedback.fromUser.id !== loggedUser.id) {
-        return new Err(new NotAuthorizedError());
-      }
+      if (rating) feedback.rating = rating;
+      if (comment) feedback.comment = comment;
 
-      await this.feedbackRepo.update(
-        {
-          id: feedbackId,
-          fromUser: {
-            id: loggedUser.id,
-          },
-        },
-        {
-          rating,
-          comment,
-        },
-      );
+      await this.feedbackRepo.save(feedback);
 
       FeedbackAggregate.entityID(feedback.id).updated();
 

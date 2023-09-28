@@ -1,7 +1,7 @@
+import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Err, Ok } from 'neverthrow';
 import { Repository } from 'typeorm';
 
@@ -51,14 +51,9 @@ export class ReadNotificationCommandHandler
         return new Err(new NotAuthorizedError());
       }
 
-      await this.notificationRepo.update(
-        {
-          id: notificationId,
-        },
-        {
-          status: NotificationStatus.READ,
-        },
-      );
+      notification.status = NotificationStatus.READ;
+
+      await this.notificationRepo.save(notification);
 
       NotificationAggregate.publishEvents(this.eventEmitter);
 

@@ -58,11 +58,11 @@ export class UpdateUserProfileCommandHandler
         }
       }
 
-      userProfile.firstName = firstName;
-      userProfile.lastName = lastName;
-      userProfile.contact = contact;
-      userProfile.address = address;
-      userProfile.description = description;
+      if (firstName) userProfile.firstName = firstName;
+      if (lastName) userProfile.lastName = lastName;
+      if (contact) userProfile.contact = contact;
+      if (address) userProfile.address = address;
+      if (description) userProfile.description = description;
 
       await this.userProfileRepo.save(userProfile);
 

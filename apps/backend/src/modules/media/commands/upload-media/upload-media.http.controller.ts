@@ -60,7 +60,7 @@ export class UploadMediaHttpController {
       },
     },
   })
-  async upload(
+  async execute(
     @UploadedFile() file: Express.Multer.File,
     @Res() res: Response,
     @AuthUser() user: UserPayload,
