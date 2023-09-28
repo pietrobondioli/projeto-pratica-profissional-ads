@@ -3,38 +3,16 @@
 		"prefix": "exception",
 		"scope": "typescript, javascript",
 		"body": [
-			"import { ExceptionBase } from '#/be/lib/exceptions/exception.base';",
-			"",
-			"export class ${1:ExceptionName}Error extends ExceptionBase {",
-			"  static readonly message = '${2:Exception message}';",
-			"",
-			"  public readonly code = '${3:CODE.IN_CAPS}';",
-			"",
-			"  constructor(cause?: Error, metadata?: unknown) {",
-			"    super(${1:ExceptionName}Error.message, cause, metadata);",
+			"export class ${2:ExceptionName}Error extends ${1:BaseError} {",
+			"  constructor(${3:prop1}, cause?: Error, metadata?: unknown) {",
+			"    super(${4:message}, cause, metadata);",
 			"  }",
 			"}"
 		],
-		"description": "Generate a custom exception class"
-	},
-	"Domain Event": {
-		"prefix": "domainevent",
-		"scope": "typescript, javascript",
-		"body": [
-			"import { DomainEventBase } from '#/be/lib/ddd/domain-event.base';",
-			"",
-			"type Payload = {",
-			"  readonly ${1:Prop1}",
-			"};",
-			"",
-			"export class ${2:EventName}Event extends DomainEventBase<Payload> {",
-			" public readonly eventName = '${3:EventNameSlug}';",
-			"}"
-		],
-		"description": "Generate a domain event class"
+		"description": "Generate a custom exception class based on a base error"
 	},
 	"AggregateBase": {
-		"prefix": "aggregatebase",
+		"prefix": "aggregate-base",
 		"scope": "typescript",
 		"body": [
 			"import { AggregateBase } from '#/be/lib/ddd/aggregate.base';",
@@ -51,13 +29,13 @@
 		],
 		"description": "Create an aggregate class"
 	},
-	"DTO": {
-		"prefix": "dto",
+	"Req DTO": {
+		"prefix": "dto-req",
 		"scope": "typescript, javascript",
 		"body": [
 			"import { ApiProperty } from '@nestjs/swagger';",
 			"",
-			"export class ${1:DtoName}Dto {",
+			"export class ${1:DtoName}ReqDto {",
 			"  @ApiProperty({",
 			"    example: '${3:exampleValue1}',",
 			"    description: '${4:description1}',",
@@ -65,7 +43,24 @@
 			"  readonly ${2:prop1}",
 			"}"
 		],
-		"description": "Generate a DTO class"
+		"description": "Generate a Request DTO class"
+	},
+	"Res DTO": {
+		"prefix": "dto-res",
+		"scope": "typescript, javascript",
+		"body": [
+			"import { ApiProperty } from '@nestjs/swagger';",
+			"",
+			"export class ${1:DtoName}ResDto {",
+			"  @Expose()",
+			"  @ApiProperty({",
+			"    example: '${3:exampleValue1}',",
+			"    description: '${4:description1}',",
+			"  })",
+			"  readonly ${2:prop1}",
+			"}"
+		],
+		"description": "Generate a Response DTO class"
 	},
 	"Command": {
 		"prefix": "command",
@@ -88,7 +83,7 @@
 		"description": "Generate a command class"
 	},
 	"Command Handler": {
-		"prefix": "cmdhandler",
+		"prefix": "command-handler",
 		"scope": "typescript, javascript",
 		"body": [
 			"import { CommandResult } from '@nestjs-architects/typed-cqrs';",
@@ -112,7 +107,7 @@
 			"    try {",
 			"      ${5:AggregateName}.publishEvents(this.eventEmitter);",
 			"",
-			"      return new Ok('');",
+			"      return new Ok();",
 			"    } finally {",
 			"      ${5:AggregateName}.clearEvents();",
 			"    }",
@@ -122,7 +117,7 @@
 		"description": "Generate a generic command handler service for NestJS CQRS module"
 	},
 	"HTTP Command Controller": {
-		"prefix": "cmdhttpcontroller",
+		"prefix": "command-http-controller",
 		"scope": "typescript, javascript",
 		"body": [
 			"import {",
@@ -149,18 +144,19 @@
 			"  @ApiOperation({ summary: '${5:OperationSummary}' })",
 			"  @ApiResponse({",
 			"    status: HttpStatus.OK,",
+			"    type: ${6:ResponseDtoName},",
 			"  })",
 			"  @ApiResponse({",
 			"    status: HttpStatus.BAD_REQUEST,",
 			"    type: ApiErrorResponse,",
 			"  })",
-			"  async execute(@Body() body: ${6:RequestDtoName}, @Res() res: Response) {",
-			"    const command = new ${7:CommandName}(${8:CommandBody});",
+			"  async execute(@Body() body: ${7:RequestDtoName}, @Res() res: Response) {",
+			"    const command = new ${8:CommandName}(${9:CommandBody});",
 			"",
 			"    const result = await this.commandBus.execute(command);",
 			"",
 			"    return result.match(",
-			"      () => res.status(HttpStatus.OK).send(),",
+			"      (${10:entity}) => res.status(HttpStatus.OK).send(${11:result}),",
 			"      (error) => {",
 			"        throw error;",
 			"      },",
@@ -185,13 +181,13 @@
 			"",
 			"export class ${2:QueryName}Query extends QueryBase<",
 			"  Payload,",
-			"  Result<${4:ReturnType}, ${5:ExceptionBase}>",
+			"  Result<${3:ReturnType}, ${4:ExceptionBase}>",
 			"> {}"
 		],
 		"description": "Generate a query class"
 	},
 	"Query Handler": {
-		"prefix": "queryhandler",
+		"prefix": "query-handler",
 		"scope": "typescript, javascript",
 		"body": [
 			"import { QueryResult } from '@nestjs-architects/typed-cqrs';",
@@ -204,8 +200,8 @@
 			"export class ${1:QueryName}Handler",
 			"  implements IInferredQueryHandler<${1:QueryName}> {",
 			"  constructor(",
-			"    @Inject(${4:DI_TOKEN})",
-			"    private readonly ${2:repoName}: ${3:EntityModel},",
+			"    @Inject(${2:DI_TOKEN})",
+			"    private readonly ${3:repoName}: ${4:EntityModel},",
 			"  ) {}",
 			"",
 			"  async execute(",
@@ -226,7 +222,7 @@
 		"description": "Generate a generic query handler service for NestJS CQRS module"
 	},
 	"Query Controller": {
-		"prefix": "querycontroller",
+		"prefix": "query-controller",
 		"scope": "typescript, javascript",
 		"body": [
 			"import { Controller, Get, HttpStatus, Param } from '@nestjs/common';",
@@ -246,22 +242,20 @@
 			"  @ApiOperation({ summary: '${4:OperationSummary}' })",
 			"  @ApiResponse({",
 			"    status: HttpStatus.OK,",
-			"    type: ${5:ResDtoName},",
+			"    type: ${4:ResDtoName},",
 			"  })",
 			"  @ApiResponse({",
 			"    status: HttpStatus.BAD_REQUEST,",
 			"    type: ApiErrorResponse,",
 			"  })",
 			"  async execute(@Param('id') id: string) {",
-			"    const query = new ${3:QueryName}({",
-			"      id,",
-			"    });",
+			"    const query = new ${5:QueryName}(${6:QueryBody});",
 			"",
 			"    const result = await this.queryBus.execute(query);",
 			"",
 			"    return result.match(",
-			"      (${6:entity}) => ",
-			"         plainToInstance(${5:ResDtoName}, ${6:entity}, {",
+			"      (${7:entity}) => ",
+			"         plainToInstance(${4:ResDtoName}, ${7:entity}, {",
 			"           excludeExtraneousValues: true,",
 			"         }),",
 			"      (error) => {",
@@ -274,7 +268,7 @@
 		"description": "Generate a generic query controller for NestJS CQRS module"
 	},
 	"Paginated Query": {
-		"prefix": "paginatedquery",
+		"prefix": "paginated-query",
 		"scope": "typescript, javascript",
 		"body": [
 			"import { Result } from 'neverthrow';",
@@ -298,7 +292,7 @@
 		"description": "Generate a generic paginated query for NestJS CQRS module"
 	},
 	"Paginated Query Req DTO": {
-		"prefix": "paginatedQueryReqDto",
+		"prefix": "paginated-query-req-dto",
 		"body": [
 			"import { ApiProperty } from '@nestjs/swagger';",
 			"import { IsOptional, IsString } from 'class-validator';",
@@ -317,21 +311,36 @@
 		"description": "Paginated Query Req DTO"
 	},
 	"Paginated Query Response DTO": {
-		"prefix": "paginatedQueryResDto",
+		"prefix": "paginated-query-res-dto",
 		"body": [
 			"import { PaginatedResponseDto } from '#/be/lib/api/paginated.response.base';",
 			"import { ResponseBase } from '#/be/lib/api/response.dto.base';",
+			"import { ApiProperty } from '@nestjs/swagger';",
+			"import { Expose, Type } from 'class-transformer';",
 			"",
-			"class ${1:ItemDto} extends ResponseBase {",
-			"  ${2:// Add properties and methods here}",
-			"}",
+			"export class ${2:MainDto} extends ResponseBase {",
+			"  @Expose()",
+			"  @ApiProperty({",
+			"    example: '${3:ExampleValue}',",
+			"    description: '${4:Description}',",
+			"  })",
+			"  readonly ${5:prop1}",
 			"",
-			"export class ${3:DtoName}ResDto extends PaginatedResponseDto<${1:ItemDto}> {}"
+			"export class ${1:ListResDtoName}ResDto extends PaginatedResponseDto<${2:MainDto}> {",
+			"  @Expose()",
+			"  @Type(() => ${2:MainDto})",
+			"  @ApiProperty({",
+			"    description: 'Array of ${6:descriptionOfMainDto}',",
+			"    type: () => [${2:MainDto}],",
+			"    isArray: true,",
+			"  })",
+			"  readonly items: ${2:MainDto}[];",
+			"}"
 		],
-		"description": "Paginated Response DTO with base and list DTO classes"
+		"description": "Paginated Response DTO with base, detail, and list DTO classes"
 	},
 	"Paginated Query Handler": {
-		"prefix": "paginatedqueryhandler",
+		"prefix": "paginated-query-handler",
 		"scope": "typescript, javascript",
 		"body": [
 			"import { Inject } from '@nestjs/common';",
@@ -345,8 +354,8 @@
 			"  implements IInferredQueryHandler<${1:QueryName}>",
 			"{",
 			"  constructor(",
-			"    @Inject(${4:DI_TOKEN})",
-			"    private readonly ${2:repoName}: ${3:EntityModel},",
+			"    @Inject(${2:DI_TOKEN})",
+			"    private readonly ${3:repoName}: ${4:EntityModel},",
 			"  ) {}",
 			"",
 			"  async execute(",
@@ -356,7 +365,7 @@
 			"",
 			"    const items = await this.${2:repoName}.find({",
 			"      where: {",
-			"        ...(searchField && { ${5:searchField}: Like(`%${5:searchField}%`) }),",
+			"        ...(${5:searchField} && { ${5:searchField}: Like(`%${5:searchField}%`) }),",
 			"      },",
 			"      skip: Math.max(0, (page - 1) * limit),",
 			"      take: limit,",
@@ -377,7 +386,7 @@
 		"description": "Generate a generic paginated query handler for NestJS CQRS module"
 	},
 	"Paginated Query Controller": {
-		"prefix": "paginatedqueryctrl",
+		"prefix": "paginated-query-controller",
 		"scope": "typescript, javascript",
 		"body": [
 			"import { Controller, Get, HttpStatus, Query } from '@nestjs/common';",
@@ -393,24 +402,24 @@
 			"export class ${2:ControllerName}HttpController {",
 			"  constructor(private readonly queryBus: QueryBus) {}",
 			"",
-			"  @Get(routesV1.${1:resource}.queries.${4:endpointName})",
-			"  @ApiOperation({ summary: '${5:SummaryDescription}' })",
+			"  @Get(routesV1.${1:resource}.queries.${3:endpointName})",
+			"  @ApiOperation({ summary: '${4:SummaryDescription}' })",
 			"  @ApiResponse({",
 			"    status: HttpStatus.OK,",
-			"    type: ${6:ResponseDtoName},",
+			"    type: ${5:ResponseDtoName},",
 			"  })",
 			"  @ApiResponse({",
 			"    status: HttpStatus.BAD_REQUEST,",
 			"    type: ApiErrorResponse,",
 			"  })",
-			"  async execute(@Query() qry: ${7:RequestDtoName}) {",
-			"    const query = new ${3:QueryName}(qry);",
+			"  async execute(@Query() qry: ${6:RequestDtoName}) {",
+			"    const query = new ${7:QueryName}(${8:QueryBody});",
 			"",
 			"    const result = await this.queryBus.execute(query);",
 			"",
 			"    return result.match(",
-			"      (${8:entity}) =>",
-			"        plainToInstance(${6:ResponseDtoName}, ${8:entity}, {",
+			"      (${9:entity}) =>",
+			"        plainToInstance(${5:ResponseDtoName}, ${9:entity}, {",
 			"          excludeExtraneousValues: true,",
 			"        }),",
 			"      (error) => {",
@@ -421,5 +430,42 @@
 			"}"
 		],
 		"description": "Generate a generic paginated query controller for NestJS CQRS module"
+	},
+	"Domain Event": {
+		"prefix": "domain-event",
+		"scope": "typescript, javascript",
+		"body": [
+			"import { DomainEventBase } from '#/be/lib/ddd/domain-event.base';",
+			"",
+			"type Payload = {",
+			"  readonly ${1:Prop1}",
+			"};",
+			"",
+			"export class ${2:EventName}Event extends DomainEventBase<Payload> {",
+			" public readonly eventName = '${3:EventNameSlug}';",
+			"}"
+		],
+		"description": "Generate a domain event class"
+	},
+	"Domain Event Handler": {
+		"prefix": "domain-event-handler",
+		"body": [
+			"import { OnEvent } from '@nestjs/event-emitter';",
+			"import { Inject, Injectable } from '@nestjs/common';",
+			"",
+			"@Injectable()",
+			"export class ${1:EventHandlerClassName}EventHandler {",
+			"  constructor(",
+			"    @Inject(${2:DI_TOKEN})",
+			"    private readonly ${3:repoVarName}: ${4:RepositoryType},",
+			"  ) {}",
+			"",
+			"  @OnEvent(${5:DomainEventClass}.eventName, { async: true, promisify: true })",
+			"  async handle(event: ${5:DomainEventClass}): Promise<any> {",
+			"    ${6:// Add your logic here}",
+			"  }",
+			"}"
+		],
+		"description": "Creates a new NestJS Domain Event Handler"
 	}
 }
