@@ -1,10 +1,9 @@
+import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Err, Ok } from 'neverthrow';
 
-import { ReqContextProvider } from '#/be/lib/application/request/req.context';
 import { ReservationRepo } from '#/be/modules/reservation/db/reservation.model';
 import { ReservationNotFoundError } from '#/be/modules/reservation/domain/errors/reservation-not-found.error';
 import { RESERVATION_REPO } from '#/be/modules/reservation/reservation.di-tokens';
@@ -37,12 +36,10 @@ export class CreateFeedbackCommandHandler
     command: CreateFeedbackCommand,
   ): Promise<CommandResult<CreateFeedbackCommand>> {
     try {
-      const { reservationId, rating, comment } = command.payload;
-
-      const authUser = ReqContextProvider.getAuthUser();
+      const { loggedUser, reservationId, rating, comment } = command.payload;
 
       const user = await this.userRepo.findOneBy({
-        id: authUser.id,
+        id: loggedUser.id,
       });
 
       if (!user) {
@@ -57,7 +54,7 @@ export class CreateFeedbackCommandHandler
         return new Err(new ReservationNotFoundError());
       }
 
-      const feedback = new Feedback(authUser.id);
+      const feedback = new Feedback(loggedUser.id);
       feedback.reservation = reservation;
       feedback.rating = rating;
       feedback.comment = comment;

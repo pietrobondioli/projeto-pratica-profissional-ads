@@ -1,10 +1,9 @@
+import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Err, Ok } from 'neverthrow';
 
-import { ReqContextProvider } from '#/be/lib/application/request/req.context';
 import { UserRepo } from '#/be/modules/user/db/user.model';
 import { USER_REPO } from '#/be/modules/user/user.di-tokens';
 
@@ -36,12 +35,10 @@ export class CreateChatCommandHandler
     command: CreateChatCommand,
   ): Promise<CommandResult<CreateChatCommand>> {
     try {
-      const { withUserId, message } = command.payload;
-
-      const authUser = ReqContextProvider.getAuthUser();
+      const { loggedUser, withUserId, message } = command.payload;
 
       const user1 = await this.userRepo.findOneBy({
-        id: authUser.id,
+        id: loggedUser.id,
       });
 
       const user2 = await this.userRepo.findOneBy({
@@ -52,7 +49,7 @@ export class CreateChatCommandHandler
         return new Err(new TargetUserNotFoundError());
       }
 
-      const chat = new Chat(authUser.id);
+      const chat = new Chat(loggedUser.id);
       chat.user1 = user1;
       chat.user2 = user2;
 
@@ -60,7 +57,7 @@ export class CreateChatCommandHandler
 
       ChatAggregate.chat(createdChat).created();
 
-      const chatMessage = new ChatMessage(authUser.id);
+      const chatMessage = new ChatMessage(loggedUser.id);
       chatMessage.chat = createdChat;
       chatMessage.sender = user1;
       chatMessage.content = message;

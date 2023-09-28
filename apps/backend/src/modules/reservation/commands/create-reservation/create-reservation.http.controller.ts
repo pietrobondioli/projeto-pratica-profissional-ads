@@ -6,8 +6,12 @@ import { Response } from 'express';
 import { routesV1 } from '#/be/config/routes/app.routes';
 import { ApiErrorResponse } from '#/be/lib/api/api-error.response.dto';
 import { IdResponse } from '#/be/lib/api/id.response.dto';
-import { Authenticated } from '#/be/modules/auth/guards/jwt-auth.guard';
+import { Authenticated } from '#/be/lib/application/guards/authenticated.guard';
 
+import {
+  AuthUser,
+  UserPayload,
+} from '#/be/lib/application/decorators/auth-user.decorator';
 import { CreateReservationCommand } from './create-reservation.command';
 import { CreateReservationReqDto } from './create-reservation.req.dto';
 
@@ -27,11 +31,16 @@ export class CreateReservationHttpController {
     status: HttpStatus.BAD_REQUEST,
     type: ApiErrorResponse,
   })
-  async execute(@Body() body: CreateReservationReqDto, @Res() res: Response) {
+  async execute(
+    @Body() body: CreateReservationReqDto,
+    @Res() res: Response,
+    @AuthUser() user: UserPayload,
+  ) {
     const command = new CreateReservationCommand({
       equipmentId: body.equipmentId,
       startDate: body.startDate,
       endDate: body.endDate,
+      loggedUser: user,
     });
 
     const result = await this.commandBus.execute(command);

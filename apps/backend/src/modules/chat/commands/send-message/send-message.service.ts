@@ -1,10 +1,9 @@
+import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Err, Ok } from 'neverthrow';
 
-import { ReqContextProvider } from '#/be/lib/application/request/req.context';
 import { UserRepo } from '#/be/modules/user/db/user.model';
 import { UserNotFoundError } from '#/be/modules/user/domain/errors/user-not-found.error';
 import { USER_REPO } from '#/be/modules/user/user.di-tokens';
@@ -36,12 +35,10 @@ export class SendMessageCommandHandler
     command: SendMessageCommand,
   ): Promise<CommandResult<SendMessageCommand>> {
     try {
-      const { chatId, message } = command.payload;
-
-      const authUser = ReqContextProvider.getAuthUser();
+      const { loggedUser, chatId, message } = command.payload;
 
       const user = await this.userRepo.findOneBy({
-        id: authUser.id,
+        id: loggedUser.id,
       });
 
       if (!user) {
@@ -56,7 +53,7 @@ export class SendMessageCommandHandler
         return new Err(new ChatNotFoundError());
       }
 
-      const chatMessage = new ChatMessage(authUser.id);
+      const chatMessage = new ChatMessage(loggedUser.id);
       chatMessage.chat = chat;
       chatMessage.sender = user;
       chatMessage.content = message;

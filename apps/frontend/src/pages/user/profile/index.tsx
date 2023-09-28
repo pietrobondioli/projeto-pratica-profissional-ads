@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { Avatar, AvatarImage } from '#/fe/shared/components/ui/avatar';
 import { Button } from '#/fe/shared/components/ui/button';
 import {
 	Form,
@@ -8,11 +7,12 @@ import {
 	FormLabel,
 } from '#/fe/shared/components/ui/form';
 import { Input } from '#/fe/shared/components/ui/input';
-import { Avatar, AvatarImage } from '#/fe/shared/components/ui/avatar';
 import { useLoggedUser } from '#/fe/shared/state/logged-user';
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 const getMediaUrl = (media?: Media) => {
 	if (!media) return '';
@@ -30,7 +30,7 @@ const userProfileSchema = z.object({
 function UserProfilePage() {
 	const loggedUser = useLoggedUser();
 	const { data: userProfile, isLoading } = useQuery(
-		['userProfile', loggedUser?.email],
+		['userProfile', loggedUser.email],
 		async () => {
 			return {} as UserProfile;
 		},
@@ -96,7 +96,7 @@ function UserProfilePage() {
 							<FormItem>
 								<FormLabel>Email</FormLabel>
 								<FormControl>
-									<Input value={loggedUser?.email} readOnly />
+									<Input value={loggedUser.email} readOnly />
 								</FormControl>
 							</FormItem>
 							<FormItem>

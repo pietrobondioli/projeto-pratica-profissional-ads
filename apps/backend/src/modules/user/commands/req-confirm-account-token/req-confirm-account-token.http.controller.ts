@@ -7,7 +7,7 @@ import { routesV1 } from '#/be/config/routes/app.routes';
 import { ApiErrorResponse } from '#/be/lib/api/api-error.response.dto';
 import { IdResponse } from '#/be/lib/api/id.response.dto';
 
-import { Authenticated } from '#/be/modules/auth/guards/jwt-auth.guard';
+import { Authenticated } from '#/be/lib/application/guards/authenticated.guard';
 import { ReqConfirmAccountTokenCommand } from './req-confirm-account-token.command';
 import { ReqChangePasswordRequestDto } from './req-confirm-account-token.req.dto';
 

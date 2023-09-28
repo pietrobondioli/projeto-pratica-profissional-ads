@@ -1,11 +1,10 @@
+import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Err, Ok } from 'neverthrow';
 import { Repository } from 'typeorm';
 
-import { ReqContextProvider } from '#/be/lib/application/request/req.context';
 import { NotAuthorizedError } from '#/be/lib/exceptions/not-authorized.error';
 import { USER_REPO } from '#/be/modules/user/user.di-tokens';
 
@@ -33,9 +32,7 @@ export class ReadNotificationCommandHandler
     command: ReadNotificationCommand,
   ): Promise<CommandResult<ReadNotificationCommand>> {
     try {
-      const { notificationId } = command.payload;
-
-      const authUser = ReqContextProvider.getAuthUser();
+      const { loggedUser, notificationId } = command.payload;
 
       const notification = await this.notificationRepo.findOne({
         where: {
@@ -50,7 +47,7 @@ export class ReadNotificationCommandHandler
         return new Err(new NotificationNotFoundError());
       }
 
-      if (notification.user.id !== authUser.id) {
+      if (notification.user.id !== loggedUser.id) {
         return new Err(new NotAuthorizedError());
       }
 

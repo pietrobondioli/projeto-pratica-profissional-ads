@@ -30,17 +30,17 @@ export class ReqChangeEmailCommandHandler
     command: ReqChangeEmailCommand,
   ): Promise<CommandResult<ReqChangeEmailCommand>> {
     try {
-      const { userId, newEmail } = command.payload;
+      const { loggedUser, newEmail } = command.payload;
 
       const user = await this.userRepo.findOneBy({
-        id: userId,
+        id: loggedUser.id,
       });
 
       if (!user) {
         return new Err(new UserNotFoundError());
       }
 
-      const token = new ChangeEmailToken(userId);
+      const token = new ChangeEmailToken(loggedUser.id);
       token.user = user;
       token.newEmail = newEmail;
       token.token = v4();

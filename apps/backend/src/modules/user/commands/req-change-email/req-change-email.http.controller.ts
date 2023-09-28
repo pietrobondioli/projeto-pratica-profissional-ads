@@ -13,11 +13,14 @@ import { Response } from 'express';
 import { routesV1 } from '#/be/config/routes/app.routes';
 import { ApiErrorResponse } from '#/be/lib/api/api-error.response.dto';
 import { IdResponse } from '#/be/lib/api/id.response.dto';
-import { ReqContextProvider } from '#/be/lib/application/request/req.context';
+import { Authenticated } from '#/be/lib/application/guards/authenticated.guard';
 
 import { UserNotFoundError } from '../../domain/errors/user-not-found.error';
 
-import { Authenticated } from '#/be/modules/auth/guards/jwt-auth.guard';
+import {
+  AuthUser,
+  UserPayload,
+} from '#/be/lib/application/decorators/auth-user.decorator';
 import { ReqChangeEmailCommand } from './req-change-email.command';
 import { ReqChangeEmailRequestDto } from './req-change-email.req.dto';
 
@@ -41,11 +44,13 @@ export class ReqChangeEmailHttpController {
     status: HttpStatus.BAD_REQUEST,
     type: ApiErrorResponse,
   })
-  async execute(@Body() body: ReqChangeEmailRequestDto, @Res() res: Response) {
-    const loggedUser = ReqContextProvider.getAuthUser();
-
+  async execute(
+    @Body() body: ReqChangeEmailRequestDto,
+    @Res() res: Response,
+    @AuthUser() user: UserPayload,
+  ) {
     const command = new ReqChangeEmailCommand({
-      userId: loggedUser.id,
+      loggedUser: user,
       newEmail: body.newEmail,
     });
 

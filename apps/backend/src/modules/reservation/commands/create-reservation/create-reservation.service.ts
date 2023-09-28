@@ -1,10 +1,9 @@
+import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Err, Ok } from 'neverthrow';
 
-import { ReqContextProvider } from '#/be/lib/application/request/req.context';
 import { EquipmentRepo } from '#/be/modules/equipment/db/equipment.model';
 import { EquipmentNotFoundError } from '#/be/modules/equipment/domain/errors/equipment-not-found.error';
 import { EQUIPMENT_REPO } from '#/be/modules/equipment/equipment.di-tokens';
@@ -38,12 +37,10 @@ export class CreateReservationCommandHandler
     command: CreateReservationCommand,
   ): Promise<CommandResult<CreateReservationCommand>> {
     try {
-      const { equipmentId, startDate, endDate } = command.payload;
-
-      const authUser = ReqContextProvider.getAuthUser();
+      const { loggedUser, equipmentId, startDate, endDate } = command.payload;
 
       const user = await this.userRepo.findOneBy({
-        id: authUser.id,
+        id: loggedUser.id,
       });
 
       if (!user) {
@@ -73,7 +70,7 @@ export class CreateReservationCommandHandler
         return new Err(new InvalidReservePeriodError());
       }
 
-      const reservation = new Reservation(authUser.id);
+      const reservation = new Reservation(loggedUser.id);
       reservation.equipment = equipment;
       reservation.renter = user;
       reservation.startDate = startDate;

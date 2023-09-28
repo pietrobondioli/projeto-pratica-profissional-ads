@@ -13,8 +13,12 @@ import { Response } from 'express';
 import { routesV1 } from '#/be/config/routes/app.routes';
 import { ApiErrorResponse } from '#/be/lib/api/api-error.response.dto';
 import { IdResponse } from '#/be/lib/api/id.response.dto';
-import { Authenticated } from '#/be/modules/auth/guards/jwt-auth.guard';
+import { Authenticated } from '#/be/lib/application/guards/authenticated.guard';
 
+import {
+  AuthUser,
+  UserPayload,
+} from '#/be/lib/application/decorators/auth-user.decorator';
 import { UpdateFeedbackCommand } from './update-feedback.command';
 import { UpdateFeedbackReqDto } from './update-feedback.req.dto';
 
@@ -38,11 +42,13 @@ export class UpdateFeedbackHttpController {
     @Param('feedbackId') feedbackId: string,
     @Body() body: UpdateFeedbackReqDto,
     @Res() res: Response,
+    @AuthUser() user: UserPayload,
   ) {
     const command = new UpdateFeedbackCommand({
       feedbackId,
       rating: body.rating,
       comment: body.comment,
+      loggedUser: user,
     });
 
     const result = await this.commandBus.execute(command);

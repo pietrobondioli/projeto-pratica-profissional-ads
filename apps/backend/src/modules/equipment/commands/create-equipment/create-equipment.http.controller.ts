@@ -5,8 +5,12 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { routesV1 } from '#/be/config/routes/app.routes';
 import { ApiErrorResponse } from '#/be/lib/api/api-error.response.dto';
 import { IdResponse } from '#/be/lib/api/id.response.dto';
-import { Authenticated } from '#/be/modules/auth/guards/jwt-auth.guard';
+import { Authenticated } from '#/be/lib/application/guards/authenticated.guard';
 
+import {
+  AuthUser,
+  UserPayload,
+} from '#/be/lib/application/decorators/auth-user.decorator';
 import { CreateEquipmentCommand } from './create-equipment.command';
 import { CreateEquipmentRequestDto } from './create-equipment.req.dto';
 
@@ -26,8 +30,14 @@ export class CreateEquipmentHttpController {
     type: ApiErrorResponse,
   })
   @Post(routesV1.equipment.commands.create)
-  async execute(@Body() body: CreateEquipmentRequestDto) {
-    const command = new CreateEquipmentCommand(body);
+  async execute(
+    @Body() body: CreateEquipmentRequestDto,
+    @AuthUser() user: UserPayload,
+  ) {
+    const command = new CreateEquipmentCommand({
+      ...body,
+      loggedUser: user,
+    });
 
     const result = await this.commandBus.execute(command);
 

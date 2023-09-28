@@ -5,8 +5,12 @@ import { Response } from 'express';
 
 import { routesV1 } from '#/be/config/routes/app.routes';
 import { ApiErrorResponse } from '#/be/lib/api/api-error.response.dto';
-import { Authenticated } from '#/be/modules/auth/guards/jwt-auth.guard';
+import { Authenticated } from '#/be/lib/application/guards/authenticated.guard';
 
+import {
+  AuthUser,
+  UserPayload,
+} from '#/be/lib/application/decorators/auth-user.decorator';
 import { ReadNotificationCommand } from './read-notification.command';
 import { ReadNotificationReqParamsDto } from './read-notification.req.params.dto';
 
@@ -28,9 +32,11 @@ export class ReadNotificationHttpController {
   async execute(
     @Param() params: ReadNotificationReqParamsDto,
     @Res() res: Response,
+    @AuthUser() user: UserPayload,
   ) {
     const command = new ReadNotificationCommand({
       notificationId: params.notificationId,
+      loggedUser: user,
     });
 
     const result = await this.commandBus.execute(command);

@@ -1,10 +1,9 @@
+import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Err, Ok } from 'neverthrow';
 
-import { ReqContextProvider } from '#/be/lib/application/request/req.context';
 import { NotAuthorizedError } from '#/be/lib/exceptions/not-authorized.error';
 
 import { FeedbackRepo } from '../../db/feedback.model';
@@ -28,9 +27,7 @@ export class DeleteFeedbackCommandHandler
     command: DeleteFeedbackCommand,
   ): Promise<CommandResult<DeleteFeedbackCommand>> {
     try {
-      const { feedbackId } = command.payload;
-
-      const authUser = ReqContextProvider.getAuthUser();
+      const { loggedUser, feedbackId } = command.payload;
 
       const feedback = await this.feedbackRepo.findOneBy({
         id: feedbackId,
@@ -40,7 +37,7 @@ export class DeleteFeedbackCommandHandler
         return new Err(new FeedbackNotFoundError());
       }
 
-      if (feedback.fromUser.id !== authUser.id) {
+      if (feedback.fromUser.id !== loggedUser.id) {
         return new Err(new NotAuthorizedError());
       }
 

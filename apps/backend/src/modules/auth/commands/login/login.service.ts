@@ -10,13 +10,8 @@ import { PasswordHelper } from '#/be/lib/utils/password-helper';
 import { UserRepo } from '#/be/modules/user/db/user.model';
 import { USER_REPO } from '#/be/modules/user/user.di-tokens';
 
+import { UserPayload } from '#/be/lib/application/decorators/auth-user.decorator';
 import { LoginCommand } from './login.command';
-
-export type UserJwtPayload = {
-  id: string;
-  email: string;
-  isVerified: boolean;
-};
 
 @CommandHandler(LoginCommand)
 export class LoginCommandHandler
@@ -46,7 +41,7 @@ export class LoginCommandHandler
       return new Err(new NotAuthorizedError());
     }
 
-    const payload: UserJwtPayload = {
+    const payload: UserPayload = {
       id: user.id,
       email: user.email,
       isVerified: user.confirmedEmail,

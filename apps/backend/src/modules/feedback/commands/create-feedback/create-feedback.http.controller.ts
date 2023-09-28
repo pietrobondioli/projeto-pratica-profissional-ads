@@ -6,8 +6,12 @@ import { Response } from 'express';
 import { routesV1 } from '#/be/config/routes/app.routes';
 import { ApiErrorResponse } from '#/be/lib/api/api-error.response.dto';
 import { IdResponse } from '#/be/lib/api/id.response.dto';
-import { Authenticated } from '#/be/modules/auth/guards/jwt-auth.guard';
+import { Authenticated } from '#/be/lib/application/guards/authenticated.guard';
 
+import {
+  AuthUser,
+  UserPayload,
+} from '#/be/lib/application/decorators/auth-user.decorator';
 import { CreateFeedbackCommand } from './create-feedback.command';
 import { CreateFeedbackReqDto } from './create-feedback.req.dto';
 
@@ -29,11 +33,16 @@ export class CreateFeedbackHttpController {
     status: HttpStatus.BAD_REQUEST,
     type: ApiErrorResponse,
   })
-  async execute(@Body() body: CreateFeedbackReqDto, @Res() res: Response) {
+  async execute(
+    @Body() body: CreateFeedbackReqDto,
+    @Res() res: Response,
+    @AuthUser() user: UserPayload,
+  ) {
     const command = new CreateFeedbackCommand({
       reservationId: body.reservationId,
       rating: body.rating,
       comment: body.comment,
+      loggedUser: user,
     });
 
     const result = await this.commandBus.execute(command);

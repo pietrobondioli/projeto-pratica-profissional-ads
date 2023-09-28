@@ -1,10 +1,9 @@
+import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Err, Ok } from 'neverthrow';
 
-import { ReqContextProvider } from '#/be/lib/application/request/req.context';
 import { NotAuthorizedError } from '#/be/lib/exceptions/not-authorized.error';
 
 import { ReservationRepo } from '../../db/reservation.model';
@@ -28,9 +27,7 @@ export class CancelReservationCommandHandler
     command: CancelReservationCommand,
   ): Promise<CommandResult<CancelReservationCommand>> {
     try {
-      const { reservationId } = command.payload;
-
-      const authUser = ReqContextProvider.getAuthUser();
+      const { loggedUser, reservationId } = command.payload;
 
       const reservation = await this.reservationRepo.findOne({
         where: {
@@ -45,7 +42,7 @@ export class CancelReservationCommandHandler
         return new Err(new ReservationNotFoundError());
       }
 
-      if (reservation.renter.id !== authUser.id) {
+      if (reservation.renter.id !== loggedUser.id) {
         return new Err(new NotAuthorizedError());
       }
 

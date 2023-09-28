@@ -49,7 +49,7 @@ export class ReqConfirmAccountTokenCommandHandler
 
       await this.invalidateOldTokens(user);
 
-      const a = await this.emailVerificationTokenRepo.save(token);
+      await this.emailVerificationTokenRepo.save(token);
 
       UserAggregate.publishEvents(this.eventEmitter);
 

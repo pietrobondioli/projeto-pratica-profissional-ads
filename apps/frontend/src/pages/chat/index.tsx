@@ -23,7 +23,7 @@ function ChatList({
 					className="w-full text-left p-4"
 				>
 					Chat with:{' '}
-					{chat.user1.email === loggedUser?.email
+					{chat.user1.email === loggedUser.email
 						? chat.user2.email
 						: chat.user1.email}
 				</Button>
@@ -48,7 +48,7 @@ function ChatBox({
 					<div
 						key={message.id}
 						className={`p-2 ${
-							message.sender.email === loggedUser?.email
+							message.sender.email === loggedUser.email
 								? 'text-right'
 								: ''
 						}`}

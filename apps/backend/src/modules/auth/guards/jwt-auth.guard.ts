@@ -1,23 +1,12 @@
-import {
-  ExecutionContext,
-  Injectable,
-  SetMetadata,
-  UseGuards,
-  applyDecorators,
-} from '@nestjs/common';
+import { ExecutionContext, Injectable, SetMetadata } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
-import { ApiBearerAuth } from '@nestjs/swagger';
 import { Request } from 'express';
 
 import { NotAuthorizedError } from '#/be/lib/exceptions/not-authorized.error';
 
 export const PUBLIC_KEY = 'isPublic';
 export const IsPublic = () => SetMetadata(PUBLIC_KEY, true);
-
-export function Authenticated() {
-  return applyDecorators(ApiBearerAuth('jwt'), UseGuards(JwtAuthGuard));
-}
 
 @Injectable()
 export class JwtAuthGuard {

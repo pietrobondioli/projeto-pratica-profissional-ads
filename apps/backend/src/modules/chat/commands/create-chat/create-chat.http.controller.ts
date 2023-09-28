@@ -1,13 +1,17 @@
 import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Response } from 'express';
 
 import { routesV1 } from '#/be/config/routes/app.routes';
 import { ApiErrorResponse } from '#/be/lib/api/api-error.response.dto';
 import { IdResponse } from '#/be/lib/api/id.response.dto';
-import { Authenticated } from '#/be/modules/auth/guards/jwt-auth.guard';
+import { Authenticated } from '#/be/lib/application/guards/authenticated.guard';
 
+import {
+  AuthUser,
+  UserPayload,
+} from '#/be/lib/application/decorators/auth-user.decorator';
+import { Response } from 'express';
 import { CreateChatCommand } from './create-chat.command';
 import { CreateChatReqDto } from './create-chat.req.dto';
 
@@ -29,10 +33,15 @@ export class CreateChatHttpController {
     status: HttpStatus.BAD_REQUEST,
     type: ApiErrorResponse,
   })
-  async execute(@Body() body: CreateChatReqDto, @Res() res: Response) {
+  async execute(
+    @Body() body: CreateChatReqDto,
+    @Res() res: Response,
+    @AuthUser() user: UserPayload,
+  ) {
     const command = new CreateChatCommand({
       withUserId: body.withUserId,
       message: body.message,
+      loggedUser: user,
     });
 
     const result = await this.commandBus.execute(command);

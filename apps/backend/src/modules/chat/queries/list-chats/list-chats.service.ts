@@ -1,10 +1,8 @@
+import { QueryResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { IInferredQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { QueryResult } from '@nestjs-architects/typed-cqrs';
 import { Ok } from 'neverthrow';
 import { Like, Repository } from 'typeorm';
-
-import { ReqContextProvider } from '#/be/lib/application/request/req.context';
 
 import { CHAT_REPO } from '../../chat.di-tokens';
 import { Chat } from '../../domain/chat.entity';
@@ -21,9 +19,7 @@ export class ListChatsQueryHandler
   ) {}
 
   async execute(query: ListChatsQuery): Promise<QueryResult<ListChatsQuery>> {
-    const { targetUserSearch, page, limit, order } = query.payload;
-
-    const loggedUser = ReqContextProvider.getAuthUser();
+    const { loggedUser, targetUserSearch, page, limit, order } = query.payload;
 
     const items = await this.ChatRepo.find({
       where: [

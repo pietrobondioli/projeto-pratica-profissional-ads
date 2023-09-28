@@ -5,7 +5,7 @@ import { plainToInstance } from 'class-transformer';
 
 import { routesV1 } from '#/be/config/routes/app.routes';
 import { ApiErrorResponse } from '#/be/lib/api/api-error.response.dto';
-import { Authenticated } from '#/be/modules/auth/guards/jwt-auth.guard';
+import { Authenticated } from '#/be/lib/application/guards/authenticated.guard';
 
 import { GetChatQuery } from './get-chat.query';
 import { GetChatResDto } from './get-chat.res.dto';
