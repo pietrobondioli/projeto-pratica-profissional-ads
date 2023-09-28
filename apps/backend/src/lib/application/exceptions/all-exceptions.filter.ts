@@ -25,7 +25,10 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
     let status = HttpStatus.INTERNAL_SERVER_ERROR;
-    let body = new GenericError(exception as Error).toJSON();
+    let body = new GenericError(
+      <Error>exception,
+      (<Error>exception).stack,
+    ).toJSON();
 
     if (exception instanceof ExceptionBase) {
       body = exception.toJSON();

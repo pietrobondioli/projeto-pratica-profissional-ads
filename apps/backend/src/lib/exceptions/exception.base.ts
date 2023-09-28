@@ -1,3 +1,5 @@
+import { isDev } from '../utils/env.helper';
+
 export interface SerializedException {
   message: string;
   code: string;
@@ -22,9 +24,9 @@ export abstract class ExceptionBase extends Error {
     return {
       message: this.message,
       code: this.code,
-      stack: this.stack,
-      cause: JSON.stringify(this.cause),
-      metadata: this.metadata,
+      stack: isDev() ? this.stack : undefined,
+      cause: isDev() ? JSON.stringify(this.cause) : undefined,
+      metadata: isDev() ? this.metadata : undefined,
     };
   }
 }
