@@ -1,7 +1,7 @@
 import { Controller, Get, HttpStatus, Param } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { plainToInstance } from 'class-transformer';
+import { plainToClass } from 'class-transformer';
 
 import { routesV1 } from '#/be/config/routes/app.routes';
 import { ApiErrorResponse } from '#/be/lib/api/api-error.response.dto';
@@ -33,7 +33,7 @@ export class GetUserHttpController {
 
     return result.match(
       (user) =>
-        plainToInstance(GetUserResDto, user, {
+        plainToClass(GetUserResDto, user, {
           excludeExtraneousValues: true,
         }),
       (error) => {

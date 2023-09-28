@@ -1,26 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
 
+import { Expose } from 'class-transformer';
 import { IdResponse } from './id.response.dto';
 
-export interface BaseResponseProps {
-  id: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
 export class ResponseBase extends IdResponse {
-  constructor(props: BaseResponseProps) {
-    super(props.id);
-    this.createdAt = new Date(props.createdAt).toISOString();
-    this.updatedAt = new Date(props.updatedAt).toISOString();
-  }
-
+  @Expose()
   @ApiProperty({
     example: '2020-11-24T17:43:15.970Z',
     description: 'Date of creation',
   })
   readonly createdAt: string;
 
+  @Expose()
   @ApiProperty({
     example: '2020-11-24T17:43:15.970Z',
     description: 'Date of last update',

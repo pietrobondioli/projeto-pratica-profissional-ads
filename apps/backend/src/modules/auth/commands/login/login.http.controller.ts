@@ -6,14 +6,11 @@ import { Response } from 'express';
 import { routesV1 } from '#/be/config/routes/app.routes';
 import { ApiErrorResponse } from '#/be/lib/api/api-error.response.dto';
 
-import { Authenticated } from '../../guards/jwt-auth.guard';
-
 import { LoginCommand } from './login.command';
 import { LoginReqDto } from './login.req.dto';
 
 @ApiTags(...routesV1.auth.tags)
 @Controller(routesV1.version)
-@Authenticated()
 export class LoginHttpController {
   constructor(private readonly commandBus: CommandBus) {}
 

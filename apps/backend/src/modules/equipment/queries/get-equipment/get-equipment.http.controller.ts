@@ -8,6 +8,7 @@ import { Authenticated } from '#/be/modules/auth/guards/jwt-auth.guard';
 
 import { Equipment } from '../../domain/equipment.entity';
 
+import { plainToInstance } from 'class-transformer';
 import { GetEquipmentQuery } from './get-equipment.query';
 import { GetEquipmentResDto } from './get-equipment.res.dto';
 
@@ -35,7 +36,10 @@ export class GetEquipmentHttpController {
     const result = await this.queryBus.execute(query);
 
     return result.match(
-      (eq: Equipment) => new GetEquipmentResDto(eq),
+      (eq: Equipment) =>
+        plainToInstance(GetEquipmentResDto, eq, {
+          excludeExtraneousValues: true,
+        }),
       (error) => {
         throw error;
       },

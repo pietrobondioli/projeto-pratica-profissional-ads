@@ -17,7 +17,7 @@ export class CreateUserRequestDto {
   readonly email: string;
 
   @ApiProperty({
-    example: 'Abc1234-',
+    example: 'Abc12345-',
     description: 'User password',
   })
   @MaxLength(256)

@@ -14,7 +14,7 @@ export class LoginReqDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty({
-    example: '12345678',
+    example: 'Abc12345-',
     description: 'User password',
   })
   readonly password: string;

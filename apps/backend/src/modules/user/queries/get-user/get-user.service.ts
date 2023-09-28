@@ -1,6 +1,6 @@
+import { QueryResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { IInferredQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { QueryResult } from '@nestjs-architects/typed-cqrs';
 import { Err, Ok } from 'neverthrow';
 
 import { UserRepo } from '../../db/user.model';
@@ -21,8 +21,11 @@ export class GetUserQueryHandler
   async execute(query: GetUserQuery): Promise<QueryResult<GetUserQuery>> {
     const { userId } = query.payload;
 
-    const user = await this.userRepo.findOneBy({
-      id: userId,
+    const user = await this.userRepo.findOne({
+      where: {
+        id: userId,
+      },
+      relations: ['userProfile', 'userProfile.profilePicture'],
     });
 
     if (!user) {

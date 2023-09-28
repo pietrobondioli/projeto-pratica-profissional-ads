@@ -1,7 +1,7 @@
-import { ConflictException, Inject } from '@nestjs/common';
+import { CommandResult } from '@nestjs-architects/typed-cqrs';
+import { Inject } from '@nestjs/common';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Err, Ok } from 'neverthrow';
 
 import { PasswordHelper } from '#/be/lib/utils/password-helper';
@@ -29,9 +29,17 @@ export class CreateUserCommandHandler
     command: CreateUserCommand,
   ): Promise<CommandResult<CreateUserCommand>> {
     try {
+      const { email, password } = command.payload;
+
+      const userExists = await this.userRepo.findOneBy({ email });
+
+      if (userExists) {
+        return new Err(new UserAlreadyExistsError(email));
+      }
+
       const user = new User('admin');
-      user.email = command.payload.email;
-      user.passwordHash = PasswordHelper.hashPassword(command.payload.password);
+      user.email = email;
+      user.passwordHash = PasswordHelper.hashPassword(password);
       user.userProfile = new UserProfile('admin');
 
       UserAggregate.user(user).created();
@@ -41,14 +49,8 @@ export class CreateUserCommandHandler
       UserAggregate.publishEvents(this.eventEmitter);
 
       return new Ok(user.id);
-    } catch (error: any) {
+    } finally {
       UserAggregate.clearEvents();
-
-      if (error instanceof ConflictException) {
-        return new Err(new UserAlreadyExistsError(error));
-      }
-
-      throw error;
     }
   }
 }
