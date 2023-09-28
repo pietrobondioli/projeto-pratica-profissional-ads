@@ -38,10 +38,8 @@ export class LoginCommandHandler
       return new Err(new NotAuthorizedError());
     }
 
-    const token = this.jwtService.sign({ id: user.id });
-
     return new Ok({
-      token,
+      token: this.jwtService.sign({ id: user.id }),
     });
   }
 }

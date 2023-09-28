@@ -3,6 +3,7 @@ import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AllExceptionsFilter } from './lib/application/exceptions/all-exceptions.filter';
+import { ReqContextInterceptor } from './lib/application/request/req-context.interceptor';
 import { AppModule } from './modules/app.module';
 
 async function bootstrap() {
@@ -11,17 +12,18 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.useGlobalFilters(new AllExceptionsFilter(app.get(HttpAdapterHost)));
+  app.useGlobalInterceptors(new ReqContextInterceptor());
 
   app.setGlobalPrefix('api');
-  console.log(`Environment: ${process.env.NODE_ENV}`);
 
   const config = new DocumentBuilder()
     .setTitle('EquipRent API')
     .setVersion('1.0')
     .addBearerAuth({
-      type: 'http',
+      type: 'apiKey',
       scheme: 'bearer',
-      name: 'Authorization',
+      name: 'authorization',
+      in: 'header',
     })
     .build();
   const document = SwaggerModule.createDocument(app, config);

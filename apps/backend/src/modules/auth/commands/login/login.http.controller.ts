@@ -31,7 +31,7 @@ export class LoginHttpController {
     const result = await this.commandBus.execute(command);
 
     return result.match(
-      () => res.status(HttpStatus.OK).send(),
+      (tokenObj) => res.status(HttpStatus.OK).send(tokenObj),
       (error) => {
         throw error;
       },

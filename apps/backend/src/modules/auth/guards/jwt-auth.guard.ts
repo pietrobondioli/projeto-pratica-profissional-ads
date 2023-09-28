@@ -1,18 +1,28 @@
-import { RootConfig } from '#/be/config/env/env.types';
 import { NotAuthorizedError } from '#/be/lib/exceptions/not-authorized.error';
-import { ExecutionContext, Injectable, SetMetadata } from '@nestjs/common';
+import {
+  ExecutionContext,
+  Injectable,
+  SetMetadata,
+  UseGuards,
+  applyDecorators,
+} from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
+import { ApiBearerAuth } from '@nestjs/swagger';
+import { Request } from 'express';
 
 export const PUBLIC_KEY = 'isPublic';
 export const IsPublic = () => SetMetadata(PUBLIC_KEY, true);
+
+export function Authenticated() {
+  return applyDecorators(ApiBearerAuth(), UseGuards(JwtAuthGuard));
+}
 
 @Injectable()
 export class JwtAuthGuard {
   constructor(
     private readonly reflector: Reflector,
     private readonly jwtService: JwtService,
-    private readonly rootConfig: RootConfig,
   ) {}
 
   async canActivate(context: ExecutionContext) {
@@ -26,25 +36,32 @@ export class JwtAuthGuard {
     }
 
     const request = context.switchToHttp().getRequest();
-    const token = this.extractTokenFromHeader(request);
+
+    let token = this.extractTokenFromHeader(request);
+    if (!token) {
+      token = this.extractTokenFromCookie(request);
+    }
+
     if (!token) {
       throw new NotAuthorizedError();
     }
+
     try {
-      const payload = await this.jwtService.verifyAsync(token, {
-        secret: this.rootConfig.jwt.secret,
-      });
+      const payload = await this.jwtService.verify(token);
 
       request['user'] = payload;
-    } catch {
+    } catch (e) {
       throw new NotAuthorizedError();
     }
     return true;
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {
-    const [type, token] =
-      request.headers.get('Authorization')?.split(' ') ?? [];
+    const [type, token] = request.headers.authorization?.split(' ') ?? [];
     return type === 'Bearer' ? token : undefined;
+  }
+
+  private extractTokenFromCookie(request: Request): string | undefined {
+    return request.cookies?.['jwt'];
   }
 }
