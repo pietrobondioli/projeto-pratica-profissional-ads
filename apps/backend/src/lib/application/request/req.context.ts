@@ -1,9 +1,7 @@
 import { Request } from 'express';
 
-import { UserJwtPayload } from '../../temp/user.jwt.payload';
-
 type AuthReq = Request & {
-  user: UserJwtPayload;
+  user: { id: string };
 };
 
 export class ReqContextProvider {

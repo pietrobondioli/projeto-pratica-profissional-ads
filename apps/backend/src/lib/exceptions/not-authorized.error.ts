@@ -1,9 +1,10 @@
 import { ExceptionBase } from '#/be/lib/exceptions/exception.base';
+import { HttpStatus } from '@nestjs/common';
 
 export class NotAuthorizedError extends ExceptionBase {
-  static readonly message = 'Not authorized';
+  public readonly httpStatus = HttpStatus.UNAUTHORIZED;
 
-  public readonly code = 'NOT_AUTHORIZED';
+  static readonly message = 'Not authorized';
 
   constructor(cause?: Error, metadata?: unknown) {
     super(NotAuthorizedError.message, cause, metadata);

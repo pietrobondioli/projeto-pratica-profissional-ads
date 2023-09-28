@@ -1,12 +1,26 @@
 import { ExceptionBase } from '#/be/lib/exceptions/exception.base';
+import { HttpStatus } from '@nestjs/common';
 
 export class GenericError extends ExceptionBase {
-  public readonly code = `SOMETHING_WENT_WRONG`;
+  public readonly httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 
-  constructor(cause?: Error, originalStack?: string, metadata?: unknown) {
-    super(cause?.message ?? `Something went wrong.`, cause, metadata);
+  constructor(
+    message: string,
+    cause?: Error,
+    originalStack?: string,
+    httpStatus?: string | number,
+    metadata?: unknown,
+  ) {
+    super(
+      message ?? cause?.message ?? `Something went wrong.`,
+      cause,
+      metadata,
+    );
     if (originalStack) {
       this.stack = originalStack;
+    }
+    if (httpStatus) {
+      this.httpStatus = httpStatus as any;
     }
   }
 }

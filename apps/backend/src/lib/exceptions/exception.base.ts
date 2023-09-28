@@ -2,14 +2,13 @@ import { isDev } from '../utils/env.helper';
 
 export interface SerializedException {
   message: string;
-  code: string;
   stack?: string;
   cause?: string;
   metadata?: unknown;
 }
 
 export abstract class ExceptionBase extends Error {
-  abstract code: string;
+  abstract httpStatus: number;
 
   constructor(
     readonly message: string,
@@ -23,7 +22,6 @@ export abstract class ExceptionBase extends Error {
   toJSON(): SerializedException {
     return {
       message: this.message,
-      code: this.code,
       stack: isDev() ? this.stack : undefined,
       cause: isDev() ? JSON.stringify(this.cause) : undefined,
       metadata: isDev() ? this.metadata : undefined,
