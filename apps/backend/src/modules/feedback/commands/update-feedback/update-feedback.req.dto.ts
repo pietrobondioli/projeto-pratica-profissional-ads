@@ -2,12 +2,6 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateFeedbackReqDto {
   @ApiProperty({
-    example: 'reservation-id-1',
-    description: 'Reservation ID',
-  })
-  readonly reservationId: string;
-
-  @ApiProperty({
     example: 5,
     description: 'Rating',
   })

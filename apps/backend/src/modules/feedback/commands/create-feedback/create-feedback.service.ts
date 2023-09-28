@@ -1,7 +1,7 @@
+import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Err, Ok } from 'neverthrow';
 
 import { ReservationRepo } from '#/be/modules/reservation/db/reservation.model';
@@ -16,6 +16,11 @@ import { FeedbackAggregate } from '../../domain/feedback.aggregate';
 import { Feedback } from '../../domain/feedback.entity';
 import { FEEDBACK_REPO } from '../../feedback.di-tokens';
 
+import { NotAuthorizedError } from '#/be/lib/exceptions/not-authorized.error';
+import { Reservation } from '#/be/modules/reservation/domain/reservation.entity';
+import { isPast } from 'date-fns';
+import { FeedbackAlreadyExistsError } from '../../domain/errors/feedback-already-exists';
+import { ReservationNotFinalizedYetError } from '../../domain/errors/reservation-not-finalized-yet.error';
 import { CreateFeedbackCommand } from './create-feedback.command';
 
 @CommandHandler(CreateFeedbackCommand)
@@ -46,12 +51,36 @@ export class CreateFeedbackCommandHandler
         return new Err(new UserNotFoundError());
       }
 
-      const reservation = await this.reservationRepo.findOneBy({
-        id: reservationId,
+      const existentFeedback = await this.feedbackRepo.findOneBy({
+        fromUser: {
+          id: loggedUser.id,
+        },
+        reservation: {
+          id: reservationId,
+        },
+      });
+
+      if (existentFeedback) {
+        return new Err(new FeedbackAlreadyExistsError());
+      }
+
+      const reservation = await this.reservationRepo.findOne({
+        where: {
+          id: reservationId,
+        },
+        relations: ['renter'],
       });
 
       if (!reservation) {
         return new Err(new ReservationNotFoundError());
+      }
+
+      if (reservation.renter.id !== loggedUser.id) {
+        return new Err(new NotAuthorizedError());
+      }
+
+      if (!this.checkIsReservationFinished(reservation)) {
+        return new Err(new ReservationNotFinalizedYetError());
       }
 
       const feedback = new Feedback(loggedUser.id);
@@ -68,5 +97,9 @@ export class CreateFeedbackCommandHandler
     } finally {
       FeedbackAggregate.clearEvents();
     }
+  }
+
+  private checkIsReservationFinished(reservation: Reservation) {
+    return isPast(reservation.endDate);
   }
 }
