@@ -13,7 +13,7 @@ export class ListUserNotificationsQueryHandler
 {
   constructor(
     @Inject(NOTIFICATION_REPO)
-    protected readonly notificationRepo: NotificationRepo,
+    private readonly notificationRepo: NotificationRepo,
   ) {}
 
   async execute(

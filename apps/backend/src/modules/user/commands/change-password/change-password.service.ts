@@ -23,10 +23,10 @@ export class ChangePasswordCommandHandler
 {
   constructor(
     @Inject(CHANGE_PASSWORD_TOKEN_REPO)
-    protected readonly changePasswordTokenRepo: ChangePasswordTokenRepo,
+    private readonly changePasswordTokenRepo: ChangePasswordTokenRepo,
     @Inject(USER_REPO)
-    protected readonly userRepo: UserRepo,
-    protected readonly eventEmitter: EventEmitter2,
+    private readonly userRepo: UserRepo,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   async execute(

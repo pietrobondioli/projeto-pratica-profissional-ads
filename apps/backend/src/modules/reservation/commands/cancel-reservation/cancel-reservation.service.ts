@@ -17,8 +17,8 @@ export class CancelReservationCommandHandler
 {
   constructor(
     @Inject(RESERVATION_REPO)
-    protected readonly reservationRepo: ReservationRepo,
-    protected readonly eventEmitter: EventEmitter2,
+    private readonly reservationRepo: ReservationRepo,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   async execute(

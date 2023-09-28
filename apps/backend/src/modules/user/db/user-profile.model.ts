@@ -8,24 +8,34 @@ import { UserProfile } from '../domain/user-profile.entity';
 
 @Entity()
 export class UserProfileModel extends BaseModel implements UserProfile {
-  @Column()
+  @Column({
+    default: '',
+  })
   firstName: string;
 
-  @Column()
+  @Column({
+    default: '',
+  })
   lastName: string;
 
-  @Column()
+  @Column({
+    default: '',
+  })
   contact: string;
 
-  @Column()
+  @Column({
+    default: '',
+  })
   address: string;
 
   @OneToOne(() => MediaModel)
   @JoinColumn()
   profilePicture?: MediaModel;
 
-  @Column({ nullable: true })
-  description?: string;
+  @Column({
+    default: '',
+  })
+  description: string;
 
   @OneToOne(() => UserModel, (user) => user.userProfile)
   user: UserModel;

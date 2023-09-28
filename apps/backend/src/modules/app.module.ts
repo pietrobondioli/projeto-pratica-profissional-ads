@@ -3,8 +3,9 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 
 import { DatabaseModule } from '../config/database/database.module';
-import { EnvModule } from '../config/env/env.module';
+import { EnvModule, rootConfig } from '../config/env/env.module';
 
+import { JwtModule } from '@nestjs/jwt';
 import { AuthModule } from './auth/auth.module';
 import { ChatModule } from './chat/chat.module';
 import { EquipmentModule } from './equipment/equipment.module';
@@ -15,15 +16,18 @@ import { PaymentModule } from './payment/payment.module';
 import { ReservationModule } from './reservation/reservation.module';
 import { UserModule } from './user/user.module';
 
-const interceptors = [];
-
 @Module({
   imports: [
     // Config
     EnvModule,
+    DatabaseModule,
+    JwtModule.register({
+      global: true,
+      secret: rootConfig.jwt.secret,
+      signOptions: { expiresIn: rootConfig.jwt.signOptions.expiresIn },
+    }),
 
     // Libraries
-    DatabaseModule,
     EventEmitterModule.forRoot(),
     CqrsModule,
 
@@ -38,7 +42,5 @@ const interceptors = [];
     PaymentModule,
     ReservationModule,
   ],
-  controllers: [],
-  providers: [...interceptors],
 })
 export class AppModule {}

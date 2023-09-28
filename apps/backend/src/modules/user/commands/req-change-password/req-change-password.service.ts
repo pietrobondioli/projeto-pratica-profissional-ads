@@ -20,10 +20,10 @@ export class ReqChangePasswordCommandHandler
 {
   constructor(
     @Inject(CHANGE_PASSWORD_TOKEN_REPO)
-    protected readonly changePasswordTokenRepo: ChangePasswordTokenRepo,
+    private readonly changePasswordTokenRepo: ChangePasswordTokenRepo,
     @Inject(USER_REPO)
-    protected readonly userRepo: UserRepo,
-    protected readonly eventEmitter: EventEmitter2,
+    private readonly userRepo: UserRepo,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   async execute(
@@ -41,7 +41,6 @@ export class ReqChangePasswordCommandHandler
       }
 
       const token = new ChangePasswordToken(user.id);
-      token.id = v4();
       token.user = user;
       token.token = v4();
       token.expiresAt = new Date(Date.now() + 1000 * 60 * 60 * 24 * 3); // 3 days

@@ -22,12 +22,12 @@ export class CreateFeedbackCommandHandler
 {
   constructor(
     @Inject(FEEDBACK_REPO)
-    protected readonly feedbackRepo: FeedbackRepo,
+    private readonly feedbackRepo: FeedbackRepo,
     @Inject(RESERVATION_REPO)
-    protected readonly reservationRepo: ReservationRepo,
+    private readonly reservationRepo: ReservationRepo,
     @Inject(USER_REPO)
-    protected readonly userRepo: UserRepo,
-    protected readonly eventEmitter: EventEmitter2,
+    private readonly userRepo: UserRepo,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   async execute(

@@ -12,7 +12,7 @@ export class ListUserReservationsQueryHandler
 {
   constructor(
     @Inject(RESERVATION_REPO)
-    protected readonly reservationRepo: ReservationRepo,
+    private readonly reservationRepo: ReservationRepo,
   ) {}
 
   async execute(

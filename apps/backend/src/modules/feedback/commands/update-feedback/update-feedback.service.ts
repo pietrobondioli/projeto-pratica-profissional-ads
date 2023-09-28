@@ -17,8 +17,8 @@ export class UpdateFeedbackCommandHandler
 {
   constructor(
     @Inject(FEEDBACK_REPO)
-    protected readonly feedbackRepo: FeedbackRepo,
-    protected readonly eventEmitter: EventEmitter2,
+    private readonly feedbackRepo: FeedbackRepo,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   async execute(

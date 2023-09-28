@@ -7,6 +7,7 @@ import {
 import { RootConfig } from './env.types';
 
 export const EnvModule = TypedConfigModule.forRoot({
+  isGlobal: true,
   schema: RootConfig,
   load: dotenvLoader({
     separator: '__',

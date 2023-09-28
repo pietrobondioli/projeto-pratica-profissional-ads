@@ -5,6 +5,7 @@ export class AppEntityBase {
     this.createdAt = new Date();
     this.updatedAt = new Date();
     this.createdBy = userID;
+    this.updatedBy = userID;
   }
 
   id: EntityID;

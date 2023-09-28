@@ -2,7 +2,6 @@ import { Logger, Module, Provider } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { DataSource } from 'typeorm';
 
-import { DatabaseModule } from '#/be/config/database/database.module';
 import { TYPEORM_DATA_SOURCE } from '#/be/config/database/database.providers';
 import { ReservationModule } from '../reservation/reservation.module';
 import { UserModule } from '../user/user.module';
@@ -35,7 +34,7 @@ const repositories: Provider[] = [
 ];
 
 @Module({
-  imports: [CqrsModule, DatabaseModule, UserModule, ReservationModule],
+  imports: [CqrsModule, UserModule, ReservationModule],
   controllers: [
     CreateFeedbackHttpController,
     DeleteFeedbackHttpController,

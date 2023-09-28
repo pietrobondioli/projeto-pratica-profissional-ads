@@ -2,7 +2,6 @@ import { Logger, Module, Provider } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { DataSource } from 'typeorm';
 
-import { DatabaseModule } from '#/be/config/database/database.module';
 import { TYPEORM_DATA_SOURCE } from '#/be/config/database/database.providers';
 import { EquipmentModule } from '../equipment/equipment.module';
 import { UserModule } from '../user/user.module';
@@ -39,7 +38,7 @@ const repositories: Provider[] = [
 ];
 
 @Module({
-  imports: [CqrsModule, DatabaseModule, UserModule, EquipmentModule],
+  imports: [CqrsModule, UserModule, EquipmentModule],
   controllers: [
     CreateReservationHttpController,
     CancelReservationHttpController,

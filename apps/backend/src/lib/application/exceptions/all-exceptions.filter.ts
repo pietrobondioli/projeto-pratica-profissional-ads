@@ -8,6 +8,7 @@ import { HttpAdapterHost } from '@nestjs/core';
 import { AlreadyExistsError } from '../../exceptions/already-exists.error';
 import { ExceptionBase } from '../../exceptions/exception.base';
 import { ExpiredError } from '../../exceptions/expired.error';
+import { GenericError } from '../../exceptions/generic.error';
 import { InvalidError } from '../../exceptions/invalid.error';
 import { NotAuthorizedError } from '../../exceptions/not-authorized.error';
 import { NotFoundError } from '../../exceptions/not-found.error';
@@ -24,7 +25,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
     let status = HttpStatus.INTERNAL_SERVER_ERROR;
-    let body: any = exception;
+    let body = new GenericError(exception as Error).toJSON();
 
     if (exception instanceof ExceptionBase) {
       body = exception.toJSON();

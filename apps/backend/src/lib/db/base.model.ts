@@ -18,9 +18,13 @@ export abstract class BaseModel extends BaseEntity implements AppEntityBase {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @Column()
+  @Column({
+    default: 'system',
+  })
   createdBy: string;
 
-  @Column()
+  @Column({
+    default: 'system',
+  })
   updatedBy: string;
 }

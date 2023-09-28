@@ -3,7 +3,6 @@ import { ConflictException, Inject } from '@nestjs/common';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Err, Ok } from 'neverthrow';
-import { v4 } from 'uuid';
 
 import { PasswordHelper } from '#/be/lib/utils/password-helper';
 
@@ -13,6 +12,7 @@ import { User } from '../../domain/user.entity';
 import { USER_REPO } from '../../user.di-tokens';
 
 import { UserRepo } from '../../db/user.model';
+import { UserProfile } from '../../domain/user-profile.entity';
 import { CreateUserCommand } from './create-user.command';
 
 @CommandHandler(CreateUserCommand)
@@ -21,8 +21,8 @@ export class CreateUserCommandHandler
 {
   constructor(
     @Inject(USER_REPO)
-    protected readonly userRepo: UserRepo,
-    protected readonly eventEmitter: EventEmitter2,
+    private readonly userRepo: UserRepo,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   async execute(
@@ -30,9 +30,9 @@ export class CreateUserCommandHandler
   ): Promise<CommandResult<CreateUserCommand>> {
     try {
       const user = new User('admin');
-      user.id = v4();
       user.email = command.payload.email;
       user.passwordHash = PasswordHelper.hashPassword(command.payload.password);
+      user.userProfile = new UserProfile('admin');
 
       UserAggregate.user(user).created();
 

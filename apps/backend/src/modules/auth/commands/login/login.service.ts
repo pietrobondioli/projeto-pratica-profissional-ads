@@ -16,9 +16,9 @@ export class LoginCommandHandler
 {
   constructor(
     @Inject(USER_REPO)
-    protected readonly UserRepo: UserRepo,
-    protected readonly eventEmitter: EventEmitter2,
-    protected readonly jwtService: JwtService,
+    private readonly UserRepo: UserRepo,
+    private readonly eventEmitter: EventEmitter2,
+    private readonly jwtService: JwtService,
   ) {}
 
   async execute(command: LoginCommand): Promise<CommandResult<LoginCommand>> {
@@ -38,8 +38,10 @@ export class LoginCommandHandler
       return new Err(new NotAuthorizedError());
     }
 
+    const token = this.jwtService.sign({ id: user.id });
+
     return new Ok({
-      token: this.jwtService.sign({ id: user.id }),
+      token,
     });
   }
 }

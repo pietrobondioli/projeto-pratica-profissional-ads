@@ -2,7 +2,6 @@ import { Logger, Module, Provider } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { DataSource } from 'typeorm';
 
-import { DatabaseModule } from '#/be/config/database/database.module';
 import { TYPEORM_DATA_SOURCE } from '#/be/config/database/database.providers';
 import { ChangeEmailHttpController } from './commands/change-email/change-email.http.controller';
 import { ChangeEmailCommandHandler } from './commands/change-email/change-email.service';
@@ -77,7 +76,7 @@ const repositories: Provider[] = [
 ];
 
 @Module({
-  imports: [CqrsModule, DatabaseModule],
+  imports: [CqrsModule],
   controllers: [
     ChangeEmailHttpController,
     ChangePasswordHttpController,

@@ -21,12 +21,12 @@ export class SendMessageCommandHandler
 {
   constructor(
     @Inject(USER_REPO)
-    protected readonly userRepo: UserRepo,
+    private readonly userRepo: UserRepo,
     @Inject(CHAT_REPO)
-    protected readonly chatRepo: ChatRepo,
+    private readonly chatRepo: ChatRepo,
     @Inject(CHAT_MESSAGE_REPO)
-    protected readonly chatMessageRepo: ChatMessageRepo,
-    protected readonly eventEmitter: EventEmitter2,
+    private readonly chatMessageRepo: ChatMessageRepo,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   async execute(

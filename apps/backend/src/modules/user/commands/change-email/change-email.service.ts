@@ -21,10 +21,10 @@ export class ChangeEmailCommandHandler
 {
   constructor(
     @Inject(CHANGE_EMAIL_TOKEN_REPO)
-    protected readonly changeEmailTokenRepo: ChangeEmailTokenRepo,
+    private readonly changeEmailTokenRepo: ChangeEmailTokenRepo,
     @Inject(USER_REPO)
-    protected readonly userRepo: UserRepo,
-    protected readonly eventEmitter: EventEmitter2,
+    private readonly userRepo: UserRepo,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   async execute(

@@ -20,10 +20,10 @@ export class ReadNotificationCommandHandler
 {
   constructor(
     @Inject(NOTIFICATION_REPO)
-    protected readonly notificationRepo: NotificationRepo,
+    private readonly notificationRepo: NotificationRepo,
     @Inject(USER_REPO)
-    protected readonly userRepo: Repository<any>,
-    protected readonly eventEmitter: EventEmitter2,
+    private readonly userRepo: Repository<any>,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   async execute(

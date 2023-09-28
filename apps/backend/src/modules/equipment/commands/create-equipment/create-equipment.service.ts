@@ -21,10 +21,10 @@ export class CreateUserCommandHandler
 {
   constructor(
     @Inject(EQUIPMENT_REPO)
-    protected readonly equipmentRepo: EquipmentRepo,
+    private readonly equipmentRepo: EquipmentRepo,
     @Inject(MEDIA_REPO)
-    protected readonly mediaRepo: MediaRepo,
-    protected readonly eventEmitter: EventEmitter2,
+    private readonly mediaRepo: MediaRepo,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   async execute(
