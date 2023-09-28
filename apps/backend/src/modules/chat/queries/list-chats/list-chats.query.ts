@@ -6,6 +6,7 @@ import {
   PaginatedQueryResultBase,
 } from '#/be/lib/ddd/query.base';
 import { ExceptionBase } from '#/be/lib/exceptions/exception.base';
+
 import { Chat } from '../../domain/chat.entity';
 
 class Payload extends PaginatedQueryPayloadBase {

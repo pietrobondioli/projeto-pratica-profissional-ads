@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IsOptional, IsString } from 'class-validator';
 
 import { PaginatedQueryRequestDto } from '#/be/lib/api/paginated-query.request.dto';
@@ -6,7 +6,7 @@ import { PaginatedQueryRequestDto } from '#/be/lib/api/paginated-query.request.d
 export class ListEquipmentsReqDto extends PaginatedQueryRequestDto {
   @IsOptional()
   @IsString()
-  @ApiProperty({
+  @ApiPropertyOptional({
     example: 'Equipment1',
     description: 'Equipment title',
   })

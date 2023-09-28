@@ -6,6 +6,7 @@ import { plainToInstance } from 'class-transformer';
 import { routesV1 } from '#/be/config/routes/app.routes';
 import { ApiErrorResponse } from '#/be/lib/api/api-error.response.dto';
 import { Authenticated } from '#/be/modules/auth/guards/jwt-auth.guard';
+
 import { GetReservationQuery } from './get-reservation.query';
 import { GetReservationResDto } from './get-reservation.res.dto';
 
@@ -25,9 +26,9 @@ export class GetReservationHttpController {
     status: HttpStatus.BAD_REQUEST,
     type: ApiErrorResponse,
   })
-  async execute(@Param('id') id: string) {
+  async execute(@Param('reservationId') reservationId: string) {
     const query = new GetReservationQuery({
-      reservationId: id,
+      reservationId,
     });
 
     const result = await this.queryBus.execute(query);

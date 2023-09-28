@@ -1,17 +1,17 @@
-import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Err, Ok } from 'neverthrow';
 import { v4 } from 'uuid';
 
+import { ChangePasswordTokenRepo } from '../../db/change-password-token.model';
 import { UserModel, UserRepo } from '../../db/user.model';
 import { ChangePasswordToken } from '../../domain/change-password-token.entity';
 import { UserNotFoundError } from '../../domain/errors/user-not-found.error';
 import { UserAggregate } from '../../domain/user.aggregate';
 import { CHANGE_PASSWORD_TOKEN_REPO, USER_REPO } from '../../user.di-tokens';
 
-import { ChangePasswordTokenRepo } from '../../db/change-password-token.model';
 import { ReqChangePasswordCommand } from './req-change-password.command';
 
 @CommandHandler(ReqChangePasswordCommand)

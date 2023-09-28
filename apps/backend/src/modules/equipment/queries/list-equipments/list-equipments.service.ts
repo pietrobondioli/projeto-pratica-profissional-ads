@@ -1,12 +1,12 @@
-import { QueryResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { IInferredQueryHandler, QueryHandler } from '@nestjs/cqrs';
+import { QueryResult } from '@nestjs-architects/typed-cqrs';
 import { Ok } from 'neverthrow';
 import { Like } from 'typeorm';
 
+import { EquipmentRepo } from '../../db/equipment.model';
 import { EQUIPMENT_REPO } from '../../equipment.di-tokens';
 
-import { EquipmentRepo } from '../../db/equipment.model';
 import { ListEquipmentsQuery } from './list-equipments.query';
 
 @QueryHandler(ListEquipmentsQuery)

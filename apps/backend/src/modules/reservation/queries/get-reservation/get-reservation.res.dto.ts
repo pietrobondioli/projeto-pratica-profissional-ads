@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+
 import { PaymentStatus } from '../../domain/reservation.entity';
 
 // TODO: Add more properties
@@ -25,6 +26,7 @@ export class GetReservationResDto {
     example: 'Pending',
     description: 'Payment status',
     enum: PaymentStatus,
+    enumName: 'PaymentStatus',
   })
   readonly paymentStatus: PaymentStatus;
 }

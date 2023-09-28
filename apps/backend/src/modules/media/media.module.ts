@@ -1,7 +1,9 @@
-import { TYPEORM_DATA_SOURCE } from '#/be/config/database/database.providers';
 import { Logger, Module, Provider } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { DataSource } from 'typeorm';
+
+import { TYPEORM_DATA_SOURCE } from '#/be/config/database/database.providers';
+
 import { MediaModel } from './db/media.model';
 import { MEDIA_REPO } from './media.di-tokens';
 

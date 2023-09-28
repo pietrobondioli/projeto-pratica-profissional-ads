@@ -1,9 +1,11 @@
-import { QueryResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { IInferredQueryHandler, QueryHandler } from '@nestjs/cqrs';
+import { QueryResult } from '@nestjs-architects/typed-cqrs';
 import { Ok } from 'neverthrow';
+
 import { ReservationRepo } from '../../db/reservation.model';
 import { RESERVATION_REPO } from '../../reservation.di-tokens';
+
 import { ListUserReservationsQuery } from './list-user-reservations.query';
 
 @QueryHandler(ListUserReservationsQuery)

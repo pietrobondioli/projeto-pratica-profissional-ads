@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { JwtModule } from '@nestjs/jwt';
 
 import { DatabaseModule } from '../config/database/database.module';
 import { EnvModule, rootConfig } from '../config/env/env.module';
 
-import { JwtModule } from '@nestjs/jwt';
 import { AuthModule } from './auth/auth.module';
 import { ChatModule } from './chat/chat.module';
 import { EquipmentModule } from './equipment/equipment.module';

@@ -1,4 +1,5 @@
 import { AggregateBase } from '#/be/lib/ddd/aggregate.base';
+
 import { ReservationCanceledEvent } from './events/reservation-canceled.event';
 import { ReservationCreatedEvent } from './events/reservation-created.event';
 

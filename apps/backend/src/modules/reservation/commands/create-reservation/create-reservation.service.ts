@@ -1,3 +1,9 @@
+import { Inject } from '@nestjs/common';
+import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { CommandResult } from '@nestjs-architects/typed-cqrs';
+import { Err, Ok } from 'neverthrow';
+
 import { ReqContextProvider } from '#/be/lib/application/request/req.context';
 import { EquipmentRepo } from '#/be/modules/equipment/db/equipment.model';
 import { EquipmentNotFoundError } from '#/be/modules/equipment/domain/errors/equipment-not-found.error';
@@ -5,16 +11,13 @@ import { EQUIPMENT_REPO } from '#/be/modules/equipment/equipment.di-tokens';
 import { UserRepo } from '#/be/modules/user/db/user.model';
 import { UserNotFoundError } from '#/be/modules/user/domain/errors/user-not-found.error';
 import { USER_REPO } from '#/be/modules/user/user.di-tokens';
-import { CommandResult } from '@nestjs-architects/typed-cqrs';
-import { Inject } from '@nestjs/common';
-import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
-import { EventEmitter2 } from '@nestjs/event-emitter';
-import { Err, Ok } from 'neverthrow';
+
 import { ReservationRepo } from '../../db/reservation.model';
 import { InvalidReservePeriodError } from '../../domain/errors/invalid-reserve-period.error';
 import { ReservationAggregate } from '../../domain/reservation.aggregate';
 import { Reservation } from '../../domain/reservation.entity';
 import { RESERVATION_REPO } from '../../reservation.di-tokens';
+
 import { CreateReservationCommand } from './create-reservation.command';
 
 @CommandHandler(CreateReservationCommand)

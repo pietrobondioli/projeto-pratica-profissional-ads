@@ -1,5 +1,6 @@
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+
 import { ResponseBase } from '#/be/lib/api/response.dto.base';
-import { ApiProperty } from '@nestjs/swagger';
 
 class Media extends ResponseBase {
   @ApiProperty({
@@ -46,13 +47,13 @@ class UserProfileDto {
   })
   readonly address: string;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     type: () => Media,
     description: 'The profile picture of the user',
   })
   profilePicture?: Media;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     example: 'I am a software engineer',
     description: 'The description of the user',
   })

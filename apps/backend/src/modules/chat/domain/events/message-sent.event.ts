@@ -1,4 +1,5 @@
 import { DomainEventBase } from '#/be/lib/ddd/domain-event.base';
+
 import { ChatMessage } from '../chat-message.entity';
 import { Chat } from '../chat.entity';
 

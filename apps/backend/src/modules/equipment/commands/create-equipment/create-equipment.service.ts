@@ -3,16 +3,16 @@ import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Err, Ok, Result } from 'neverthrow';
 
+import { ReqContextProvider } from '#/be/lib/application/request/req.context';
 import { EntityID } from '#/be/lib/ddd/entity.base';
+import { MediaRepo } from '#/be/modules/media/db/media.model';
 import { MEDIA_REPO } from '#/be/modules/media/media.di-tokens';
 
+import { EquipmentRepo } from '../../db/equipment.model';
 import { Equipment } from '../../domain/equipment.entity';
 import { PhotoNotFoundError } from '../../domain/errors/photo-not-found.error';
 import { EQUIPMENT_REPO } from '../../equipment.di-tokens';
 
-import { ReqContextProvider } from '#/be/lib/application/request/req.context';
-import { MediaRepo } from '#/be/modules/media/db/media.model';
-import { EquipmentRepo } from '../../db/equipment.model';
 import { CreateEquipmentCommand } from './create-equipment.command';
 
 @CommandHandler(CreateEquipmentCommand)

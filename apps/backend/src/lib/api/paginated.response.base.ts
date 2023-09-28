@@ -17,5 +17,5 @@ export abstract class PaginatedResponseDto<T> {
   readonly page: number;
 
   @ApiProperty({ isArray: true })
-  readonly items: readonly T[];
+  readonly items: T[];
 }

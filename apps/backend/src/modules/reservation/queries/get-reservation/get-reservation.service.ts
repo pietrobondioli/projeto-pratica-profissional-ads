@@ -1,10 +1,12 @@
-import { QueryResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { IInferredQueryHandler, QueryHandler } from '@nestjs/cqrs';
+import { QueryResult } from '@nestjs-architects/typed-cqrs';
 import { Err, Ok } from 'neverthrow';
+
 import { ReservationRepo } from '../../db/reservation.model';
 import { ReservationNotFoundError } from '../../domain/errors/reservation-not-found.error';
 import { RESERVATION_REPO } from '../../reservation.di-tokens';
+
 import { GetReservationQuery } from './get-reservation.query';
 
 @QueryHandler(GetReservationQuery)

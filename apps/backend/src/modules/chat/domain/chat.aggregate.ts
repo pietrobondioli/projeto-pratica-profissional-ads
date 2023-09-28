@@ -1,4 +1,5 @@
 import { AggregateBase } from '#/be/lib/ddd/aggregate.base';
+
 import { ChatMessage } from './chat-message.entity';
 import { Chat } from './chat.entity';
 import { ChatCreatedEvent } from './events/chat-created.event';

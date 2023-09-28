@@ -1,4 +1,3 @@
-import { NotAuthorizedError } from '#/be/lib/exceptions/not-authorized.error';
 import {
   ExecutionContext,
   Injectable,
@@ -10,6 +9,8 @@ import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { Request } from 'express';
+
+import { NotAuthorizedError } from '#/be/lib/exceptions/not-authorized.error';
 
 export const PUBLIC_KEY = 'isPublic';
 export const IsPublic = () => SetMetadata(PUBLIC_KEY, true);

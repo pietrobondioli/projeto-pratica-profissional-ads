@@ -1,6 +1,8 @@
+import { ApiProperty } from '@nestjs/swagger';
+
 import { PaginatedResponseDto } from '#/be/lib/api/paginated.response.base';
 import { ResponseBase } from '#/be/lib/api/response.dto.base';
-import { ApiProperty } from '@nestjs/swagger';
+
 import { PaymentStatus } from '../../domain/reservation.entity';
 
 // TODO: Add more properties
@@ -27,6 +29,7 @@ class ReservationDto extends ResponseBase {
     example: 'Pending',
     description: 'Payment status',
     enum: PaymentStatus,
+    enumName: 'PaymentStatus',
   })
   readonly paymentStatus: PaymentStatus;
 }

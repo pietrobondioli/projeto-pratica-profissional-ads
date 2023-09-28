@@ -1,11 +1,14 @@
-import { ReqContextProvider } from '#/be/lib/application/request/req.context';
-import { QueryResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { IInferredQueryHandler, QueryHandler } from '@nestjs/cqrs';
+import { QueryResult } from '@nestjs-architects/typed-cqrs';
 import { Ok } from 'neverthrow';
 import { Like, Repository } from 'typeorm';
+
+import { ReqContextProvider } from '#/be/lib/application/request/req.context';
+
 import { CHAT_REPO } from '../../chat.di-tokens';
 import { Chat } from '../../domain/chat.entity';
+
 import { ListChatsQuery } from './list-chats.query';
 
 @QueryHandler(ListChatsQuery)

@@ -1,16 +1,16 @@
 import { Controller, Get, HttpStatus, Query } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { plainToInstance } from 'class-transformer';
 
 import { routesV1 } from '#/be/config/routes/app.routes';
 import { ApiErrorResponse } from '#/be/lib/api/api-error.response.dto';
 import { IdResponse } from '#/be/lib/api/id.response.dto';
+import { Authenticated } from '#/be/modules/auth/guards/jwt-auth.guard';
 
-import { plainToInstance } from 'class-transformer';
 import { ListEquipmentsQuery } from './list-equipments.query';
 import { ListEquipmentsReqDto } from './list-equipments.req.dto';
 import { ListEquipmentResDto } from './list-equipments.res.dto';
-import { Authenticated } from '#/be/modules/auth/guards/jwt-auth.guard';
 
 @ApiTags(...routesV1.equipment.tags)
 @Controller(routesV1.version)

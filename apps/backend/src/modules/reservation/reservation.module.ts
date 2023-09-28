@@ -3,8 +3,10 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { DataSource } from 'typeorm';
 
 import { TYPEORM_DATA_SOURCE } from '#/be/config/database/database.providers';
+
 import { EquipmentModule } from '../equipment/equipment.module';
 import { UserModule } from '../user/user.module';
+
 import { CancelReservationHttpController } from './commands/cancel-reservation/cancel-reservation.http.controller';
 import { CancelReservationCommandHandler } from './commands/cancel-reservation/cancel-reservation.service';
 import { CreateReservationHttpController } from './commands/create-reservation/create-reservation.http.controller';

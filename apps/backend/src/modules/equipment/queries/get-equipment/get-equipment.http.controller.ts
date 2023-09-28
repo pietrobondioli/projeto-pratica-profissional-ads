@@ -4,10 +4,10 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { routesV1 } from '#/be/config/routes/app.routes';
 import { ApiErrorResponse } from '#/be/lib/api/api-error.response.dto';
+import { Authenticated } from '#/be/modules/auth/guards/jwt-auth.guard';
 
 import { Equipment } from '../../domain/equipment.entity';
 
-import { Authenticated } from '#/be/modules/auth/guards/jwt-auth.guard';
 import { GetEquipmentQuery } from './get-equipment.query';
 import { GetEquipmentResDto } from './get-equipment.res.dto';
 
@@ -27,9 +27,9 @@ export class GetEquipmentHttpController {
     status: HttpStatus.BAD_REQUEST,
     type: ApiErrorResponse,
   })
-  async execute(@Param('id') id: string) {
+  async execute(@Param('equipmentId') equipmentId: string) {
     const query = new GetEquipmentQuery({
-      equipmentId: id,
+      equipmentId,
     });
 
     const result = await this.queryBus.execute(query);

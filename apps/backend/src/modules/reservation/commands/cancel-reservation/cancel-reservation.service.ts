@@ -1,14 +1,17 @@
-import { ReqContextProvider } from '#/be/lib/application/request/req.context';
-import { NotAuthorizedError } from '#/be/lib/exceptions/not-authorized.error';
-import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Err, Ok } from 'neverthrow';
+
+import { ReqContextProvider } from '#/be/lib/application/request/req.context';
+import { NotAuthorizedError } from '#/be/lib/exceptions/not-authorized.error';
+
 import { ReservationRepo } from '../../db/reservation.model';
 import { ReservationNotFoundError } from '../../domain/errors/reservation-not-found.error';
 import { ReservationAggregate } from '../../domain/reservation.aggregate';
 import { RESERVATION_REPO } from '../../reservation.di-tokens';
+
 import { CancelReservationCommand } from './cancel-reservation.command';
 
 @CommandHandler(CancelReservationCommand)

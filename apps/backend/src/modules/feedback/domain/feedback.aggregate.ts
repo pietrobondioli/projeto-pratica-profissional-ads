@@ -1,4 +1,5 @@
 import { AggregateBase } from '#/be/lib/ddd/aggregate.base';
+
 import { FeedbackCreatedEvent } from './events/feedback-created.event';
 import { FeedbackDeletedEvent } from './events/feedback-deleted.event';
 import { FeedbackUpdatedEvent } from './events/feedback-updated.event';

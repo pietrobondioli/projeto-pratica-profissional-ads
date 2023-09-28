@@ -3,6 +3,7 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { DataSource } from 'typeorm';
 
 import { TYPEORM_DATA_SOURCE } from '#/be/config/database/database.providers';
+
 import { ChangeEmailHttpController } from './commands/change-email/change-email.http.controller';
 import { ChangeEmailCommandHandler } from './commands/change-email/change-email.service';
 import { ChangePasswordHttpController } from './commands/change-password/change-password.http.controller';

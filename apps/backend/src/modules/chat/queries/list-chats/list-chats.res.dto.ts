@@ -1,6 +1,7 @@
+import { ApiProperty } from '@nestjs/swagger';
+
 import { PaginatedResponseDto } from '#/be/lib/api/paginated.response.base';
 import { ResponseBase } from '#/be/lib/api/response.dto.base';
-import { ApiProperty } from '@nestjs/swagger';
 
 class UserDto extends ResponseBase {
   @ApiProperty({

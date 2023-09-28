@@ -3,7 +3,9 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { DataSource } from 'typeorm';
 
 import { TYPEORM_DATA_SOURCE } from '#/be/config/database/database.providers';
+
 import { MediaModule } from '../media/media.module';
+
 import { CreateEquipmentCommand } from './commands/create-equipment/create-equipment.command';
 import { CreateEquipmentHttpController } from './commands/create-equipment/create-equipment.http.controller';
 import { UpdateEquipmentHttpController } from './commands/update-equipment/update-equipment.http.controller';

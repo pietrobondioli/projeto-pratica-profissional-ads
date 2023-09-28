@@ -1,18 +1,18 @@
-import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { ConflictException, Inject } from '@nestjs/common';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Err, Ok } from 'neverthrow';
 
 import { PasswordHelper } from '#/be/lib/utils/password-helper';
 
+import { UserRepo } from '../../db/user.model';
 import { UserAlreadyExistsError } from '../../domain/errors/user-already-exists.error';
+import { UserProfile } from '../../domain/user-profile.entity';
 import { UserAggregate } from '../../domain/user.aggregate';
 import { User } from '../../domain/user.entity';
 import { USER_REPO } from '../../user.di-tokens';
 
-import { UserRepo } from '../../db/user.model';
-import { UserProfile } from '../../domain/user-profile.entity';
 import { CreateUserCommand } from './create-user.command';
 
 @CommandHandler(CreateUserCommand)

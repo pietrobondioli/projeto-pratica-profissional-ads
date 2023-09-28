@@ -1,5 +1,6 @@
-import { ResponseBase } from '#/be/lib/api/response.dto.base';
 import { ApiProperty } from '@nestjs/swagger';
+
+import { ResponseBase } from '#/be/lib/api/response.dto.base';
 
 class UserDto extends ResponseBase {
   @ApiProperty({

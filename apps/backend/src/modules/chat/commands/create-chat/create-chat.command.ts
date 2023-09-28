@@ -2,6 +2,7 @@ import { Result } from 'neverthrow';
 
 import { CommandBase } from '#/be/lib/ddd/command.base';
 import { EntityID } from '#/be/lib/ddd/entity.base';
+
 import { TargetUserNotFoundError } from '../../domain/errors/target-user-not-found.error';
 
 class Payload {

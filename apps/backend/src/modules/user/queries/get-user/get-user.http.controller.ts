@@ -24,9 +24,9 @@ export class GetUserHttpController {
     status: HttpStatus.BAD_REQUEST,
     type: ApiErrorResponse,
   })
-  async execute(@Param('id') id: string) {
+  async execute(@Param('userId') userId: string) {
     const query = new GetUserQuery({
-      userId: id,
+      userId,
     });
 
     const result = await this.queryBus.execute(query);

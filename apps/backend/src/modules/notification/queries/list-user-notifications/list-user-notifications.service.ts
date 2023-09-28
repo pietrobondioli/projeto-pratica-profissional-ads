@@ -1,10 +1,13 @@
-import { ReqContextProvider } from '#/be/lib/application/request/req.context';
-import { QueryResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { IInferredQueryHandler, QueryHandler } from '@nestjs/cqrs';
+import { QueryResult } from '@nestjs-architects/typed-cqrs';
 import { Ok } from 'neverthrow';
+
+import { ReqContextProvider } from '#/be/lib/application/request/req.context';
+
 import { NotificationRepo } from '../../db/notification.model';
 import { NOTIFICATION_REPO } from '../../notification.di-tokens';
+
 import { ListUserNotificationsQuery } from './list-user-notifications.query';
 
 @QueryHandler(ListUserNotificationsQuery)

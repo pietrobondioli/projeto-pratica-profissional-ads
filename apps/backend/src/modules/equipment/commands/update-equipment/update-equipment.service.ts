@@ -4,14 +4,14 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Err, Ok, Result } from 'neverthrow';
 
 import { EntityID } from '#/be/lib/ddd/entity.base';
+import { MediaRepo } from '#/be/modules/media/db/media.model';
 import { MEDIA_REPO } from '#/be/modules/media/media.di-tokens';
 
+import { EquipmentRepo } from '../../db/equipment.model';
 import { EquipmentAggregate } from '../../domain/equipment.aggregate';
 import { EquipmentNotFoundError } from '../../domain/errors/equipment-not-found.error';
 import { PhotoNotFoundError } from '../../domain/errors/photo-not-found.error';
 
-import { MediaRepo } from '#/be/modules/media/db/media.model';
-import { EquipmentRepo } from '../../db/equipment.model';
 import { EQUIPMENT_REPO } from './../../equipment.di-tokens';
 import { UpdateEquipmentCommand } from './update-equipment.command';
 

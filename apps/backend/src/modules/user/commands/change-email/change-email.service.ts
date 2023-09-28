@@ -1,10 +1,11 @@
-import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { isPast } from 'date-fns';
 import { Err, Ok } from 'neverthrow';
 
+import { ChangeEmailTokenRepo } from '../../db/change-email-token.model';
 import { UserModel, UserRepo } from '../../db/user.model';
 import { ChangeEmailToken } from '../../domain/change-email-token.entity';
 import { TokenInvalidError } from '../../domain/errors/token-invalid.error';
@@ -12,7 +13,6 @@ import { TokenNotFoundError } from '../../domain/errors/token-not-found.error';
 import { UserAggregate } from '../../domain/user.aggregate';
 import { CHANGE_EMAIL_TOKEN_REPO, USER_REPO } from '../../user.di-tokens';
 
-import { ChangeEmailTokenRepo } from '../../db/change-email-token.model';
 import { ChangeEmailCommand } from './change-email.command';
 
 @CommandHandler(ChangeEmailCommand)

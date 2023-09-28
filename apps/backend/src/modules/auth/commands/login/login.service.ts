@@ -1,13 +1,15 @@
-import { NotAuthorizedError } from '#/be/lib/exceptions/not-authorized.error';
-import { PasswordHelper } from '#/be/lib/utils/password-helper';
-import { UserRepo } from '#/be/modules/user/db/user.model';
-import { USER_REPO } from '#/be/modules/user/user.di-tokens';
-import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { JwtService } from '@nestjs/jwt';
+import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Err, Ok } from 'neverthrow';
+
+import { NotAuthorizedError } from '#/be/lib/exceptions/not-authorized.error';
+import { PasswordHelper } from '#/be/lib/utils/password-helper';
+import { UserRepo } from '#/be/modules/user/db/user.model';
+import { USER_REPO } from '#/be/modules/user/user.di-tokens';
+
 import { LoginCommand } from './login.command';
 
 @CommandHandler(LoginCommand)
@@ -16,7 +18,7 @@ export class LoginCommandHandler
 {
   constructor(
     @Inject(USER_REPO)
-    private readonly UserRepo: UserRepo,
+    private readonly userRepo: UserRepo,
     private readonly eventEmitter: EventEmitter2,
     private readonly jwtService: JwtService,
   ) {}
@@ -24,7 +26,7 @@ export class LoginCommandHandler
   async execute(command: LoginCommand): Promise<CommandResult<LoginCommand>> {
     const { email, password } = command.payload;
 
-    const user = await this.UserRepo.findOne({
+    const user = await this.userRepo.findOne({
       where: {
         email,
       },

@@ -1,12 +1,12 @@
-import { QueryResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { IInferredQueryHandler, QueryHandler } from '@nestjs/cqrs';
+import { QueryResult } from '@nestjs-architects/typed-cqrs';
 import { Err, Ok } from 'neverthrow';
 
 import { CHAT_REPO } from '../../chat.di-tokens';
+import { ChatRepo } from '../../db/chat.model';
 import { ChatNotFoundError } from '../../domain/errors/chat-not-found.error';
 
-import { ChatRepo } from '../../db/chat.model';
 import { GetChatQuery } from './get-chat.query';
 
 @QueryHandler(GetChatQuery)

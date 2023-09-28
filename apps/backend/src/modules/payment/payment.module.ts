@@ -3,6 +3,7 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { DataSource } from 'typeorm';
 
 import { TYPEORM_DATA_SOURCE } from '#/be/config/database/database.providers';
+
 import { PaymentModel } from './db/payment.model';
 import { PAYMENT_REPO } from './payment.di-tokens';
 

@@ -1,4 +1,5 @@
 import { DomainEventBase } from '#/be/lib/ddd/domain-event.base';
+
 import { Chat } from '../chat.entity';
 
 type Payload = {

@@ -3,7 +3,9 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { DataSource } from 'typeorm';
 
 import { TYPEORM_DATA_SOURCE } from '#/be/config/database/database.providers';
+
 import { UserModule } from '../user/user.module';
+
 import { ReadNotificationHttpController } from './commands/read-notification/read-notification.http.controller';
 import { ReadNotificationCommandHandler } from './commands/read-notification/read-notification.service';
 import { NotificationModel } from './db/notification.model';
