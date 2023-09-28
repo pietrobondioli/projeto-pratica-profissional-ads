@@ -1,8 +1,8 @@
+import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { JwtService } from '@nestjs/jwt';
-import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Err, Ok } from 'neverthrow';
 
 import { NotAuthorizedError } from '#/be/lib/exceptions/not-authorized.error';
@@ -11,6 +11,12 @@ import { UserRepo } from '#/be/modules/user/db/user.model';
 import { USER_REPO } from '#/be/modules/user/user.di-tokens';
 
 import { LoginCommand } from './login.command';
+
+export type UserJwtPayload = {
+  id: string;
+  email: string;
+  isVerified: boolean;
+};
 
 @CommandHandler(LoginCommand)
 export class LoginCommandHandler
@@ -40,8 +46,14 @@ export class LoginCommandHandler
       return new Err(new NotAuthorizedError());
     }
 
+    const payload: UserJwtPayload = {
+      id: user.id,
+      email: user.email,
+      isVerified: user.confirmedEmail,
+    };
+
     return new Ok({
-      token: this.jwtService.sign({ id: user.id }),
+      token: this.jwtService.sign(payload),
     });
   }
 }

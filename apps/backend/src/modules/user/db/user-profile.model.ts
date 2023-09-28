@@ -6,7 +6,9 @@ import { UserModel } from '#/be/modules/user/db/user.model';
 
 import { UserProfile } from '../domain/user-profile.entity';
 
-@Entity()
+@Entity({
+  name: 'user_profile',
+})
 export class UserProfileModel extends BaseModel implements UserProfile {
   @Column({
     default: '',

@@ -1,7 +1,7 @@
+import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { isPast } from 'date-fns';
 import { Err, Ok } from 'neverthrow';
 
@@ -33,46 +33,42 @@ export class ChangePasswordCommandHandler
     command: ChangePasswordCommand,
   ): Promise<CommandResult<ChangePasswordCommand>> {
     try {
-      const token = await this.changePasswordTokenRepo.findOne({
+      const { token, newPassword } = command.payload;
+
+      const existingToken = await this.changePasswordTokenRepo.findOne({
         where: {
-          token: command.payload.token,
+          token: token,
         },
         relations: {
           user: true,
         },
       });
 
-      if (!token) {
+      if (!existingToken) {
         return new Err(new TokenNotFoundError());
       }
 
-      if (!this.isTokenValid(token)) {
+      if (!this.isTokenValid(existingToken)) {
         return new Err(new TokenInvalidError());
       }
 
-      UserAggregate.user(token.user).changedPassword(token);
+      UserAggregate.user(existingToken.user).changedPassword(existingToken);
 
-      await this.consumeToken(token);
+      await this.consumeToken(existingToken);
 
-      await this.updatePassword(token.user, command.payload.newPassword);
+      await this.updatePassword(existingToken.user, newPassword);
 
       UserAggregate.publishEvents(this.eventEmitter);
 
       return new Ok(true);
-    } catch (error: any) {
+    } finally {
       UserAggregate.clearEvents();
-
-      throw error;
     }
   }
 
   private isTokenValid(token: ChangePasswordToken) {
     return (
-      !isPast(token.expiresAt) &&
-      token.invalidatedAt &&
-      !isPast(token.invalidatedAt) &&
-      token.consumedAt &&
-      !isPast(token.consumedAt)
+      !isPast(token.expiresAt) && !token.invalidatedAt && !token.consumedAt
     );
   }
 

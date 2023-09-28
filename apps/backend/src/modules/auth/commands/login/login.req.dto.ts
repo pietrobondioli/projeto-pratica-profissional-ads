@@ -6,7 +6,7 @@ export class LoginReqDto {
   @IsNotEmpty()
   @IsEmail()
   @ApiProperty({
-    example: 'johndoe@gmail.com',
+    example: 'john@gmail.com',
     description: 'User email',
   })
   readonly email: string;

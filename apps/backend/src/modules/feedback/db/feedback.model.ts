@@ -6,7 +6,9 @@ import { UserModel } from '#/be/modules/user/db/user.model';
 
 import { Feedback } from '../domain/feedback.entity';
 
-@Entity()
+@Entity({
+  name: 'feedback',
+})
 export class FeedbackModel extends BaseModel implements Feedback {
   @ManyToOne(() => UserModel)
   fromUser: UserModel;

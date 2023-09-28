@@ -8,7 +8,9 @@ import {
   NotificationStatus,
 } from '../domain/notification.entity';
 
-@Entity()
+@Entity({
+  name: 'notification',
+})
 export class NotificationModel extends BaseModel implements Notification {
   @ManyToOne(() => UserModel, (user) => user.notifications)
   user: UserModel;

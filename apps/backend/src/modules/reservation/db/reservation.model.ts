@@ -8,7 +8,9 @@ import { UserModel } from '#/be/modules/user/db/user.model';
 
 import { PaymentStatus, Reservation } from '../domain/reservation.entity';
 
-@Entity()
+@Entity({
+  name: 'reservation',
+})
 export class ReservationModel extends BaseModel implements Reservation {
   @ManyToOne(() => EquipmentModel, (equipment) => equipment.reservations)
   equipment: EquipmentModel;

@@ -16,7 +16,7 @@ export const PUBLIC_KEY = 'isPublic';
 export const IsPublic = () => SetMetadata(PUBLIC_KEY, true);
 
 export function Authenticated() {
-  return applyDecorators(ApiBearerAuth(), UseGuards(JwtAuthGuard));
+  return applyDecorators(ApiBearerAuth('jwt'), UseGuards(JwtAuthGuard));
 }
 
 @Injectable()

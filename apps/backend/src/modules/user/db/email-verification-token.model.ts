@@ -5,7 +5,9 @@ import { UserModel } from '#/be/modules/user/db/user.model';
 
 import { EmailVerificationToken } from '../domain/email-verification-token.entity';
 
-@Entity()
+@Entity({
+  name: 'email_verification_token',
+})
 export class EmailVerificationTokenModel
   extends BaseModel
   implements EmailVerificationToken

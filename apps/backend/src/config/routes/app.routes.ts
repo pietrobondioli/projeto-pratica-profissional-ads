@@ -25,6 +25,7 @@ export const routesV1 = {
     root: usersRoot,
     commands: {
       create: `/${usersRoot}`,
+      req_confirm_account_token: `/${usersRoot}/request-confirm-account-token`,
       confirm_account: `/${usersRoot}/confirm-account`,
       req_change_password: `/${usersRoot}/request-change-password`,
       change_password: `/${usersRoot}/change-password`,

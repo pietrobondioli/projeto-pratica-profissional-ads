@@ -5,7 +5,9 @@ import { ReservationModel } from '#/be/modules/reservation/db/reservation.model'
 
 import { Payment, PaymentMethod } from '../domain/payment.entity';
 
-@Entity()
+@Entity({
+  name: 'payment',
+})
 export class PaymentModel extends BaseModel implements Payment {
   @ManyToOne(() => ReservationModel, (reservation) => reservation.payment)
   reservation: ReservationModel;

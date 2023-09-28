@@ -1,7 +1,9 @@
 import { Request } from 'express';
 
+import { UserJwtPayload } from '#/be/modules/auth/commands/login/login.service';
+
 type AuthReq = Request & {
-  user: { id: string };
+  user: UserJwtPayload;
 };
 
 export class ReqContextProvider {

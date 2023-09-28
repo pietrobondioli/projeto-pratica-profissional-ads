@@ -14,7 +14,9 @@ import { UserModel } from '#/be/modules/user/db/user.model';
 
 import { Equipment } from '../domain/equipment.entity';
 
-@Entity()
+@Entity({
+  name: 'equipment',
+})
 export class EquipmentModel extends BaseModel implements Equipment {
   @Column()
   title: string;

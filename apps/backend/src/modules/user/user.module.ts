@@ -8,6 +8,8 @@ import { ChangeEmailHttpController } from './commands/change-email/change-email.
 import { ChangeEmailCommandHandler } from './commands/change-email/change-email.service';
 import { ChangePasswordHttpController } from './commands/change-password/change-password.http.controller';
 import { ChangePasswordCommandHandler } from './commands/change-password/change-password.service';
+import { ConfirmAccountHttpController } from './commands/confirm-account/confirm-account.http.controller';
+import { ConfirmAccountCommandHandler } from './commands/confirm-account/confirm-account.service';
 import { CreateUserHttpController } from './commands/create-user/create-user.http.controller';
 import { CreateUserCommandHandler } from './commands/create-user/create-user.service';
 import { ReqChangeEmailHttpController } from './commands/req-change-email/req-change-email.http.controller';
@@ -35,6 +37,7 @@ const commandHandlers: Provider[] = [
   CreateUserCommandHandler,
   ChangeEmailCommandHandler,
   ChangePasswordCommandHandler,
+  ConfirmAccountCommandHandler,
   ReqChangeEmailCommandHandler,
   ReqChangePasswordCommandHandler,
   ReqConfirmAccountTokenCommandHandler,
@@ -79,9 +82,10 @@ const repositories: Provider[] = [
 @Module({
   imports: [CqrsModule],
   controllers: [
+    CreateUserHttpController,
     ChangeEmailHttpController,
     ChangePasswordHttpController,
-    CreateUserHttpController,
+    ConfirmAccountHttpController,
     ReqChangeEmailHttpController,
     ReqChangePasswordHttpController,
     ReqConfirmAccountTokenHttpController,

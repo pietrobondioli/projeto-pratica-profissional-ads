@@ -1,7 +1,7 @@
+import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Err, Ok } from 'neverthrow';
 import { v4 } from 'uuid';
 
@@ -55,10 +55,8 @@ export class ReqChangeEmailCommandHandler
       UserAggregate.publishEvents(this.eventEmitter);
 
       return new Ok(true);
-    } catch (error: any) {
+    } finally {
       UserAggregate.clearEvents();
-
-      throw error;
     }
   }
 

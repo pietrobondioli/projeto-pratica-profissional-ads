@@ -17,14 +17,17 @@ import { ReqContextProvider } from '#/be/lib/application/request/req.context';
 
 import { UserNotFoundError } from '../../domain/errors/user-not-found.error';
 
+import { Authenticated } from '#/be/modules/auth/guards/jwt-auth.guard';
 import { ReqChangeEmailCommand } from './req-change-email.command';
 import { ReqChangeEmailRequestDto } from './req-change-email.req.dto';
 
 @ApiTags(...routesV1.user.tags)
 @Controller(routesV1.version)
+@Authenticated()
 export class ReqChangeEmailHttpController {
   constructor(private readonly commandBus: CommandBus) {}
 
+  @Post(routesV1.user.commands.req_change_email)
   @ApiOperation({ summary: 'Request to change email' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -38,7 +41,6 @@ export class ReqChangeEmailHttpController {
     status: HttpStatus.BAD_REQUEST,
     type: ApiErrorResponse,
   })
-  @Post(routesV1.user.commands.req_change_email)
   async execute(@Body() body: ReqChangeEmailRequestDto, @Res() res: Response) {
     const loggedUser = ReqContextProvider.getAuthUser();
 

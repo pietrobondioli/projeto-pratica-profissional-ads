@@ -19,13 +19,20 @@ import { UserProfileModel } from '#/be/modules/user/db/user-profile.model';
 
 import { User } from '../domain/user.entity';
 
-@Entity()
+@Entity({
+  name: 'user',
+})
 export class UserModel extends BaseModel implements User {
   @Column()
   email: string;
 
   @Column()
   passwordHash: string;
+
+  @Column({
+    default: false,
+  })
+  confirmedEmail: boolean;
 
   @OneToOne(() => UserProfileModel, (userProfile) => userProfile.user, {
     cascade: true,

@@ -46,7 +46,7 @@ export const mockUser2: User = {
 	id: 'user2',
 	createdAt: new Date(),
 	updatedAt: new Date(),
-	email: 'johndoe@gmail.com',
+	email: 'john@gmail.com',
 	passwordHash: 'hashedpassword',
 	userProfile: {
 		id: 'profile2',

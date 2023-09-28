@@ -74,7 +74,7 @@ class UserProfileDto {
 export class GetUserResDto extends ResponseBase {
   @Expose()
   @ApiProperty({
-    example: 'johndoe@example.com',
+    example: 'john@gmail.com',
     description: 'The email of the user',
   })
   readonly email: string;

@@ -4,7 +4,9 @@ import { BaseModel } from '#/be/lib/db/base.model';
 
 import { Media } from '../domain/media.entity';
 
-@Entity()
+@Entity({
+  name: 'media',
+})
 export class MediaModel extends BaseModel implements Media {
   @Column()
   key: string;

@@ -5,7 +5,9 @@ import { UserModel } from '#/be/modules/user/db/user.model';
 
 import { ChangePasswordToken } from '../domain/change-password-token.entity';
 
-@Entity()
+@Entity({
+  name: 'change_password_token',
+})
 export class ChangePasswordTokenModel
   extends BaseModel
   implements ChangePasswordToken

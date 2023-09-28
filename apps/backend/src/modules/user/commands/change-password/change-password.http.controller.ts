@@ -26,7 +26,7 @@ import { ChangePasswordRequestDto } from './change-password.req.dto';
 export class ChangePasswordHttpController {
   constructor(private readonly commandBus: CommandBus) {}
 
-  @Post(routesV1.user.commands.change_email)
+  @Post(routesV1.user.commands.change_password)
   @ApiOperation({ summary: 'Change password, using token' })
   @ApiResponse({
     status: HttpStatus.OK,

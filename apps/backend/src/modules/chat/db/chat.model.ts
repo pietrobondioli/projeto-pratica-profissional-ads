@@ -6,7 +6,9 @@ import { UserModel } from '#/be/modules/user/db/user.model';
 
 import { Chat } from '../domain/chat.entity';
 
-@Entity()
+@Entity({
+  name: 'chat',
+})
 export class ChatModel extends BaseModel implements Chat {
   @ManyToOne(() => UserModel)
   user1: UserModel;

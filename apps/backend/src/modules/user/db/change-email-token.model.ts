@@ -5,7 +5,9 @@ import { UserModel } from '#/be/modules/user/db/user.model';
 
 import { ChangeEmailToken } from '../domain/change-email-token.entity';
 
-@Entity()
+@Entity({
+  name: 'change_email_token',
+})
 export class ChangeEmailTokenModel
   extends BaseModel
   implements ChangeEmailToken

@@ -13,6 +13,8 @@ export class User extends AppEntityBase {
 
   passwordHash: string;
 
+  confirmedEmail: boolean;
+
   userProfile: UserProfile;
 
   equipment: Equipment[];

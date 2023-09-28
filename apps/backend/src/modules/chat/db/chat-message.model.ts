@@ -6,7 +6,9 @@ import { UserModel } from '#/be/modules/user/db/user.model';
 
 import { ChatMessage } from '../domain/chat-message.entity';
 
-@Entity()
+@Entity({
+  name: 'chat_message',
+})
 export class ChatMessageModel extends BaseModel implements ChatMessage {
   @ManyToOne(() => ChatModel, (chat) => chat.messages)
   chat: ChatModel;
