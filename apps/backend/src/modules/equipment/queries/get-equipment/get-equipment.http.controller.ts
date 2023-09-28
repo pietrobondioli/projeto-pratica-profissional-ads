@@ -1,6 +1,7 @@
 import { Controller, Get, HttpStatus, Param } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { plainToInstance } from 'class-transformer';
 
 import { routesV1 } from '#/be/config/routes/app.routes';
 import { ApiErrorResponse } from '#/be/lib/api/api-error.response.dto';
@@ -8,7 +9,6 @@ import { Authenticated } from '#/be/lib/application/guards/authenticated.guard';
 
 import { Equipment } from '../../domain/equipment.entity';
 
-import { plainToInstance } from 'class-transformer';
 import { GetEquipmentQuery } from './get-equipment.query';
 import { GetEquipmentResDto } from './get-equipment.res.dto';
 

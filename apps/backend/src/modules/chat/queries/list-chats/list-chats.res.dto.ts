@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Expose, Type } from 'class-transformer';
 
 import { PaginatedResponseDto } from '#/be/lib/api/paginated.response.base';
 import { ResponseBase } from '#/be/lib/api/response.dto.base';
-import { Expose, Type } from 'class-transformer';
 
 class UserDto extends ResponseBase {
   @Expose()

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-
 import { Expose } from 'class-transformer';
+
 import { IdResponse } from './id.response.dto';
 
 export class ResponseBase extends IdResponse {

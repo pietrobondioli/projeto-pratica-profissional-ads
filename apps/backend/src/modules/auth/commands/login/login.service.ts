@@ -1,16 +1,16 @@
-import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { JwtService } from '@nestjs/jwt';
+import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Err, Ok } from 'neverthrow';
 
+import { UserPayload } from '#/be/lib/application/decorators/auth-user.decorator';
 import { NotAuthorizedError } from '#/be/lib/exceptions/not-authorized.error';
 import { PasswordHelper } from '#/be/lib/utils/password-helper';
 import { UserRepo } from '#/be/modules/user/db/user.model';
 import { USER_REPO } from '#/be/modules/user/user.di-tokens';
 
-import { UserPayload } from '#/be/lib/application/decorators/auth-user.decorator';
 import { LoginCommand } from './login.command';
 
 @CommandHandler(LoginCommand)

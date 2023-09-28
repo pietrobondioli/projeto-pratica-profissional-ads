@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+
 import { AwsSESMailService } from './aws-ses-mail.service';
 
 @Module({

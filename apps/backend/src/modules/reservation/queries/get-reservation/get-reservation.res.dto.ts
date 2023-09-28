@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-
 import { Expose } from 'class-transformer';
+
 import { PaymentStatus } from '../../domain/reservation.entity';
 
 // TODO: Add more properties

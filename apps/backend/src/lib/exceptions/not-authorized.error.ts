@@ -1,5 +1,6 @@
-import { ExceptionBase } from '#/be/lib/exceptions/exception.base';
 import { HttpStatus } from '@nestjs/common';
+
+import { ExceptionBase } from '#/be/lib/exceptions/exception.base';
 
 export class NotAuthorizedError extends ExceptionBase {
   public readonly httpStatus = HttpStatus.UNAUTHORIZED;

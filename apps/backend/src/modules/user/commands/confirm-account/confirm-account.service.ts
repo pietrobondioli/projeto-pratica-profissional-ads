@@ -1,7 +1,7 @@
-import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { isPast } from 'date-fns';
 import { Err, Ok } from 'neverthrow';
 
@@ -13,6 +13,7 @@ import { TokenNotFoundError } from '../../domain/errors/token-not-found.error';
 import { UserAggregate } from '../../domain/user.aggregate';
 import { User } from '../../domain/user.entity';
 import { EMAIL_VERIFICATION_TOKEN_REPO, USER_REPO } from '../../user.di-tokens';
+
 import { ConfirmAccountCommand } from './confirm-account.command';
 
 @CommandHandler(ConfirmAccountCommand)

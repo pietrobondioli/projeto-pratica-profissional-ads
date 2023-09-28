@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Expose } from 'class-transformer';
 
 import { PaginatedResponseDto } from '#/be/lib/api/paginated.response.base';
 import { ResponseBase } from '#/be/lib/api/response.dto.base';
 
-import { Expose } from 'class-transformer';
 import { NotificationStatus } from '../../domain/notification.entity';
 
 class NotificationDto extends ResponseBase {

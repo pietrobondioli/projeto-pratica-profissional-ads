@@ -5,12 +5,12 @@ import { plainToInstance } from 'class-transformer';
 
 import { routesV1 } from '#/be/config/routes/app.routes';
 import { ApiErrorResponse } from '#/be/lib/api/api-error.response.dto';
-import { Authenticated } from '#/be/lib/application/guards/authenticated.guard';
-
 import {
   AuthUser,
   UserPayload,
 } from '#/be/lib/application/decorators/auth-user.decorator';
+import { Authenticated } from '#/be/lib/application/guards/authenticated.guard';
+
 import { ListUserNotificationsQuery } from './list-user-notifications.query';
 import { ListUserNotificationsReqDto } from './list-user-notifications.req.dto';
 import { ListUserNotificationsResDto } from './list-user-notifications.res.dto';

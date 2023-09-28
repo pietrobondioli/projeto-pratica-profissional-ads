@@ -1,6 +1,7 @@
 import { Inject } from '@nestjs/common';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Err, Ok } from 'neverthrow';
 
 import { MediaRepo } from '#/be/modules/media/db/media.model';
@@ -11,7 +12,6 @@ import { Equipment } from '../../domain/equipment.entity';
 import { PhotoNotFoundError } from '../../domain/errors/photo-not-found.error';
 import { EQUIPMENT_REPO } from '../../equipment.di-tokens';
 
-import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { CreateEquipmentCommand } from './create-equipment.command';
 
 @CommandHandler(CreateEquipmentCommand)

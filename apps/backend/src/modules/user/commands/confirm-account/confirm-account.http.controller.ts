@@ -5,6 +5,7 @@ import { Response } from 'express';
 
 import { routesV1 } from '#/be/config/routes/app.routes';
 import { ApiErrorResponse } from '#/be/lib/api/api-error.response.dto';
+
 import { ConfirmAccountCommand } from './confirm-account.command';
 import { ConfirmAccountReqDto } from './confirm-account.req.dto';
 

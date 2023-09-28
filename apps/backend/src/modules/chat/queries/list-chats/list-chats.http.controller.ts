@@ -5,12 +5,12 @@ import { plainToInstance } from 'class-transformer';
 
 import { routesV1 } from '#/be/config/routes/app.routes';
 import { ApiErrorResponse } from '#/be/lib/api/api-error.response.dto';
-import { Authenticated } from '#/be/lib/application/guards/authenticated.guard';
-
 import {
   AuthUser,
   UserPayload,
 } from '#/be/lib/application/decorators/auth-user.decorator';
+import { Authenticated } from '#/be/lib/application/guards/authenticated.guard';
+
 import { ListChatsQuery } from './list-chats.query';
 import { ListChatsReqDto } from './list-chats.req.dto';
 import { ListChatsResDto } from './list-chats.res.dto';

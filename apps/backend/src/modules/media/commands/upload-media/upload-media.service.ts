@@ -1,13 +1,16 @@
-import { AwsS3MediaService } from '#/be/lib/services/media-storage/aws-s3-media.service';
-import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Ok } from 'neverthrow';
+
+import { AwsS3MediaService } from '#/be/lib/services/media-storage/aws-s3-media.service';
+
 import { MediaRepo } from '../../db/media.model';
 import { MediaAggregate } from '../../domain/media.aggregate';
 import { Media } from '../../domain/media.entity';
 import { MEDIA_REPO } from '../../media.di-tokens';
+
 import { UploadMediaCommand } from './upload-media.command';
 
 @CommandHandler(UploadMediaCommand)

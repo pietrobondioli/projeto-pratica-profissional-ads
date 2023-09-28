@@ -1,5 +1,6 @@
-import { ExceptionBase } from '#/be/lib/exceptions/exception.base';
 import { HttpStatus } from '@nestjs/common';
+
+import { ExceptionBase } from '#/be/lib/exceptions/exception.base';
 
 export class GenericError extends ExceptionBase {
   public readonly httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;

@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+
 import { AwsS3MediaService } from './aws-s3-media.service';
 
 @Module({

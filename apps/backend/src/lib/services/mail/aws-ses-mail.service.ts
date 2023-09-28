@@ -1,9 +1,11 @@
-import { AwsConfig } from '#/be/config/env/env.types';
 import * as aws from '@aws-sdk/client-ses';
 import { defaultProvider } from '@aws-sdk/credential-provider-node';
 import { Injectable } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
 import SESTransport from 'nodemailer/lib/ses-transport';
+
+import { AwsConfig } from '#/be/config/env/env.types';
+
 import { MailService } from './interface/mail-service.types';
 
 @Injectable()

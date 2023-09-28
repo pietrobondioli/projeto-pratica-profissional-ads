@@ -3,8 +3,8 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { DataSource } from 'typeorm';
 
 import { TYPEORM_DATA_SOURCE } from '#/be/config/database/database.providers';
-
 import { MediaStorageModule } from '#/be/lib/services/media-storage/media-storage.module';
+
 import { UploadMediaHttpController } from './commands/upload-media/upload-media.http.controller';
 import { UploadMediaCommandHandler } from './commands/upload-media/upload-media.service';
 import { MediaModel } from './db/media.model';

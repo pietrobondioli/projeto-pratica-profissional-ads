@@ -1,17 +1,17 @@
 import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Response } from 'express';
 
 import { routesV1 } from '#/be/config/routes/app.routes';
 import { ApiErrorResponse } from '#/be/lib/api/api-error.response.dto';
 import { IdResponse } from '#/be/lib/api/id.response.dto';
-import { Authenticated } from '#/be/lib/application/guards/authenticated.guard';
-
 import {
   AuthUser,
   UserPayload,
 } from '#/be/lib/application/decorators/auth-user.decorator';
-import { Response } from 'express';
+import { Authenticated } from '#/be/lib/application/guards/authenticated.guard';
+
 import { CreateChatCommand } from './create-chat.command';
 import { CreateChatReqDto } from './create-chat.req.dto';
 
