@@ -12,7 +12,7 @@ export class OnEmailChangeSendEmailEventHandler {
     this.emailService.sendMail({
       to: event.payload.token.oldEmail,
       subject: 'Email changed',
-      message: `
+      html: `
         <p>Your email has been changed to ${event.payload.token.newEmail}.</p>
         <p>If you did not do this, please contact us immediately.</p>
       `,

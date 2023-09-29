@@ -8,7 +8,6 @@ import { PasswordHelper } from '#/be/lib/utils/password-helper';
 
 import { UserRepo } from '../../db/user.model';
 import { UserAlreadyExistsError } from '../../domain/errors/user-already-exists.error';
-import { UserProfile } from '../../domain/user-profile.entity';
 import { UserAggregate } from '../../domain/user.aggregate';
 import { User } from '../../domain/user.entity';
 import { USER_REPO } from '../../user.di-tokens';
@@ -40,12 +39,10 @@ export class CreateUserCommandHandler
       const user = new User('admin');
       user.email = email;
       user.passwordHash = PasswordHelper.hashPassword(password);
-      user.userProfile = new UserProfile('admin');
-
-      UserAggregate.user(user.id).created();
 
       await this.userRepo.save(user);
 
+      UserAggregate.user(user.id).created();
       UserAggregate.publishEvents(this.eventEmitter);
 
       return new Ok(user.id);

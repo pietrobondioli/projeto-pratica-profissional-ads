@@ -31,15 +31,15 @@ export class AwsSESMailService implements MailService {
   async sendMail(props: {
     to: string;
     subject: string;
-    message: string;
+    html: string;
   }): Promise<void> {
-    const { to, subject, message } = props;
+    const { to, subject, html } = props;
 
     const mailOptions = {
       from: this.awsConfig.ses.mailFrom,
       to,
       subject: subject,
-      html: message,
+      html,
     };
     console.log('Sending:', mailOptions);
 

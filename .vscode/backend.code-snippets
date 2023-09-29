@@ -458,7 +458,7 @@
 			"    private readonly ${3:repoVarName}: ${4:RepositoryType},",
 			"  ) {}",
 			"",
-			"  @OnEvent(${5:DomainEventClass}.eventName, { async: true, promisify: true })",
+			"  @OnEvent(${5:DomainEventClass}.name, { async: true, promisify: true })",
 			"  async handle(event: ${5:DomainEventClass}): Promise<any> {",
 			"    ${6:// Add your logic here}",
 			"  }",

@@ -4,6 +4,13 @@ import { DataSource } from 'typeorm';
 
 import { TYPEORM_DATA_SOURCE } from '#/be/config/database/database.providers';
 
+import { OnEmailChangeSendEmailEventHandler } from './application/event-handlers/on-email-change.send-email.event-handler';
+import { OnPasswordChangeSendEmailEventHandler } from './application/event-handlers/on-password-change.send-email.event-handler';
+import { OnUserConfirmEmailSendEmailEventHandler } from './application/event-handlers/on-user-confirm-email.send-email.event-handler';
+import { OnUserCreatedCreateProfileEventHandler } from './application/event-handlers/on-user-created.create-profile.event-handler';
+import { OnUserReqEmailChangeSendEmailEventHandler } from './application/event-handlers/on-user-req-email-change.send-email.event-handler';
+import { OnUserReqNewVerificationTokenSendEmailEventHandler } from './application/event-handlers/on-user-req-new-verification-token.send-email.event-handler';
+import { OnUserReqPasswordChangeSendEmailEventHandler } from './application/event-handlers/on-user-req-password-change.send-email.event-handler';
 import { ChangeEmailHttpController } from './commands/change-email/change-email.http.controller';
 import { ChangeEmailCommandHandler } from './commands/change-email/change-email.service';
 import { ChangePasswordHttpController } from './commands/change-password/change-password.http.controller';
@@ -50,8 +57,6 @@ const commandHandlers: Provider[] = [
 
 const queryHandlers: Provider[] = [GetMeQueryHandler, GetUserQueryHandler];
 
-const mappers: Provider[] = [];
-
 const repositories: Provider[] = [
   {
     provide: USER_REPO,
@@ -84,6 +89,16 @@ const repositories: Provider[] = [
   },
 ];
 
+const eventHandlers: Provider[] = [
+  OnEmailChangeSendEmailEventHandler,
+  OnPasswordChangeSendEmailEventHandler,
+  OnUserConfirmEmailSendEmailEventHandler,
+  OnUserCreatedCreateProfileEventHandler,
+  OnUserReqEmailChangeSendEmailEventHandler,
+  OnUserReqNewVerificationTokenSendEmailEventHandler,
+  OnUserReqPasswordChangeSendEmailEventHandler,
+];
+
 @Module({
   imports: [CqrsModule],
   controllers: [
@@ -103,7 +118,7 @@ const repositories: Provider[] = [
     ...repositories,
     ...commandHandlers,
     ...queryHandlers,
-    ...mappers,
+    ...eventHandlers,
   ],
   exports: [...repositories],
 })
