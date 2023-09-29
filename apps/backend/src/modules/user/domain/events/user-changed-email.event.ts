@@ -7,6 +7,6 @@ type Payload = {
   token: ChangeEmailToken;
 };
 
-export class UserChangedEmail extends DomainEventBase<Payload> {
+export class UserChangedEmailEvent extends DomainEventBase<Payload> {
   public readonly eventName = 'user-changed-email';
 }

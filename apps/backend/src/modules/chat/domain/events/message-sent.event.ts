@@ -8,6 +8,4 @@ type Payload = {
   readonly message: ChatMessage;
 };
 
-export class MessageSentEvent extends DomainEventBase<Payload> {
-  public readonly eventName = 'message-sent';
-}
+export class MessageSentEvent extends DomainEventBase<Payload> {}

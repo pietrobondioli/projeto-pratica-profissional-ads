@@ -7,6 +7,6 @@ type Payload = {
   token: ChangePasswordToken;
 };
 
-export class UserRequestedPasswordChange extends DomainEventBase<Payload> {
+export class UserRequestedPasswordChangeEvent extends DomainEventBase<Payload> {
   public readonly eventName = 'user-requested-password-change';
 }

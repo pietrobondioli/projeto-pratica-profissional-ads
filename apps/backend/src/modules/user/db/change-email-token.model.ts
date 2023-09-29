@@ -16,6 +16,9 @@ export class ChangeEmailTokenModel
   user: UserModel;
 
   @Column()
+  oldEmail: string;
+
+  @Column()
   newEmail: string;
 
   @Column()

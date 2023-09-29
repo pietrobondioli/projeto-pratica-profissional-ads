@@ -42,6 +42,7 @@ export class ReqChangeEmailCommandHandler
 
       const token = new ChangeEmailToken(loggedUser.id);
       token.user = user;
+      token.oldEmail = user.email;
       token.newEmail = newEmail;
       token.token = v4();
       token.expiresAt = new Date(Date.now() + 1000 * 60 * 60 * 24 * 3); // 3 days

@@ -6,6 +6,4 @@ type Payload = {
   readonly chat: Chat;
 };
 
-export class ChatCreatedEvent extends DomainEventBase<Payload> {
-  public readonly eventName = 'chat-created';
-}
+export class ChatCreatedEvent extends DomainEventBase<Payload> {}
