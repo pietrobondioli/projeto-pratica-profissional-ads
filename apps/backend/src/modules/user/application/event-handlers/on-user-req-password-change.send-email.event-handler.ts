@@ -18,18 +18,19 @@ export class OnUserReqPasswordChangeSendEmailEventHandler {
     promisify: true,
   })
   async handle(event: UserRequestedPasswordChangeEvent): Promise<any> {
-    const user = await this.userRepo.findOneBy({
-      id: event.payload.userId,
-    });
+    try {
+      const user = await this.userRepo.findOneBy({
+        id: event.payload.userId,
+      });
 
-    if (!user) {
-      return;
-    }
+      if (!user) {
+        return;
+      }
 
-    this.mailService.sendMail({
-      to: user?.email,
-      subject: 'Change your password',
-      html: `
+      this.mailService.sendMail({
+        to: user?.email,
+        subject: 'Change your password',
+        html: `
         <p>
           Please change your password by clicking on the link below.
         </p>
@@ -38,6 +39,7 @@ export class OnUserReqPasswordChangeSendEmailEventHandler {
         </p>
         <p>If you did not do this, please contact us immediately.</p>
       `,
-    });
+      });
+    } catch {}
   }
 }

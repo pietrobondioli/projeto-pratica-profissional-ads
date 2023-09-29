@@ -15,18 +15,19 @@ export class OnPasswordChangeSendEmailEventHandler {
 
   @OnEvent(UserChangedPasswordEvent.name, { async: true, promisify: true })
   async handle(event: UserChangedPasswordEvent): Promise<any> {
-    const user = await this.userRepo.findOneBy({
-      id: event.payload.userId,
-    });
+    try {
+      const user = await this.userRepo.findOneBy({
+        id: event.payload.userId,
+      });
 
-    if (!user) {
-      return;
-    }
+      if (!user) {
+        return;
+      }
 
-    this.mailService.sendMail({
-      to: user?.email,
-      subject: 'Your password has been changed',
-      html: `
+      this.mailService.sendMail({
+        to: user?.email,
+        subject: 'Your password has been changed',
+        html: `
         <p>
           Your password has been changed.
         </p>
@@ -35,6 +36,7 @@ export class OnPasswordChangeSendEmailEventHandler {
         </p>
         <p>If you did not do this, please contact us immediately.</p>
       `,
-    });
+      });
+    } catch {}
   }
 }

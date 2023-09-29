@@ -10,6 +10,7 @@ import { OnEmailChangeSendEmailEventHandler } from './application/event-handlers
 import { OnPasswordChangeSendEmailEventHandler } from './application/event-handlers/on-password-change.send-email.event-handler';
 import { OnUserConfirmEmailSendEmailEventHandler } from './application/event-handlers/on-user-confirm-email.send-email.event-handler';
 import { OnUserCreatedCreateProfileEventHandler } from './application/event-handlers/on-user-created.create-profile.event-handler';
+import { OnUserCreatedSendEmailEventHandler } from './application/event-handlers/on-user-created.send-email.event-handler';
 import { OnUserReqEmailChangeSendEmailEventHandler } from './application/event-handlers/on-user-req-email-change.send-email.event-handler';
 import { OnUserReqNewVerificationTokenSendEmailEventHandler } from './application/event-handlers/on-user-req-new-verification-token.send-email.event-handler';
 import { OnUserReqPasswordChangeSendEmailEventHandler } from './application/event-handlers/on-user-req-password-change.send-email.event-handler';
@@ -96,6 +97,7 @@ const eventHandlers: Provider[] = [
   OnPasswordChangeSendEmailEventHandler,
   OnUserConfirmEmailSendEmailEventHandler,
   OnUserCreatedCreateProfileEventHandler,
+  OnUserCreatedSendEmailEventHandler,
   OnUserReqEmailChangeSendEmailEventHandler,
   OnUserReqNewVerificationTokenSendEmailEventHandler,
   OnUserReqPasswordChangeSendEmailEventHandler,

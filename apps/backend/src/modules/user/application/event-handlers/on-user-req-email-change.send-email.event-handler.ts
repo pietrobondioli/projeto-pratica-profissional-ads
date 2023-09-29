@@ -9,10 +9,11 @@ export class OnUserReqEmailChangeSendEmailEventHandler {
 
   @OnEvent(UserRequestedEmailChangeEvent.name, { async: true, promisify: true })
   async handle(event: UserRequestedEmailChangeEvent): Promise<any> {
-    this.mailService.sendMail({
-      to: event.payload.token.oldEmail,
-      subject: 'You have requested to change your email',
-      html: `
+    try {
+      this.mailService.sendMail({
+        to: event.payload.token.oldEmail,
+        subject: 'You have requested to change your email',
+        html: `
         <p>
           You have requested to change your email to ${event.payload.token.newEmail}. Please confirm this change by clicking the link below.
         </p>
@@ -21,6 +22,7 @@ export class OnUserReqEmailChangeSendEmailEventHandler {
         </p>
         <p>If you did not do this, please contact us immediately.</p>
       `,
-    });
+      });
+    } catch {}
   }
 }

@@ -18,18 +18,19 @@ export class OnUserReqNewVerificationTokenSendEmailEventHandler {
     promisify: true,
   })
   async handle(event: UserRequestedEmailConfirmationTokenEvent): Promise<any> {
-    const user = await this.userRepo.findOneBy({
-      id: event.payload.userId,
-    });
+    try {
+      const user = await this.userRepo.findOneBy({
+        id: event.payload.userId,
+      });
 
-    if (!user) {
-      return;
-    }
+      if (!user) {
+        return;
+      }
 
-    this.mailService.sendMail({
-      to: user?.email,
-      subject: 'Confirm your email',
-      html: `
+      this.mailService.sendMail({
+        to: user?.email,
+        subject: 'Confirm your email',
+        html: `
         <p>
           Please confirm your email by clicking on the link below.
         </p>
@@ -37,6 +38,7 @@ export class OnUserReqNewVerificationTokenSendEmailEventHandler {
           <a href="/confirm-email?token=${event.payload.token.token}">Confirm email</a>
         </p>
       `,
-    });
+      });
+    } catch {}
   }
 }
