@@ -12,7 +12,7 @@
 		"description": "Generate a custom exception class based on a base error"
 	},
 	"AggregateBase": {
-		"prefix": "aggregate-base",
+		"prefix": "aggregatebase",
 		"scope": "typescript",
 		"body": [
 			"import { AggregateBase } from '#/be/lib/ddd/aggregate.base';",
@@ -30,7 +30,7 @@
 		"description": "Create an aggregate class"
 	},
 	"Req DTO": {
-		"prefix": "dto-req",
+		"prefix": "dtoreq",
 		"scope": "typescript, javascript",
 		"body": [
 			"import { ApiProperty } from '@nestjs/swagger';",
@@ -46,7 +46,7 @@
 		"description": "Generate a Request DTO class"
 	},
 	"Res DTO": {
-		"prefix": "dto-res",
+		"prefix": "dtores",
 		"scope": "typescript, javascript",
 		"body": [
 			"import { ApiProperty } from '@nestjs/swagger';",
@@ -83,7 +83,7 @@
 		"description": "Generate a command class"
 	},
 	"Command Handler": {
-		"prefix": "command-handler",
+		"prefix": "commandhandler",
 		"scope": "typescript, javascript",
 		"body": [
 			"import { CommandResult } from '@nestjs-architects/typed-cqrs';",
@@ -117,7 +117,7 @@
 		"description": "Generate a generic command handler service for NestJS CQRS module"
 	},
 	"HTTP Command Controller": {
-		"prefix": "command-http-controller",
+		"prefix": "commandhttpcontroller",
 		"scope": "typescript, javascript",
 		"body": [
 			"import {",
@@ -187,7 +187,7 @@
 		"description": "Generate a query class"
 	},
 	"Query Handler": {
-		"prefix": "query-handler",
+		"prefix": "queryhandler",
 		"scope": "typescript, javascript",
 		"body": [
 			"import { QueryResult } from '@nestjs-architects/typed-cqrs';",
@@ -222,7 +222,7 @@
 		"description": "Generate a generic query handler service for NestJS CQRS module"
 	},
 	"Query Controller": {
-		"prefix": "query-controller",
+		"prefix": "querycontroller",
 		"scope": "typescript, javascript",
 		"body": [
 			"import { Controller, Get, HttpStatus, Param } from '@nestjs/common';",
@@ -268,7 +268,7 @@
 		"description": "Generate a generic query controller for NestJS CQRS module"
 	},
 	"Paginated Query": {
-		"prefix": "paginated-query",
+		"prefix": "paginatedquery",
 		"scope": "typescript, javascript",
 		"body": [
 			"import { Result } from 'neverthrow';",
@@ -292,7 +292,7 @@
 		"description": "Generate a generic paginated query for NestJS CQRS module"
 	},
 	"Paginated Query Req DTO": {
-		"prefix": "paginated-query-req-dto",
+		"prefix": "paginatedqueryreqdto",
 		"body": [
 			"import { ApiProperty } from '@nestjs/swagger';",
 			"import { IsOptional, IsString } from 'class-validator';",
@@ -311,7 +311,7 @@
 		"description": "Paginated Query Req DTO"
 	},
 	"Paginated Query Response DTO": {
-		"prefix": "paginated-query-res-dto",
+		"prefix": "paginatedqueryresdto",
 		"body": [
 			"import { PaginatedResponseDto } from '#/be/lib/api/paginated.response.base';",
 			"import { ResponseBase } from '#/be/lib/api/response.dto.base';",
@@ -340,7 +340,7 @@
 		"description": "Paginated Response DTO with base, detail, and list DTO classes"
 	},
 	"Paginated Query Handler": {
-		"prefix": "paginated-query-handler",
+		"prefix": "paginatedqueryhandler",
 		"scope": "typescript, javascript",
 		"body": [
 			"import { Inject } from '@nestjs/common';",
@@ -386,7 +386,7 @@
 		"description": "Generate a generic paginated query handler for NestJS CQRS module"
 	},
 	"Paginated Query Controller": {
-		"prefix": "paginated-query-controller",
+		"prefix": "paginatedquerycontroller",
 		"scope": "typescript, javascript",
 		"body": [
 			"import { Controller, Get, HttpStatus, Query } from '@nestjs/common';",
@@ -432,7 +432,7 @@
 		"description": "Generate a generic paginated query controller for NestJS CQRS module"
 	},
 	"Domain Event": {
-		"prefix": "domain-event",
+		"prefix": "domainevent",
 		"scope": "typescript, javascript",
 		"body": [
 			"import { DomainEventBase } from '#/be/lib/ddd/domain-event.base';",
@@ -441,14 +441,12 @@
 			"  readonly ${1:Prop1}",
 			"};",
 			"",
-			"export class ${2:EventName}Event extends DomainEventBase<Payload> {",
-			" public readonly eventName = '${3:EventNameSlug}';",
-			"}"
+			"export class ${2:EventName}Event extends DomainEventBase<Payload> {}"
 		],
 		"description": "Generate a domain event class"
 	},
 	"Domain Event Handler": {
-		"prefix": "domain-event-handler",
+		"prefix": "domaineventhandler",
 		"body": [
 			"import { OnEvent } from '@nestjs/event-emitter';",
 			"import { Inject, Injectable } from '@nestjs/common';",
