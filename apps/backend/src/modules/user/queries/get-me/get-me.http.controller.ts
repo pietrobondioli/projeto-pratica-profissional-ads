@@ -10,12 +10,14 @@ import {
   UserPayload,
 } from '#/be/lib/application/decorators/auth-user.decorator';
 import { Authenticated } from '#/be/lib/application/decorators/authenticated.decorator';
+import { AllowUnverifiedUser } from '../../guards/verified-user.guard';
 import { GetMeQuery } from './get-me.query';
 import { GetMeResDto } from './get-me.res.dto';
 
 @ApiTags(...routesV1.user.tags)
 @Controller(routesV1.version)
 @Authenticated()
+@AllowUnverifiedUser()
 export class GetMeHttpController {
   constructor(private readonly queryBus: QueryBus) {}
 

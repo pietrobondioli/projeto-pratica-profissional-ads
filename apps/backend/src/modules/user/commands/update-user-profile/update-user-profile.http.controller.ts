@@ -10,11 +10,13 @@ import {
   AuthUser,
   UserPayload,
 } from '#/be/lib/application/decorators/auth-user.decorator';
+import { Authenticated } from '#/be/lib/application/decorators/authenticated.decorator';
 import { UpdateUserProfileCommand } from './update-user-profile.command';
 import { UpdateUserProfileDto } from './update-user-profile.req.dto';
 
 @ApiTags(...routesV1.user.tags)
 @Controller(routesV1.version)
+@Authenticated()
 export class UpdateUserProfileHttpController {
   constructor(private readonly commandBus: CommandBus) {}
 

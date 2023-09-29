@@ -4,6 +4,8 @@ import { DataSource } from 'typeorm';
 
 import { TYPEORM_DATA_SOURCE } from '#/be/config/database/database.providers';
 
+import { MailModule } from '#/be/lib/services/mail/mail.module';
+import { MediaModule } from '../media/media.module';
 import { OnEmailChangeSendEmailEventHandler } from './application/event-handlers/on-email-change.send-email.event-handler';
 import { OnPasswordChangeSendEmailEventHandler } from './application/event-handlers/on-password-change.send-email.event-handler';
 import { OnUserConfirmEmailSendEmailEventHandler } from './application/event-handlers/on-user-confirm-email.send-email.event-handler';
@@ -100,7 +102,7 @@ const eventHandlers: Provider[] = [
 ];
 
 @Module({
-  imports: [CqrsModule],
+  imports: [CqrsModule, MediaModule, MailModule],
   controllers: [
     CreateUserHttpController,
     ChangeEmailHttpController,
@@ -109,9 +111,9 @@ const eventHandlers: Provider[] = [
     ReqChangeEmailHttpController,
     ReqChangePasswordHttpController,
     ReqConfirmAccountTokenHttpController,
+    UpdateUserProfileHttpController,
     GetMeHttpController,
     GetUserHttpController,
-    UpdateUserProfileHttpController,
   ],
   providers: [
     Logger,

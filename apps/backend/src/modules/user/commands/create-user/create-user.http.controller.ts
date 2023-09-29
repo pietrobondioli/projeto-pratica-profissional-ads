@@ -24,6 +24,7 @@ import { CreateUserRequestDto } from './create-user.req.dto';
 export class CreateUserHttpController {
   constructor(private readonly commandBus: CommandBus) {}
 
+  @Post(routesV1.user.commands.create)
   @ApiOperation({ summary: 'Create a user' })
   @ApiResponse({
     status: HttpStatus.CREATED,
@@ -37,7 +38,6 @@ export class CreateUserHttpController {
     status: HttpStatus.BAD_REQUEST,
     type: ApiErrorResponse,
   })
-  @Post(routesV1.user.commands.create)
   async execute(@Body() body: CreateUserRequestDto, @Res() res: Response) {
     const command = new CreateUserCommand(body);
 

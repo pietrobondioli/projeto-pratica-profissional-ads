@@ -6,11 +6,11 @@ import { EntityID } from '#/be/lib/ddd/entity.base';
 import { ExceptionBase } from '#/be/lib/exceptions/exception.base';
 
 class Payload {
-  readonly firstName: string;
-  readonly lastName: string;
-  readonly contact: string;
-  readonly address: string;
-  readonly description: string;
+  readonly firstName?: string;
+  readonly lastName?: string;
+  readonly contact?: string;
+  readonly address?: string;
+  readonly description?: string;
   readonly profilePictureId?: string;
   loggedUser: UserPayload;
 }
