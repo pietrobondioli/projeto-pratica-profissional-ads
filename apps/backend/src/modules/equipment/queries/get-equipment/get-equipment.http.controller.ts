@@ -5,7 +5,6 @@ import { plainToInstance } from 'class-transformer';
 
 import { routesV1 } from '#/be/config/routes/app.routes';
 import { ApiErrorResponse } from '#/be/lib/api/api-error.response.dto';
-import { Authenticated } from '#/be/lib/application/decorators/authenticated.decorator';
 
 import { Equipment } from '../../domain/equipment.entity';
 
@@ -14,7 +13,6 @@ import { GetEquipmentResDto } from './get-equipment.res.dto';
 
 @ApiTags(...routesV1.equipment.tags)
 @Controller(routesV1.version)
-@Authenticated()
 export class GetEquipmentHttpController {
   constructor(private readonly queryBus: QueryBus<GetEquipmentQuery>) {}
 

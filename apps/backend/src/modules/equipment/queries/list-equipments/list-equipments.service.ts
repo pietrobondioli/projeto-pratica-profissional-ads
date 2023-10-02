@@ -32,7 +32,7 @@ export class ListEquipmentsQueryHandler
       order: {
         [order.field]: order.param,
       },
-      relations: ['photo'],
+      relations: ['owner', 'photo'],
     });
 
     return new Ok({

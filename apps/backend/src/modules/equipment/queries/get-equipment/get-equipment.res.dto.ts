@@ -4,6 +4,8 @@ import { Expose, Type } from 'class-transformer';
 
 class PhotoDto extends ResponseBase {}
 
+class OwnerDto extends ResponseBase {}
+
 export class GetEquipmentResDto extends ResponseBase {
   @Expose()
   @ApiProperty({
@@ -41,4 +43,12 @@ export class GetEquipmentResDto extends ResponseBase {
     description: 'Availability status',
   })
   readonly photo: PhotoDto;
+
+  @Expose()
+  @Type(() => OwnerDto)
+  @ApiProperty({
+    type: OwnerDto,
+    description: 'Owner of the equipment',
+  })
+  readonly owner: OwnerDto;
 }

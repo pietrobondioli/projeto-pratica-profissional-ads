@@ -27,7 +27,7 @@ export class GetEquipmentQueryHandler
       where: {
         id: equipmentId,
       },
-      relations: ['photo'],
+      relations: ['owner', 'photo'],
     });
 
     if (!equipment) {
