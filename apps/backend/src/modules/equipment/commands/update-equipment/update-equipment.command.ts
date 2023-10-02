@@ -8,11 +8,11 @@ import { PhotoNotFoundError } from '../../domain/errors/photo-not-found.error';
 
 class Payload {
   readonly equipmentId: string;
-  readonly title: string;
-  readonly description: string;
-  readonly photoId: string;
-  readonly pricePerDay: number;
-  readonly availabilityStatus: boolean;
+  readonly title?: string;
+  readonly description?: string;
+  readonly photoId?: string;
+  readonly pricePerDay?: number;
+  readonly availabilityStatus?: boolean;
 }
 
 export class UpdateEquipmentCommand extends CommandBase<

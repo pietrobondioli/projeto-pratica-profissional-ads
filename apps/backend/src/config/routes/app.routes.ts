@@ -31,7 +31,7 @@ export const routesV1 = {
       change_password: `/${usersRoot}/change-password`,
       req_change_email: `/${usersRoot}/request-change-email`,
       change_email: `/${usersRoot}/change-email`,
-      update_profile: `/${usersRoot}/update-profile`,
+      update_profile: `/${usersRoot}/profile`,
     },
     queries: {
       me: `/${usersRoot}/me`,
@@ -57,7 +57,7 @@ export const routesV1 = {
     root: reservationRoot,
     commands: {
       create: `/${reservationRoot}`,
-      cancel: `/${reservationRoot}/:reservationId/cancel`,
+      cancel: `/${reservationRoot}/:reservationId`,
     },
     queries: {
       get: `/${reservationRoot}/:reservationId`,

@@ -40,14 +40,6 @@ export class UpdateEquipmentCommandHandler
         availabilityStatus,
       } = command.payload;
 
-      const photo = await this.mediaRepo.findOneBy({
-        id: photoId,
-      });
-
-      if (!photo) {
-        return new Err(new PhotoNotFoundError());
-      }
-
       const equipment = await this.equipmentRepo.findOneBy({
         id: equipmentId,
       });
@@ -56,11 +48,20 @@ export class UpdateEquipmentCommandHandler
         return new Err(new EquipmentNotFoundError());
       }
 
-      equipment.title = title;
-      equipment.description = description;
-      equipment.photo = photo;
-      equipment.pricePerDay = pricePerDay;
-      equipment.availabilityStatus = availabilityStatus;
+      if (photoId) {
+        const photo = await this.mediaRepo.findOneBy({ id: photoId });
+
+        if (!photo) {
+          return new Err(new PhotoNotFoundError());
+        }
+
+        equipment.photo = photo;
+      }
+
+      if (title) equipment.title = title;
+      if (description) equipment.description = description;
+      if (pricePerDay) equipment.pricePerDay = pricePerDay;
+      if (availabilityStatus) equipment.availabilityStatus = availabilityStatus;
 
       await this.equipmentRepo.save(equipment);
 

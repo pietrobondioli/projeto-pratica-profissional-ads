@@ -1,4 +1,4 @@
-import { Body, Controller, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
@@ -11,6 +11,7 @@ import {
 } from '#/be/lib/application/decorators/auth-user.decorator';
 import { Authenticated } from '#/be/lib/application/decorators/authenticated.decorator';
 
+import { Response } from 'express';
 import { CreateEquipmentCommand } from './create-equipment.command';
 import { CreateEquipmentRequestDto } from './create-equipment.req.dto';
 
@@ -33,6 +34,7 @@ export class CreateEquipmentHttpController {
   async execute(
     @Body() body: CreateEquipmentRequestDto,
     @AuthUser() user: UserPayload,
+    @Res() res: Response,
   ) {
     const command = new CreateEquipmentCommand({
       ...body,
@@ -42,7 +44,7 @@ export class CreateEquipmentHttpController {
     const result = await this.commandBus.execute(command);
 
     return result.match(
-      (id: string) => new IdResponse(id),
+      (id: string) => res.status(HttpStatus.CREATED).send(new IdResponse(id)),
       (error) => {
         throw error;
       },
