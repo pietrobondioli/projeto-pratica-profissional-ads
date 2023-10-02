@@ -27,4 +27,4 @@ export const ROUTES = {
 		ROOT: '/chat',
 		MESSAGES: '/chat/:chatId/messages',
 	},
-};
+} as const;

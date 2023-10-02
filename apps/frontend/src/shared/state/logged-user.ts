@@ -5,6 +5,7 @@ import { immer } from 'zustand/middleware/immer';
 const STORAGE_KEY = 'LoggedUser';
 
 type User = {
+	id: string;
 	email: string;
 	userProfile: {
 		firstName: string;

@@ -1,22 +1,31 @@
-import { useNavigate } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import {
-	NavigationMenu,
-	NavigationMenuTrigger,
-	NavigationMenuContent,
-	NavigationMenuList,
-	NavigationMenuItem,
-} from '#/fe/shared/components/ui/navigation-menu';
+import { ROUTES } from '#/fe/config/routes';
+import { Avatar, AvatarImage } from '#/fe/shared/components/ui/avatar';
 import {
 	Card,
-	CardHeader,
 	CardContent,
 	CardDescription,
+	CardHeader,
 	CardTitle,
 } from '#/fe/shared/components/ui/card';
-import { Avatar, AvatarImage } from '#/fe/shared/components/ui/avatar';
+import {
+	FormControl,
+	FormItem,
+	FormLabel,
+} from '#/fe/shared/components/ui/form';
+import { Input } from '#/fe/shared/components/ui/input';
+import {
+	NavigationMenu,
+	NavigationMenuContent,
+	NavigationMenuItem,
+	NavigationMenuList,
+	NavigationMenuTrigger,
+} from '#/fe/shared/components/ui/navigation-menu';
 import { Skeleton } from '#/fe/shared/components/ui/skeleton';
-import { ROUTES } from '#/fe/config/routes';
+import { getMedia, listEquipments } from '#/fe/shared/services/api';
+import { Equipment } from '#/fe/shared/services/api-types';
+import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
+import { generatePath, useNavigate } from 'react-router-dom';
 
 const NavBar = () => {
 	const navigate = useNavigate();
@@ -70,45 +79,91 @@ const NavBar = () => {
 	);
 };
 
-const EquipmentList = () => {
-	const { data, isLoading } = useQuery(['equipments'], fetchEquipments);
+const Equipment = ({ equipment }: { equipment: Equipment }) => {
+	const navigate = useNavigate();
 
-	const equipments = data ?? [];
+	const { data: media } = useQuery(
+		['media', equipment.photo.id],
+		async () => {
+			if (equipment.photo.id) return getMedia(equipment.photo.id);
+		},
+	);
+
+	return (
+		<Card
+			className="cursor-pointer"
+			onClick={() =>
+				navigate(
+					generatePath(ROUTES.EQUIPMENT.ROOT, {
+						equipmentId: equipment.id,
+					}),
+				)
+			}
+		>
+			<Avatar>
+				<AvatarImage src={media?.url} alt="Equipment Picture" />
+			</Avatar>
+			<CardHeader>
+				<div className="flex flex-col">
+					<CardTitle>{equipment.title}</CardTitle>
+					<CardDescription>
+						{equipment.owner.userProfile.firstName}
+					</CardDescription>
+				</div>
+			</CardHeader>
+			<CardContent>
+				<div className="flex flex-col">
+					<CardDescription>{equipment.description}</CardDescription>
+					<CardDescription>
+						{equipment.pricePerDay.toLocaleString('pt-BR', {
+							style: 'currency',
+							currency: 'BRL',
+						})}
+					</CardDescription>
+				</div>
+			</CardContent>
+		</Card>
+	);
+};
+
+const EquipmentList = () => {
+	const page = 0;
+
+	const [equipSearch, setEquipSearch] = useState('');
+
+	const { data: equipments, isLoading } = useQuery(
+		['equipments', page, equipSearch],
+		() =>
+			listEquipments({
+				page,
+				limit: 10,
+				title: equipSearch,
+			}),
+	);
 
 	if (isLoading) {
 		return <Skeleton />;
 	}
 
 	return (
-		<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
-			{equipments.map((equipment) => (
-				<Card key={equipment.id}>
-					<CardHeader>
-						<Avatar>
-							<AvatarImage
-								src={getMediaUrl(equipment.photo)}
-								alt="Equipment"
-							/>
-						</Avatar>
-						<CardTitle>{equipment.description}</CardTitle>
-					</CardHeader>
-					<CardContent>
-						<CardDescription>
-							Price per day: {equipment.pricePerDay}
-						</CardDescription>
-					</CardContent>
-				</Card>
-			))}
+		<div>
+			<FormItem>
+				<FormLabel>Equipamento</FormLabel>
+				<FormControl>
+					<Input
+						placeholder="Pesquisar equipamento"
+						value={equipSearch}
+						onChange={(e) => setEquipSearch(e.target.value)}
+					/>
+				</FormControl>
+			</FormItem>
+			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+				{equipments?.items.map((equipment) => (
+					<Equipment key={equipment.id} equipment={equipment} />
+				))}
+			</div>
 		</div>
 	);
-};
-
-const fetchEquipments = async () => {
-	return [] as Equipment[];
-};
-
-const getMediaUrl = (media: Media) => {
-	return `https://${media.bucket}/${media.key}`;
 };
 
 const HomePage = () => {

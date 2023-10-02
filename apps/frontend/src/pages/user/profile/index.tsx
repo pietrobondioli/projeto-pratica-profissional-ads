@@ -7,50 +7,80 @@ import {
 	FormLabel,
 } from '#/fe/shared/components/ui/form';
 import { Input } from '#/fe/shared/components/ui/input';
-import { useLoggedUser } from '#/fe/shared/state/logged-user';
+import { toast } from '#/fe/shared/components/ui/use-toast';
+import { getMe, getMedia, updateUserProfile } from '#/fe/shared/services/api';
+import { useJwtToken } from '#/fe/shared/state/logged-user';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-const getMediaUrl = (media?: Media) => {
-	if (!media) return '';
-	return `https://${media.bucket}/${media.key}`;
-};
-
 const userProfileSchema = z.object({
-	firstName: z.string(),
-	lastName: z.string(),
-	contact: z.string(),
-	address: z.string(),
-	description: z.string(),
+	firstName: z.string().optional(),
+	lastName: z.string().optional(),
+	contact: z.string().optional(),
+	address: z.string().optional(),
+	description: z.string().optional(),
 });
 
+type UserProfile = z.infer<typeof userProfileSchema>;
+
 function UserProfilePage() {
-	const loggedUser = useLoggedUser();
-	const { data: userProfile, isLoading } = useQuery(
-		['userProfile', loggedUser.email],
+	const jwtToken = useJwtToken();
+	const { data: user, isLoading } = useQuery(
+		['userProfile', jwtToken],
 		async () => {
-			return {} as UserProfile;
+			if (jwtToken) return getMe(jwtToken);
 		},
 	);
+
+	const { data: media } = useQuery(
+		['media', user?.userProfile.profilePicture.id],
+		async () => {
+			if (user?.userProfile.profilePicture.id)
+				return getMedia(user?.userProfile.profilePicture.id);
+		},
+	);
+
 	const [isEditMode, setIsEditMode] = useState(false);
 
 	const editForm = useForm({
 		resolver: zodResolver(userProfileSchema),
-		defaultValues: userProfile,
+		defaultValues: {
+			firstName: user?.userProfile.firstName,
+			lastName: user?.userProfile.lastName,
+			contact: user?.userProfile.contact,
+			address: user?.userProfile.address,
+			description: user?.userProfile.description,
+		},
 	});
-
-	if (isLoading || !userProfile) return <div>Loading...</div>;
 
 	const handleEditToggle = () => {
 		setIsEditMode(!isEditMode);
 	};
 
+	const updateProfile = useMutation(
+		async (updatedProfile: UserProfile) => {
+			if (jwtToken)
+				return await updateUserProfile(jwtToken, updatedProfile);
+		},
+		{
+			onSuccess: () => {
+				setIsEditMode(false);
+				toast({
+					title: 'Success',
+					description: 'Profile updated successfully!',
+				});
+			},
+		},
+	);
+
 	const handleSaveChanges = (updatedProfile: UserProfile) => {
-		setIsEditMode(false);
+		updateProfile.mutate(updatedProfile);
 	};
+
+	if (isLoading || !user) return <div>Loading...</div>;
 
 	return (
 		<div className="p-4">
@@ -64,10 +94,7 @@ function UserProfilePage() {
 			<div className="flex items-start space-x-4">
 				<div>
 					<Avatar>
-						<AvatarImage
-							src={getMediaUrl(userProfile.profilePicture)}
-							alt="Profile Picture"
-						/>
+						<AvatarImage src={media?.url} alt="Profile Picture" />
 					</Avatar>
 				</div>
 				<div className="flex-grow">
@@ -79,7 +106,7 @@ function UserProfilePage() {
 								<FormLabel>Nome</FormLabel>
 								<FormControl>
 									<Input
-										value={userProfile.firstName}
+										value={user?.userProfile.firstName}
 										readOnly={!isEditMode}
 									/>
 								</FormControl>
@@ -88,7 +115,7 @@ function UserProfilePage() {
 								<FormLabel>Sobrenome</FormLabel>
 								<FormControl>
 									<Input
-										value={userProfile.lastName}
+										value={user.userProfile.lastName}
 										readOnly={!isEditMode}
 									/>
 								</FormControl>
@@ -96,14 +123,14 @@ function UserProfilePage() {
 							<FormItem>
 								<FormLabel>Email</FormLabel>
 								<FormControl>
-									<Input value={loggedUser.email} readOnly />
+									<Input value={user.email} readOnly />
 								</FormControl>
 							</FormItem>
 							<FormItem>
 								<FormLabel>Contato</FormLabel>
 								<FormControl>
 									<Input
-										value={userProfile.contact}
+										value={user.userProfile.contact}
 										readOnly={!isEditMode}
 									/>
 								</FormControl>
@@ -112,7 +139,7 @@ function UserProfilePage() {
 								<FormLabel>Endereço</FormLabel>
 								<FormControl>
 									<Input
-										value={userProfile.address}
+										value={user.userProfile.address}
 										readOnly={!isEditMode}
 									/>
 								</FormControl>
@@ -121,7 +148,7 @@ function UserProfilePage() {
 								<FormLabel>Descrição</FormLabel>
 								<FormControl>
 									<Input
-										value={userProfile.description}
+										value={user.userProfile.description}
 										readOnly={!isEditMode}
 									/>
 								</FormControl>

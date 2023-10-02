@@ -2,8 +2,15 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { Button } from '#/fe/shared/components/ui/button';
+import {
+	FormControl,
+	FormItem,
+	FormLabel,
+} from '#/fe/shared/components/ui/form';
 import { Input } from '#/fe/shared/components/ui/input';
-import { useLoggedUser } from '#/fe/shared/state/logged-user';
+import { getChat, listChats } from '#/fe/shared/services/api';
+import { Chat } from '#/fe/shared/services/api-types';
+import { useJwtToken, useLoggedUser } from '#/fe/shared/state/logged-user';
 
 function ChatList({
 	chats,
@@ -23,9 +30,9 @@ function ChatList({
 					className="w-full text-left p-4"
 				>
 					Chat with:{' '}
-					{chat.user1.email === loggedUser.email
-						? chat.user2.email
-						: chat.user1.email}
+					{chat.user1.id === loggedUser?.id
+						? chat.user2.firstName
+						: chat.user1.firstName}
 				</Button>
 			))}
 		</div>
@@ -33,28 +40,38 @@ function ChatList({
 }
 
 function ChatBox({
-	chat,
+	chatId,
 	onSendMessage,
 }: {
-	chat: Chat;
+	chatId: string;
 	onSendMessage: (message: string) => void;
 }) {
 	const loggedUser = useLoggedUser();
+	const loggedJwt = useJwtToken();
+
+	const { data: chat, isLoading } = useQuery(
+		['chat', loggedJwt, chatId],
+		async () => {
+			if (loggedJwt) return getChat(loggedJwt, chatId);
+		},
+	);
+
+	if (isLoading) return <div>Loading...</div>;
 
 	return (
 		<div className="flex flex-col h-full">
 			<div className="overflow-y-auto p-4">
-				{chat.messages.map((message) => (
+				{chat?.messages.map((message) => (
 					<div
 						key={message.id}
 						className={`p-2 ${
-							message.sender.email === loggedUser.email
+							message.sender.id === loggedUser?.id
 								? 'text-right'
 								: ''
 						}`}
 					>
 						<div>{message.content}</div>
-						<small>{message.createdAt.toLocaleTimeString()}</small>
+						<small>{message.createdAt.toString()}</small>
 					</div>
 				))}
 			</div>
@@ -82,8 +99,18 @@ function ChatBox({
 function ChatPage() {
 	const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
 
-	const chatsQry = useQuery(['chats'], () => {
-		return [];
+	const loggedJwt = useJwtToken();
+
+	const [page, setPage] = useState(0);
+	const [userSearch, setUserSearch] = useState('');
+
+	const chatsQry = useQuery(['chats', loggedJwt, page, userSearch], () => {
+		if (!loggedJwt) return;
+		return listChats(loggedJwt, {
+			page,
+			limit: 10,
+			targetUserSearch: userSearch,
+		});
 	});
 
 	const chats = chatsQry.data ?? [];
@@ -94,10 +121,22 @@ function ChatPage() {
 
 	return (
 		<div className="flex h-screen">
-			<ChatList chats={chats} onSelectChat={setSelectedChat} />
-			{selectedChat && (
+			<div className="border-r w-1/4 h-full overflow-y-auto">
+				<FormItem>
+					<FormLabel>Usuário</FormLabel>
+					<FormControl>
+						<Input
+							placeholder="Pesquisar usuário"
+							value={userSearch}
+							onChange={(e) => setUserSearch(e.target.value)}
+						/>
+					</FormControl>
+				</FormItem>
+				<ChatList chats={chats} onSelectChat={setSelectedChat} />
+			</div>
+			{selectedChat?.id && (
 				<ChatBox
-					chat={selectedChat}
+					chatId={selectedChat.id}
 					onSendMessage={(message) => sendMessageMtt.mutate(message)}
 				/>
 			)}

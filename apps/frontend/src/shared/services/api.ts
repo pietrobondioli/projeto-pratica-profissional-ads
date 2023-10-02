@@ -50,12 +50,8 @@ export async function createUser(body: { email: string; password: string }) {
 	return createdUser as IdResponse;
 }
 
-export async function getUser(authToken: string, userId: string) {
-	const response = await fetch(`${API_URL}/users/${userId}`, {
-		headers: {
-			Authorization: `Bearer ${authToken}`,
-		},
-	});
+export async function getUser(userId: string) {
+	const response = await fetch(`${API_URL}/users/${userId}`);
 
 	if (!response.ok) {
 		const error = await response.json();
@@ -464,12 +460,8 @@ export async function updateEquipment(
 	return updatedEquipment as IdResponse;
 }
 
-export async function getEquipment(authToken: string, equipmentId: string) {
-	const response = await fetch(`${API_URL}/equipment/${equipmentId}`, {
-		headers: {
-			Authorization: `Bearer ${authToken}`,
-		},
-	});
+export async function getEquipment(equipmentId: string) {
+	const response = await fetch(`${API_URL}/equipment/${equipmentId}`);
 
 	if (!response.ok) {
 		const error = await response.json();
@@ -481,7 +473,6 @@ export async function getEquipment(authToken: string, equipmentId: string) {
 }
 
 export async function listEquipments(
-	authToken: string,
 	request: PaginatedReq & {
 		title?: string;
 	},
@@ -492,11 +483,6 @@ export async function listEquipments(
 		`${API_URL}/equipment?title=${
 			title ?? ''
 		}&limit=${limit}&page=${page}&orderBy=${order?.field}:${order?.param}`,
-		{
-			headers: {
-				Authorization: `Bearer ${authToken}`,
-			},
-		},
 	);
 
 	if (!response.ok) {
@@ -642,12 +628,8 @@ export async function uploadMedia(authToken: string, file: File) {
 	return uploadedMedia as IdResponse;
 }
 
-export async function getMedia(key: string, authToken: string) {
-	const response = await fetch(`${API_URL}/media/${key}`, {
-		headers: {
-			Authorization: `Bearer ${authToken}`,
-		},
-	});
+export async function getMedia(mediaId: string) {
+	const response = await fetch(`${API_URL}/media/${mediaId}`);
 
 	if (!response.ok) {
 		const error = await response.json();

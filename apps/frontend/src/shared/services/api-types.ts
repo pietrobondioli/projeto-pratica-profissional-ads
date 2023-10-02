@@ -81,10 +81,10 @@ export type Reservation = {
 export type Equipment = {
 	title: string;
 	description: string;
-	photoId: string;
 	pricePerDay: number;
 	availabilityStatus: boolean;
 	photo: BaseEntity;
+	owner: User;
 } & BaseEntity;
 
 export type Media = {
