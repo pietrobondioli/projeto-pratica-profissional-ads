@@ -4,13 +4,28 @@ import { immer } from 'zustand/middleware/immer';
 
 const STORAGE_KEY = 'LoggedUser';
 
+type User = {
+	email: string;
+	userProfile: {
+		firstName: string;
+		lastName: string;
+		contact: string;
+		address: string;
+		description: string;
+		profilePicture: {
+			id: string;
+		};
+	};
+};
+
 type LoggedUserState = {
 	isLogged: boolean;
+	jwtToken?: string;
 	user?: User;
 };
 
 type LoggedUserActions = {
-	login: (user: User) => void;
+	login: (token: string, user: User) => void;
 	logout: () => void;
 };
 
@@ -28,9 +43,10 @@ export const useLoggedUserStore = create<LoggedUserStore>()(
 		immer((set) => ({
 			state: INITIAL_STATE,
 			actions: {
-				login: (user) =>
+				login: (token, user) =>
 					set((state) => {
 						state.isLogged = true;
+						state.jwtToken = token;
 						state.user = user;
 					}),
 				logout: () =>
@@ -55,3 +71,5 @@ export const useLoggedUserState = () => useLoggedUserStore((s) => s.state);
 export const useLoggedUser = () => useLoggedUserStore((s) => s.state.user);
 
 export const useIsLogged = () => useLoggedUserStore((s) => s.state.isLogged);
+
+export const useJwtToken = () => useLoggedUserStore((s) => s.state.jwtToken);
