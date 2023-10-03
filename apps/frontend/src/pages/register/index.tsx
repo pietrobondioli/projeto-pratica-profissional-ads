@@ -1,22 +1,19 @@
 import { ROUTES } from '#/fe/config/routes';
 import { Button } from '#/fe/shared/components/ui/button';
-import { useToast } from '#/fe/shared/components/ui/use-toast';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
 import { FormItem, FormLabel, FormMessage } from '#/fe/shared/components/form';
+import { HideableInput } from '#/fe/shared/components/hideable-input';
 import { Input } from '#/fe/shared/components/input';
 import { createUser } from '#/fe/shared/services/api';
 import { useMutation } from '@tanstack/react-query';
+import { toast } from 'react-toastify';
 
 const registerSchema = z
 	.object({
-		firstName: z.string().nonempty({ message: 'O nome é obrigatório.' }),
-		lastName: z
-			.string()
-			.nonempty({ message: 'O sobrenome é obrigatório.' }),
 		email: z.string().email({ message: 'Formato de email inválido.' }),
 		password: z.string().min(6, {
 			message: 'A senha deve ter no mínimo 6 caracteres.',
@@ -28,6 +25,7 @@ const registerSchema = z
 	.superRefine((data, ctx) => {
 		if (data.password !== data.confirmPassword) {
 			ctx.addIssue({
+				path: ['confirmPassword'],
 				code: z.ZodIssueCode.custom,
 				message: 'As senhas devem ser iguais.',
 			});
@@ -44,8 +42,6 @@ export function RegisterPage() {
 	} = useForm<z.infer<typeof registerSchema>>({
 		resolver: zodResolver(registerSchema),
 		defaultValues: {
-			firstName: '',
-			lastName: '',
 			email: '',
 			password: '',
 			confirmPassword: '',
@@ -53,7 +49,6 @@ export function RegisterPage() {
 	});
 
 	const navigate = useNavigate();
-	const { toast } = useToast();
 
 	const createUserMutation = useMutation(
 		async (data: RegisterData) => {
@@ -66,13 +61,11 @@ export function RegisterPage() {
 		},
 		{
 			onSuccess: async (data) => {
+				toast.success('Usuário criado com sucesso!');
 				navigate(ROUTES.LOGIN);
 			},
 			onError: (error: any) => {
-				toast({
-					title: 'Error',
-					description: error.message,
-				});
+				toast.error(error.message);
 			},
 		},
 	);
@@ -82,47 +75,53 @@ export function RegisterPage() {
 	}
 
 	return (
-		<form
-			onSubmit={handleSubmit(onSubmit)}
-			className="flex w-full flex-col gap-4 items-center p-12"
-		>
-			<FormItem>
-				<FormLabel>Email</FormLabel>
-				<Input
-					type="email"
-					placeholder="example@email.com"
-					{...register('email')}
-				/>
-				{errors.email && (
-					<FormMessage>{errors.email.message}</FormMessage>
-				)}
-			</FormItem>
+		<div className="flex flex-col items-center justify-center w-full h-full">
+			<form
+				onSubmit={handleSubmit(onSubmit)}
+				className="flex w-96 flex-col gap-4 items-stretch p-12"
+			>
+				<FormItem>
+					<FormLabel>Email</FormLabel>
+					<Input
+						type="email"
+						placeholder="example@email.com"
+						{...register('email')}
+					/>
+					{errors.email && (
+						<FormMessage>{errors.email.message}</FormMessage>
+					)}
+				</FormItem>
 
-			<FormItem>
-				<FormLabel>Senha</FormLabel>
-				<Input
-					type="password"
-					placeholder="******"
-					{...register('password')}
-				/>
-				{errors.password && (
-					<FormMessage>{errors.password.message}</FormMessage>
-				)}
-			</FormItem>
+				<FormItem>
+					<FormLabel>Senha</FormLabel>
+					<HideableInput
+						type="password"
+						placeholder="******"
+						{...register('password')}
+					/>
+					{errors.password && (
+						<FormMessage>{errors.password.message}</FormMessage>
+					)}
+				</FormItem>
 
-			<FormItem>
-				<FormLabel>Confirmar Senha</FormLabel>
-				<Input
-					type="password"
-					placeholder="******"
-					{...register('confirmPassword')}
-				/>
-				{errors.confirmPassword && (
-					<FormMessage>{errors.confirmPassword.message}</FormMessage>
-				)}
-			</FormItem>
+				<FormItem>
+					<FormLabel>Confirmar Senha</FormLabel>
+					<HideableInput
+						type="password"
+						placeholder="******"
+						{...register('confirmPassword')}
+					/>
+					{errors.confirmPassword && (
+						<FormMessage>
+							{errors.confirmPassword.message}
+						</FormMessage>
+					)}
+				</FormItem>
 
-			<Button type="submit">Registrar</Button>
-		</form>
+				<Button type="submit" variant="secondary">
+					Registrar
+				</Button>
+			</form>
+		</div>
 	);
 }

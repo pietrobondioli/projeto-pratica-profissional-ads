@@ -53,6 +53,7 @@ export const useLoggedUserStore = create<LoggedUserStore>()(
 				logout: () =>
 					set((s) => {
 						s.state.isLogged = false;
+						s.state.jwtToken = undefined;
 						s.state.user = undefined;
 					}),
 			},

@@ -1,31 +1,113 @@
-import { useEffect, useRef, useState } from 'react';
+import React, {
+	createContext,
+	useContext,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from 'react';
 
-type MenuItemProps = {
-	href: string;
-	onSelect: () => void;
+type MenuTitleProps = {
 	children: React.ReactNode;
 };
 
-export const MenuItem = ({ href, onSelect, children }: MenuItemProps) => {
+export const MenuTitle: React.FC<MenuTitleProps> = ({ children }) => {
+	const { setIsMenuOpen } = useContext(NavigationMenuContext);
+
+	return (
+		<button
+			type="button"
+			className="focus:outline-none px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 rounded-md ring-1 ring-black ring-opacity-5 w-full text-left"
+			onClick={() => setIsMenuOpen((isOpen) => !isOpen)}
+		>
+			{children}
+		</button>
+	);
+};
+
+type MenuIconProps = {
+	children: React.ReactNode;
+};
+
+export const MenuIcon: React.FC<MenuIconProps> = ({ children }) => {
+	const { setIsMenuOpen } = useContext(NavigationMenuContext);
+
+	return (
+		<button
+			type="button"
+			className="flex w-full items-center"
+			onClick={() => setIsMenuOpen((isOpen) => !isOpen)}
+		>
+			{children}
+		</button>
+	);
+};
+
+type MenuItemListProps = {
+	children: React.ReactNode;
+};
+
+export const MenuItemList: React.FC<MenuItemListProps> = ({ children }) => {
+	const { isMenuOpen } = useContext(NavigationMenuContext);
+
+	return (
+		<div className="relative">
+			{isMenuOpen && (
+				<div className="absolute right-0 mt-2 w-48 bg-white shadow-lg py-1 rounded-md ring-1 ring-black ring-opacity-5">
+					{children}
+				</div>
+			)}
+		</div>
+	);
+};
+
+type MenuItemProps = {
+	href?: string;
+	onSelect?: () => void;
+	children: React.ReactNode;
+};
+
+export const MenuItem: React.FC<MenuItemProps> = ({
+	href,
+	onSelect,
+	children,
+}) => {
+	const { setIsMenuOpen } = useContext(NavigationMenuContext);
+
 	return (
 		<a
 			href={href}
-			className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-			onClick={onSelect}
+			className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:cursor-pointer"
+			onClick={() => {
+				setIsMenuOpen(false);
+				onSelect?.();
+			}}
 		>
 			{children}
 		</a>
 	);
 };
 
-type NavigationMenuProps = {
-	title: string;
-	items: MenuItemProps[];
+type NavigationMenuContextType = {
+	isMenuOpen: boolean;
+	setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export const NavigationMenu = ({ title, items }: NavigationMenuProps) => {
+const NavigationMenuContext = createContext<NavigationMenuContextType>({
+	isMenuOpen: false,
+	setIsMenuOpen: () => {},
+});
+
+export const NavigationMenu = ({ children }: { children: React.ReactNode }) => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
-	const menuRef = useRef<HTMLDivElement>(null);
+
+	const memoizedContextValue = useMemo(
+		() => ({
+			isMenuOpen,
+			setIsMenuOpen,
+		}),
+		[isMenuOpen, setIsMenuOpen],
+	);
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
@@ -44,28 +126,11 @@ export const NavigationMenu = ({ title, items }: NavigationMenuProps) => {
 		};
 	}, []);
 
+	const menuRef = useRef<HTMLDivElement>(null);
+
 	return (
-		<div className="relative" ref={menuRef}>
-			<button
-				type="button"
-				className="focus:outline-none px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-				onClick={() => setIsMenuOpen(!isMenuOpen)}
-			>
-				{title}
-			</button>
-			{isMenuOpen && (
-				<div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1">
-					{items.map((item) => (
-						<MenuItem
-							key={item.href}
-							href={item.href}
-							onSelect={item.onSelect}
-						>
-							{item.children}
-						</MenuItem>
-					))}
-				</div>
-			)}
-		</div>
+		<NavigationMenuContext.Provider value={memoizedContextValue}>
+			<div ref={menuRef}>{children}</div>
+		</NavigationMenuContext.Provider>
 	);
 };
