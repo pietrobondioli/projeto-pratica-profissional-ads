@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
+import { Container } from '#/fe/shared/components/container';
 import { FormItem, FormLabel } from '#/fe/shared/components/form';
 import { Input } from '#/fe/shared/components/input';
 import { Button } from '#/fe/shared/components/ui/button';
@@ -116,7 +117,7 @@ function ChatPage() {
 	});
 
 	return (
-		<div className="flex h-screen">
+		<Container>
 			<div className="border-r w-1/4 h-full overflow-y-auto">
 				<FormItem>
 					<FormLabel>Usuário</FormLabel>
@@ -134,7 +135,7 @@ function ChatPage() {
 					onSendMessage={(message) => sendMessageMtt.mutate(message)}
 				/>
 			)}
-		</div>
+		</Container>
 	);
 }
 

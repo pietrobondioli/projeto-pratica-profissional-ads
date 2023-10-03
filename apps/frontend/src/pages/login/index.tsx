@@ -1,4 +1,5 @@
 import { ROUTES } from '#/fe/config/routes';
+import { Container } from '#/fe/shared/components/container';
 import { FormItem, FormLabel, FormMessage } from '#/fe/shared/components/form';
 import { HideableInput } from '#/fe/shared/components/hideable-input';
 import { Input } from '#/fe/shared/components/input';
@@ -64,10 +65,10 @@ export function LoginPage() {
 	}
 
 	return (
-		<div className="flex flex-col items-center justify-center h-screen">
+		<Container>
 			<form
 				onSubmit={handleSubmit(onSubmit)}
-				className="flex w-full flex-col gap-4 items-stretch p-12 w-96"
+				className="flex  flex-col gap-4 items-stretch p-12 w-96 mx-auto"
 			>
 				<FormItem>
 					<FormLabel>Email</FormLabel>
@@ -109,6 +110,6 @@ export function LoginPage() {
 					</Button>
 				</div>
 			</form>
-		</div>
+		</Container>
 	);
 }

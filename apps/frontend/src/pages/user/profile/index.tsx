@@ -1,14 +1,15 @@
+import { Container } from '#/fe/shared/components/container';
 import { FormItem, FormLabel, FormMessage } from '#/fe/shared/components/form';
 import { Input } from '#/fe/shared/components/input';
 import { Avatar, AvatarImage } from '#/fe/shared/components/ui/avatar';
 import { Button } from '#/fe/shared/components/ui/button';
-import { toast } from '#/fe/shared/components/ui/use-toast';
 import { getMe, getMedia, updateUserProfile } from '#/fe/shared/services/api';
 import { useJwtToken } from '#/fe/shared/state/logged-user';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 import { z } from 'zod';
 
 const userProfileSchema = z.object({
@@ -26,34 +27,67 @@ function UserProfilePage() {
 	const { data: user, isLoading } = useQuery(
 		['userProfile', jwtToken],
 		async () => {
-			if (jwtToken) return getMe(jwtToken);
+			if (!jwtToken) {
+				throw new Error('No JWT token.');
+			}
+
+			return getMe(jwtToken);
 		},
 	);
 
+	console.log(user);
+
 	const { data: media } = useQuery(
-		['media', user?.userProfile.profilePicture.id],
+		['media', user?.userProfile.profilePicture?.id],
 		async () => {
-			if (user?.userProfile.profilePicture.id)
-				return getMedia(user?.userProfile.profilePicture.id);
+			if (!user?.userProfile.profilePicture?.id) {
+				throw new Error('No profile picture.');
+			}
+
+			return getMedia(user?.userProfile.profilePicture.id);
+		},
+		{
+			enabled: !!user?.userProfile.profilePicture?.id,
 		},
 	);
 
 	const [isEditMode, setIsEditMode] = useState(false);
 
-	const {
-		register,
-		handleSubmit,
-		formState: { errors },
-	} = useForm({
-		resolver: zodResolver(userProfileSchema),
-		defaultValues: {
+	const defaultValues = useMemo(() => {
+		return {
 			firstName: user?.userProfile.firstName,
 			lastName: user?.userProfile.lastName,
 			contact: user?.userProfile.contact,
 			address: user?.userProfile.address,
 			description: user?.userProfile.description,
-		},
+		};
+	}, [user]);
+
+	const {
+		register,
+		handleSubmit,
+		watch,
+		reset,
+		formState: { errors },
+	} = useForm({
+		resolver: zodResolver(userProfileSchema),
+		defaultValues,
 	});
+
+	useEffect(() => {
+		if (user) {
+			reset({
+				firstName: user?.userProfile.firstName,
+				lastName: user?.userProfile.lastName,
+				contact: user?.userProfile.contact,
+				address: user?.userProfile.address,
+				description: user?.userProfile.description,
+			});
+		}
+	}, [user, reset]);
+
+	console.log(watch());
+	console.log(errors);
 
 	const handleEditToggle = () => {
 		setIsEditMode(!isEditMode);
@@ -67,10 +101,7 @@ function UserProfilePage() {
 		{
 			onSuccess: () => {
 				setIsEditMode(false);
-				toast({
-					title: 'Success',
-					description: 'Profile updated successfully!',
-				});
+				toast.success('Profile updated successfully!');
 			},
 		},
 	);
@@ -82,7 +113,7 @@ function UserProfilePage() {
 	if (isLoading || !user) return <div>Loading...</div>;
 
 	return (
-		<div className="p-4">
+		<Container>
 			<div className="flex items-center justify-between mb-4">
 				<h2 className="text-2xl font-bold">Meu Perfil</h2>
 				<Button onClick={handleEditToggle}>
@@ -90,92 +121,82 @@ function UserProfilePage() {
 				</Button>
 			</div>
 
-			<div className="flex items-start space-x-4">
-				<div>
-					<Avatar>
-						<AvatarImage src={media?.url} alt="Profile Picture" />
-					</Avatar>
-				</div>
-				<div className="flex-grow">
-					<form onSubmit={handleSubmit(handleSaveChanges)}>
-						<FormItem>
-							<FormLabel>Nome</FormLabel>
-							<Input
-								value={user?.userProfile.firstName}
-								readOnly={!isEditMode}
-								{...register('firstName')}
-							/>
-							{errors.firstName && (
-								<FormMessage>
-									{errors.firstName.message}
-								</FormMessage>
-							)}
-						</FormItem>
-						<FormItem>
-							<FormLabel>Sobrenome</FormLabel>
-							<Input
-								value={user.userProfile.lastName}
-								readOnly={!isEditMode}
-								{...register('lastName')}
-							/>
-							{errors.lastName && (
-								<FormMessage>
-									{errors.lastName.message}
-								</FormMessage>
-							)}
-						</FormItem>
-						<FormItem>
-							<FormLabel>Email</FormLabel>
-							<Input value={user.email} readOnly />
-						</FormItem>
-						<FormItem>
-							<FormLabel>Contato</FormLabel>
-							<Input
-								value={user.userProfile.contact}
-								readOnly={!isEditMode}
-								{...register('contact')}
-							/>
-							{errors.contact && (
-								<FormMessage>
-									{errors.contact.message}
-								</FormMessage>
-							)}
-						</FormItem>
-						<FormItem>
-							<FormLabel>Endereço</FormLabel>
-							<Input
-								value={user.userProfile.address}
-								readOnly={!isEditMode}
-								{...register('address')}
-							/>
-							{errors.address && (
-								<FormMessage>
-									{errors.address.message}
-								</FormMessage>
-							)}
-						</FormItem>
-						<FormItem>
-							<FormLabel>Descrição</FormLabel>
-							<Input
-								value={user.userProfile.description}
-								readOnly={!isEditMode}
-								{...register('description')}
-							/>
-							{errors.description && (
-								<FormMessage>
-									{errors.description.message}
-								</FormMessage>
-							)}
-						</FormItem>
-						{isEditMode && (
+			<div className="flex">
+				<Avatar>
+					<AvatarImage src={media?.url} alt="Profile Picture" />
+				</Avatar>
+				<form
+					onSubmit={handleSubmit(handleSaveChanges)}
+					className="flex gap-4 flex-col justify-stretch w-full"
+				>
+					<FormItem>
+						<FormLabel>Nome</FormLabel>
+						<Input
+							readOnly={!isEditMode}
+							{...register('firstName')}
+						/>
+						{errors.firstName && (
+							<FormMessage>
+								{errors.firstName.message}
+							</FormMessage>
+						)}
+					</FormItem>
+					<FormItem>
+						<FormLabel>Sobrenome</FormLabel>
+						<Input
+							readOnly={!isEditMode}
+							{...register('lastName')}
+						/>
+						{errors.lastName && (
+							<FormMessage>{errors.lastName.message}</FormMessage>
+						)}
+					</FormItem>
+					<FormItem>
+						<FormLabel>Email</FormLabel>
+						<Input value={user.email} readOnly />
+					</FormItem>
+					<FormItem>
+						<FormLabel>Contato</FormLabel>
+						<Input
+							readOnly={!isEditMode}
+							{...register('contact')}
+						/>
+						{errors.contact && (
+							<FormMessage>{errors.contact.message}</FormMessage>
+						)}
+					</FormItem>
+					<FormItem>
+						<FormLabel>Endereço</FormLabel>
+						<Input
+							readOnly={!isEditMode}
+							{...register('address')}
+						/>
+						{errors.address && (
+							<FormMessage>{errors.address.message}</FormMessage>
+						)}
+					</FormItem>
+					<FormItem>
+						<FormLabel>Descrição</FormLabel>
+						<Input
+							readOnly={!isEditMode}
+							{...register('description')}
+						/>
+						{errors.description && (
+							<FormMessage>
+								{errors.description.message}
+							</FormMessage>
+						)}
+					</FormItem>
+					{isEditMode && (
+						<div className="flex w-full">
 							<FormItem>
 								<Button type="submit">Save Changes</Button>
 							</FormItem>
-						)}
-					</form>
-				</div>
+						</div>
+					)}
+				</form>
 			</div>
-		</div>
+		</Container>
 	);
 }
 

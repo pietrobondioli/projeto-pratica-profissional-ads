@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
+import { Container } from '#/fe/shared/components/container';
 import { FormItem, FormLabel, FormMessage } from '#/fe/shared/components/form';
 import { HideableInput } from '#/fe/shared/components/hideable-input';
 import { Input } from '#/fe/shared/components/input';
@@ -75,10 +76,10 @@ export function RegisterPage() {
 	}
 
 	return (
-		<div className="flex flex-col items-center justify-center w-full h-full">
+		<Container>
 			<form
 				onSubmit={handleSubmit(onSubmit)}
-				className="flex w-96 flex-col gap-4 items-stretch p-12"
+				className="flex w-96 flex-col gap-4 items-stretch p-12 mx-auto"
 			>
 				<FormItem>
 					<FormLabel>Email</FormLabel>
@@ -122,6 +123,6 @@ export function RegisterPage() {
 					Registrar
 				</Button>
 			</form>
-		</div>
+		</Container>
 	);
 }

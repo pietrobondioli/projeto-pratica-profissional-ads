@@ -13,7 +13,7 @@ type User = {
 		contact: string;
 		address: string;
 		description: string;
-		profilePicture: {
+		profilePicture?: {
 			id: string;
 		};
 	};

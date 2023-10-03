@@ -6,6 +6,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from '#/fe/shared/components/card';
+import { Container } from '#/fe/shared/components/container';
 import { Input } from '#/fe/shared/components/input';
 import { Avatar, AvatarImage } from '#/fe/shared/components/ui/avatar';
 import { Skeleton } from '#/fe/shared/components/ui/skeleton';
@@ -89,7 +90,7 @@ const EquipmentList = () => {
 	}
 
 	return (
-		<div className="p-8 flex flex-col gap-4">
+		<Container className="flex flex-col gap-4">
 			<Input
 				placeholder="Pesquisar equipamento"
 				value={equipSearch}
@@ -100,7 +101,7 @@ const EquipmentList = () => {
 					<EquipmentItem key={equipment.id} equipment={equipment} />
 				))}
 			</div>
-		</div>
+		</Container>
 	);
 };
 

@@ -7,7 +7,7 @@ type CardProps = {
 export const Card = ({ className, children, onClick }: CardProps) => {
 	return (
 		<div
-			className={`bg-white rounded-lg shadow-md overflow-hidden ${className}`}
+			className={`bg-gray-100 rounded-lg shadow-md overflow-hidden hover:shadow-lg duration-200 ${className}`}
 			onClick={onClick}
 		>
 			{children}

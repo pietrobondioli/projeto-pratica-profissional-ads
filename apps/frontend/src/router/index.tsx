@@ -1,8 +1,10 @@
 import { ROUTES } from '#/fe/config/routes';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import ChatPage from '../pages/chat';
 import HomePage from '../pages/home';
 import { LoginPage } from '../pages/login';
 import { RegisterPage } from '../pages/register';
+import UserProfilePage from '../pages/user/profile';
 import BaseLayout from '../shared/layout/base-layout';
 
 function Router() {
@@ -35,7 +37,7 @@ function Router() {
 					/>
 					<Route
 						path={ROUTES.USER.MY_PROFILE}
-						element={<div>Not implemented.</div>}
+						element={<UserProfilePage />}
 					/>
 					<Route
 						path={ROUTES.USER.PROFILE}
@@ -61,12 +63,9 @@ function Router() {
 						path={ROUTES.USER.NOTIFICATIONS}
 						element={<div>Not implemented.</div>}
 					/>
+					<Route path={ROUTES.CHAT.ROOT} element={<ChatPage />} />
 					<Route
 						path={ROUTES.CHAT.MESSAGES}
-						element={<div>Not implemented.</div>}
-					/>
-					<Route
-						path={ROUTES.CHAT.ROOT}
 						element={<div>Not implemented.</div>}
 					/>
 

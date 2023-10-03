@@ -29,7 +29,7 @@ type UserProfile = {
 	contact: string;
 	address: string;
 	description: string;
-	profilePicture: BaseEntity;
+	profilePicture?: BaseEntity;
 } & BaseEntity;
 
 export type User = {
