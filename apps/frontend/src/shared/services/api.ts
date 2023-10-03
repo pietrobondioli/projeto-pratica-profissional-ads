@@ -29,7 +29,7 @@ export async function login(email: string, password: string) {
 	}
 
 	const token = await response.json();
-	return token;
+	return token as { token: string };
 }
 
 export async function createUser(body: { email: string; password: string }) {
@@ -414,7 +414,7 @@ export async function createEquipment(
 		pricePerDay: number;
 	},
 ) {
-	const response = await fetch(`${API_URL}/equipment`, {
+	const response = await fetch(`${API_URL}/equipments`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -442,7 +442,7 @@ export async function updateEquipment(
 		pricePerDay?: number;
 	},
 ) {
-	const response = await fetch(`${API_URL}/equipment/${equipmentId}`, {
+	const response = await fetch(`${API_URL}/equipments/${equipmentId}`, {
 		method: 'PATCH',
 		headers: {
 			'Content-Type': 'application/json',
@@ -461,7 +461,7 @@ export async function updateEquipment(
 }
 
 export async function getEquipment(equipmentId: string) {
-	const response = await fetch(`${API_URL}/equipment/${equipmentId}`);
+	const response = await fetch(`${API_URL}/equipments/${equipmentId}`);
 
 	if (!response.ok) {
 		const error = await response.json();
@@ -480,7 +480,7 @@ export async function listEquipments(
 	const { title, limit, page, order } = request;
 
 	const response = await fetch(
-		`${API_URL}/equipment?title=${
+		`${API_URL}/equipments?title=${
 			title ?? ''
 		}&limit=${limit}&page=${page}&orderBy=${order?.field}:${order?.param}`,
 	);

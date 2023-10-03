@@ -1,12 +1,7 @@
+import { FormItem, FormLabel, FormMessage } from '#/fe/shared/components/form';
+import { Input } from '#/fe/shared/components/input';
 import { Avatar, AvatarImage } from '#/fe/shared/components/ui/avatar';
 import { Button } from '#/fe/shared/components/ui/button';
-import {
-	Form,
-	FormControl,
-	FormItem,
-	FormLabel,
-} from '#/fe/shared/components/ui/form';
-import { Input } from '#/fe/shared/components/ui/input';
 import { toast } from '#/fe/shared/components/ui/use-toast';
 import { getMe, getMedia, updateUserProfile } from '#/fe/shared/services/api';
 import { useJwtToken } from '#/fe/shared/state/logged-user';
@@ -45,7 +40,11 @@ function UserProfilePage() {
 
 	const [isEditMode, setIsEditMode] = useState(false);
 
-	const editForm = useForm({
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm({
 		resolver: zodResolver(userProfileSchema),
 		defaultValues: {
 			firstName: user?.userProfile.firstName,
@@ -98,68 +97,82 @@ function UserProfilePage() {
 					</Avatar>
 				</div>
 				<div className="flex-grow">
-					<Form {...editForm}>
-						<form
-							onSubmit={editForm.handleSubmit(handleSaveChanges)}
-						>
+					<form onSubmit={handleSubmit(handleSaveChanges)}>
+						<FormItem>
+							<FormLabel>Nome</FormLabel>
+							<Input
+								value={user?.userProfile.firstName}
+								readOnly={!isEditMode}
+								{...register('firstName')}
+							/>
+							{errors.firstName && (
+								<FormMessage>
+									{errors.firstName.message}
+								</FormMessage>
+							)}
+						</FormItem>
+						<FormItem>
+							<FormLabel>Sobrenome</FormLabel>
+							<Input
+								value={user.userProfile.lastName}
+								readOnly={!isEditMode}
+								{...register('lastName')}
+							/>
+							{errors.lastName && (
+								<FormMessage>
+									{errors.lastName.message}
+								</FormMessage>
+							)}
+						</FormItem>
+						<FormItem>
+							<FormLabel>Email</FormLabel>
+							<Input value={user.email} readOnly />
+						</FormItem>
+						<FormItem>
+							<FormLabel>Contato</FormLabel>
+							<Input
+								value={user.userProfile.contact}
+								readOnly={!isEditMode}
+								{...register('contact')}
+							/>
+							{errors.contact && (
+								<FormMessage>
+									{errors.contact.message}
+								</FormMessage>
+							)}
+						</FormItem>
+						<FormItem>
+							<FormLabel>Endereço</FormLabel>
+							<Input
+								value={user.userProfile.address}
+								readOnly={!isEditMode}
+								{...register('address')}
+							/>
+							{errors.address && (
+								<FormMessage>
+									{errors.address.message}
+								</FormMessage>
+							)}
+						</FormItem>
+						<FormItem>
+							<FormLabel>Descrição</FormLabel>
+							<Input
+								value={user.userProfile.description}
+								readOnly={!isEditMode}
+								{...register('description')}
+							/>
+							{errors.description && (
+								<FormMessage>
+									{errors.description.message}
+								</FormMessage>
+							)}
+						</FormItem>
+						{isEditMode && (
 							<FormItem>
-								<FormLabel>Nome</FormLabel>
-								<FormControl>
-									<Input
-										value={user?.userProfile.firstName}
-										readOnly={!isEditMode}
-									/>
-								</FormControl>
+								<Button type="submit">Save Changes</Button>
 							</FormItem>
-							<FormItem>
-								<FormLabel>Sobrenome</FormLabel>
-								<FormControl>
-									<Input
-										value={user.userProfile.lastName}
-										readOnly={!isEditMode}
-									/>
-								</FormControl>
-							</FormItem>
-							<FormItem>
-								<FormLabel>Email</FormLabel>
-								<FormControl>
-									<Input value={user.email} readOnly />
-								</FormControl>
-							</FormItem>
-							<FormItem>
-								<FormLabel>Contato</FormLabel>
-								<FormControl>
-									<Input
-										value={user.userProfile.contact}
-										readOnly={!isEditMode}
-									/>
-								</FormControl>
-							</FormItem>
-							<FormItem>
-								<FormLabel>Endereço</FormLabel>
-								<FormControl>
-									<Input
-										value={user.userProfile.address}
-										readOnly={!isEditMode}
-									/>
-								</FormControl>
-							</FormItem>
-							<FormItem>
-								<FormLabel>Descrição</FormLabel>
-								<FormControl>
-									<Input
-										value={user.userProfile.description}
-										readOnly={!isEditMode}
-									/>
-								</FormControl>
-							</FormItem>
-							{isEditMode && (
-								<FormItem>
-									<Button type="submit">Save Changes</Button>
-								</FormItem>
-							)}{' '}
-						</form>
-					</Form>
+						)}
+					</form>
 				</div>
 			</div>
 		</div>

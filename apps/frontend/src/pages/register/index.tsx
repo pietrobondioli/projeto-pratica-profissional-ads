@@ -1,19 +1,15 @@
+import { ROUTES } from '#/fe/config/routes';
+import { Button } from '#/fe/shared/components/ui/button';
+import { useToast } from '#/fe/shared/components/ui/use-toast';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { Button } from '#/fe/shared/components/ui/button';
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from '#/fe/shared/components/ui/form';
 import { useNavigate } from 'react-router-dom';
-import { useToast } from '#/fe/shared/components/ui/use-toast';
-import { Input } from '#/fe/shared/components/ui/input';
-import { ROUTES } from '#/fe/config/routes';
+import { z } from 'zod';
+
+import { FormItem, FormLabel, FormMessage } from '#/fe/shared/components/form';
+import { Input } from '#/fe/shared/components/input';
+import { createUser } from '#/fe/shared/services/api';
+import { useMutation } from '@tanstack/react-query';
 
 const registerSchema = z
 	.object({
@@ -38,8 +34,14 @@ const registerSchema = z
 		}
 	});
 
+type RegisterData = z.infer<typeof registerSchema>;
+
 export function RegisterPage() {
-	const form = useForm<z.infer<typeof registerSchema>>({
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<z.infer<typeof registerSchema>>({
 		resolver: zodResolver(registerSchema),
 		defaultValues: {
 			firstName: '',
@@ -53,129 +55,74 @@ export function RegisterPage() {
 	const navigate = useNavigate();
 	const { toast } = useToast();
 
-	function onSubmit(values: z.infer<typeof registerSchema>) {
-		if (
-			values.firstName &&
-			values.lastName &&
-			values.email &&
-			values.password &&
-			values.password === values.confirmPassword
-		) {
-			navigate(ROUTES.HOME);
-		} else {
-			toast({
-				title: 'Error',
-				description: 'Verifique seus dados e tente novamente!',
+	const createUserMutation = useMutation(
+		async (data: RegisterData) => {
+			const createdUser = await createUser({
+				email: data.email,
+				password: data.password,
 			});
-		}
+
+			return createdUser;
+		},
+		{
+			onSuccess: async (data) => {
+				navigate(ROUTES.LOGIN);
+			},
+			onError: (error: any) => {
+				toast({
+					title: 'Error',
+					description: error.message,
+				});
+			},
+		},
+	);
+
+	async function onSubmit(data: RegisterData) {
+		createUserMutation.mutate(data);
 	}
 
 	return (
-		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-				<FormField
-					control={form.control}
-					name="firstName"
-					render={({ field, fieldState }) => (
-						<FormItem>
-							<FormLabel>Nome</FormLabel>
-							<FormControl>
-								<Input placeholder="João" {...field} />
-							</FormControl>
-							{fieldState.invalid && (
-								<FormMessage>
-									{fieldState.error?.message}
-								</FormMessage>
-							)}
-						</FormItem>
-					)}
+		<form
+			onSubmit={handleSubmit(onSubmit)}
+			className="flex w-full flex-col gap-4 items-center p-12"
+		>
+			<FormItem>
+				<FormLabel>Email</FormLabel>
+				<Input
+					type="email"
+					placeholder="example@email.com"
+					{...register('email')}
 				/>
+				{errors.email && (
+					<FormMessage>{errors.email.message}</FormMessage>
+				)}
+			</FormItem>
 
-				<FormField
-					control={form.control}
-					name="lastName"
-					render={({ field, fieldState }) => (
-						<FormItem>
-							<FormLabel>Sobrenome</FormLabel>
-							<FormControl>
-								<Input placeholder="Silva" {...field} />
-							</FormControl>
-							{fieldState.invalid && (
-								<FormMessage>
-									{fieldState.error?.message}
-								</FormMessage>
-							)}
-						</FormItem>
-					)}
+			<FormItem>
+				<FormLabel>Senha</FormLabel>
+				<Input
+					type="password"
+					placeholder="******"
+					{...register('password')}
 				/>
+				{errors.password && (
+					<FormMessage>{errors.password.message}</FormMessage>
+				)}
+			</FormItem>
 
-				<FormField
-					control={form.control}
-					name="email"
-					render={({ field, fieldState }) => (
-						<FormItem>
-							<FormLabel>Email</FormLabel>
-							<FormControl>
-								<Input
-									placeholder="example@email.com"
-									{...field}
-								/>
-							</FormControl>
-							{fieldState.invalid && (
-								<FormMessage>
-									{fieldState.error?.message}
-								</FormMessage>
-							)}
-						</FormItem>
-					)}
+			<FormItem>
+				<FormLabel>Confirmar Senha</FormLabel>
+				<Input
+					type="password"
+					placeholder="******"
+					{...register('confirmPassword')}
 				/>
+				{errors.confirmPassword && (
+					<FormMessage>{errors.confirmPassword.message}</FormMessage>
+				)}
+			</FormItem>
 
-				<FormField
-					control={form.control}
-					name="password"
-					render={({ field, fieldState }) => (
-						<FormItem>
-							<FormLabel>Senha</FormLabel>
-							<FormControl>
-								<Input
-									type="password"
-									placeholder="******"
-									{...field}
-								/>
-							</FormControl>
-							{fieldState.invalid && (
-								<FormMessage>
-									{fieldState.error?.message}
-								</FormMessage>
-							)}
-						</FormItem>
-					)}
-				/>
-
-				<FormField
-					control={form.control}
-					name="confirmPassword"
-					render={({ field, fieldState }) => (
-						<FormItem>
-							<FormLabel>Confirmar Senha</FormLabel>
-							<FormControl>
-								<Input
-									type="password"
-									placeholder="******"
-									{...field}
-								/>
-							</FormControl>
-							{fieldState.invalid && (
-								<FormMessage>
-									{fieldState.error?.message}
-								</FormMessage>
-							)}
-						</FormItem>
-					)}
-				/>
-
-				<Button type="submit">Registrar</Button>
-			</form>
-		</Form>
+			<Button type="submit">Registrar</Button>
+		</form>
 	);
 }

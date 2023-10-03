@@ -1,13 +1,9 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
+import { FormItem, FormLabel } from '#/fe/shared/components/form';
+import { Input } from '#/fe/shared/components/input';
 import { Button } from '#/fe/shared/components/ui/button';
-import {
-	FormControl,
-	FormItem,
-	FormLabel,
-} from '#/fe/shared/components/ui/form';
-import { Input } from '#/fe/shared/components/ui/input';
 import { getChat, listChats } from '#/fe/shared/services/api';
 import { Chat } from '#/fe/shared/services/api-types';
 import { useJwtToken, useLoggedUser } from '#/fe/shared/state/logged-user';
@@ -124,13 +120,11 @@ function ChatPage() {
 			<div className="border-r w-1/4 h-full overflow-y-auto">
 				<FormItem>
 					<FormLabel>Usuário</FormLabel>
-					<FormControl>
-						<Input
-							placeholder="Pesquisar usuário"
-							value={userSearch}
-							onChange={(e) => setUserSearch(e.target.value)}
-						/>
-					</FormControl>
+					<Input
+						placeholder="Pesquisar usuário"
+						value={userSearch}
+						onChange={(e) => setUserSearch(e.target.value)}
+					/>
 				</FormItem>
 				<ChatList chats={chats} onSelectChat={setSelectedChat} />
 			</div>

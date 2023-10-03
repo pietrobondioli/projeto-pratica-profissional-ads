@@ -1,19 +1,15 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { Button } from '#/fe/shared/components/ui/button';
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from '#/fe/shared/components/ui/form';
-import { useNavigate } from 'react-router-dom';
-import { useToast } from '#/fe/shared/components/ui/use-toast';
-import { Input } from '#/fe/shared/components/ui/input';
 import { ROUTES } from '#/fe/config/routes';
+import { FormItem, FormLabel, FormMessage } from '#/fe/shared/components/form';
+import { Input } from '#/fe/shared/components/input';
+import { Button } from '#/fe/shared/components/ui/button';
+import { useToast } from '#/fe/shared/components/ui/use-toast';
+import { getMe, login } from '#/fe/shared/services/api';
+import { useLoggedUserActions } from '#/fe/shared/state/logged-user';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { z } from 'zod';
 
 const loginSchema = z.object({
 	email: z.string().email({ message: 'Formato de email inválido.' }),
@@ -22,8 +18,14 @@ const loginSchema = z.object({
 	}),
 });
 
+type LoginData = z.infer<typeof loginSchema>;
+
 export function LoginPage() {
-	const form = useForm<z.infer<typeof loginSchema>>({
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<z.infer<typeof loginSchema>>({
 		resolver: zodResolver(loginSchema),
 		defaultValues: {
 			email: '',
@@ -33,65 +35,66 @@ export function LoginPage() {
 
 	const navigate = useNavigate();
 	const { toast } = useToast();
+	const { login: loginAction } = useLoggedUserActions();
 
-	function onSubmit(values: z.infer<typeof loginSchema>) {
-		if (values.email && values.password) {
-			navigate(ROUTES.HOME);
-		} else {
-			toast({
-				title: 'Error',
-				description: 'Invalid email or password!',
-			});
-		}
+	const loginMutation = useMutation(
+		async (data: LoginData) => {
+			const loginRes = await login(data.email, data.password);
+
+			const user = await getMe(loginRes.token);
+
+			return {
+				jwtToken: loginRes.token,
+				user,
+			};
+		},
+		{
+			onSuccess: (token) => {
+				loginAction(token.jwtToken, token.user);
+				navigate(ROUTES.HOME);
+			},
+			onError: (error: any) => {
+				toast({
+					title: 'Error',
+					description: error.message,
+				});
+			},
+		},
+	);
+
+	function onSubmit(data: LoginData) {
+		loginMutation.mutate(data);
 	}
 
 	return (
-		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-				<FormField
-					control={form.control}
-					name="email"
-					render={({ field, fieldState }) => (
-						<FormItem>
-							<FormLabel>Email</FormLabel>
-							<FormControl>
-								<Input
-									placeholder="example@email.com"
-									{...field}
-								/>
-							</FormControl>
-							{fieldState.invalid && (
-								<FormMessage>
-									{fieldState.error?.message}
-								</FormMessage>
-							)}
-						</FormItem>
-					)}
-				/>
+		<form
+			onSubmit={handleSubmit(onSubmit)}
+			className="flex w-full flex-col gap-4 items-center p-12"
+		>
+			<FormItem>
+				<FormLabel>Email</FormLabel>
+				<Input placeholder="example@email.com" {...register('email')} />
+				{errors.email && (
+					<FormMessage>{errors.email.message}</FormMessage>
+				)}
+			</FormItem>
 
-				<FormField
-					control={form.control}
-					name="password"
-					render={({ field, fieldState }) => (
-						<FormItem>
-							<FormLabel>Senha</FormLabel>
-							<FormControl>
-								<Input
-									type="password"
-									placeholder="******"
-									{...field}
-								/>
-							</FormControl>
-							{fieldState.invalid && (
-								<FormMessage>
-									{fieldState.error?.message}
-								</FormMessage>
-							)}
-						</FormItem>
-					)}
+			<FormItem>
+				<FormLabel>Senha</FormLabel>
+				<Input
+					type="password"
+					placeholder="******"
+					{...register('password')}
 				/>
+				{errors.password && (
+					<FormMessage>{errors.password.message}</FormMessage>
+				)}
+			</FormItem>
 
-				<Button type="submit">Login</Button>
+			<div className="flex gap-4">
+				<Button type="submit" disabled={loginMutation.isLoading}>
+					Login
+				</Button>
 				<Button
 					type="button"
 					onClick={() => navigate(ROUTES.REGISTER)}
@@ -99,7 +102,7 @@ export function LoginPage() {
 				>
 					Registrar
 				</Button>
-			</form>
-		</Form>
+			</div>
+		</form>
 	);
 }

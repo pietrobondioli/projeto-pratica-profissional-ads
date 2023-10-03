@@ -45,15 +45,15 @@ export const useLoggedUserStore = create<LoggedUserStore>()(
 			state: INITIAL_STATE,
 			actions: {
 				login: (token, user) =>
-					set((state) => {
-						state.isLogged = true;
-						state.jwtToken = token;
-						state.user = user;
+					set((s) => {
+						s.state.isLogged = true;
+						s.state.jwtToken = token;
+						s.state.user = user;
 					}),
 				logout: () =>
-					set((state) => {
-						state.isLogged = false;
-						state.user = undefined;
+					set((s) => {
+						s.state.isLogged = false;
+						s.state.user = undefined;
 					}),
 			},
 		})),

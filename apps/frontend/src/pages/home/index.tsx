@@ -1,86 +1,27 @@
 import { ROUTES } from '#/fe/config/routes';
-import { Avatar, AvatarImage } from '#/fe/shared/components/ui/avatar';
 import {
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from '#/fe/shared/components/ui/card';
-import {
-	FormControl,
-	FormItem,
-	FormLabel,
-} from '#/fe/shared/components/ui/form';
-import { Input } from '#/fe/shared/components/ui/input';
-import {
-	NavigationMenu,
-	NavigationMenuContent,
-	NavigationMenuItem,
-	NavigationMenuList,
-	NavigationMenuTrigger,
-} from '#/fe/shared/components/ui/navigation-menu';
+} from '#/fe/shared/components/card';
+import { Input } from '#/fe/shared/components/input';
+import { Avatar, AvatarImage } from '#/fe/shared/components/ui/avatar';
 import { Skeleton } from '#/fe/shared/components/ui/skeleton';
-import { getMedia, listEquipments } from '#/fe/shared/services/api';
-import { Equipment } from '#/fe/shared/services/api-types';
+import { useDebounce } from '#/fe/shared/hooks/useDebounce';
+import { getMedia, getUser, listEquipments } from '#/fe/shared/services/api';
+import type { Equipment } from '#/fe/shared/services/api-types';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { generatePath, useNavigate } from 'react-router-dom';
 
-const NavBar = () => {
+const EquipmentItem = ({ equipment }: { equipment: Equipment }) => {
 	const navigate = useNavigate();
 
-	return (
-		<div className="flex justify-between items-center p-4 bg-white shadow-md">
-			<div className="text-2xl font-bold">Logo</div>
-			<input
-				type="text"
-				placeholder="Search equipments..."
-				className="p-2 rounded border"
-			/>
-			<NavigationMenu>
-				<NavigationMenuTrigger>Menu</NavigationMenuTrigger>
-				<NavigationMenuContent>
-					<NavigationMenuList>
-						<NavigationMenuItem
-							onSelect={() => navigate(ROUTES.USER.MY_PROFILE)}
-						>
-							Meu perfil
-						</NavigationMenuItem>
-						<NavigationMenuItem
-							onSelect={() => navigate(ROUTES.USER.FAVORITES)}
-						>
-							Favoritos
-						</NavigationMenuItem>
-						<NavigationMenuItem
-							onSelect={() => navigate(ROUTES.USER.RESERVATIONS)}
-						>
-							Minhas reservas
-						</NavigationMenuItem>
-						<NavigationMenuItem
-							onSelect={() => navigate(ROUTES.CHAT.ROOT)}
-						>
-							Chats
-						</NavigationMenuItem>
-						<NavigationMenuItem
-							onSelect={() => navigate(ROUTES.USER.NOTIFICATIONS)}
-						>
-							Notificações
-						</NavigationMenuItem>
-						<NavigationMenuItem
-							onSelect={() => navigate(ROUTES.LOGOUT)}
-						>
-							Sair
-						</NavigationMenuItem>
-					</NavigationMenuList>
-				</NavigationMenuContent>
-			</NavigationMenu>
-		</div>
-	);
-};
-
-const Equipment = ({ equipment }: { equipment: Equipment }) => {
-	const navigate = useNavigate();
+	const { data: owner } = useQuery(['user', equipment.owner.id], async () => {
+		if (equipment.owner.id) return getUser(equipment.owner.id);
+	});
 
 	const { data: media } = useQuery(
 		['media', equipment.photo.id],
@@ -107,7 +48,7 @@ const Equipment = ({ equipment }: { equipment: Equipment }) => {
 				<div className="flex flex-col">
 					<CardTitle>{equipment.title}</CardTitle>
 					<CardDescription>
-						{equipment.owner.userProfile.firstName}
+						{owner?.userProfile.firstName}
 					</CardDescription>
 				</div>
 			</CardHeader>
@@ -131,13 +72,15 @@ const EquipmentList = () => {
 
 	const [equipSearch, setEquipSearch] = useState('');
 
+	const debouncedSearchTerm = useDebounce(equipSearch, 500);
+
 	const { data: equipments, isLoading } = useQuery(
-		['equipments', page, equipSearch],
+		['equipments', page, debouncedSearchTerm],
 		() =>
 			listEquipments({
 				page,
 				limit: 10,
-				title: equipSearch,
+				title: debouncedSearchTerm,
 			}),
 	);
 
@@ -146,20 +89,15 @@ const EquipmentList = () => {
 	}
 
 	return (
-		<div>
-			<FormItem>
-				<FormLabel>Equipamento</FormLabel>
-				<FormControl>
-					<Input
-						placeholder="Pesquisar equipamento"
-						value={equipSearch}
-						onChange={(e) => setEquipSearch(e.target.value)}
-					/>
-				</FormControl>
-			</FormItem>
-			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+		<div className="p-8 flex flex-col gap-4">
+			<Input
+				placeholder="Pesquisar equipamento"
+				value={equipSearch}
+				onChange={(e) => setEquipSearch(e.target.value)}
+			/>
+			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 				{equipments?.items.map((equipment) => (
-					<Equipment key={equipment.id} equipment={equipment} />
+					<EquipmentItem key={equipment.id} equipment={equipment} />
 				))}
 			</div>
 		</div>
@@ -167,12 +105,7 @@ const EquipmentList = () => {
 };
 
 const HomePage = () => {
-	return (
-		<div className="flex flex-col w-full">
-			<NavBar />
-			<EquipmentList />
-		</div>
-	);
+	return <EquipmentList />;
 };
 
 export default HomePage;
