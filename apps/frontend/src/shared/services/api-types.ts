@@ -8,7 +8,7 @@ export type IdResponse = {
 	id: string;
 };
 
-export type OrderBy = { field: string; param: 'asc' | 'desc' };
+export type OrderBy = { field: string; param: 'ASC' | 'DESC' };
 
 export type PaginatedReq = {
 	page: number;
@@ -38,8 +38,10 @@ export type User = {
 } & BaseEntity;
 
 type ChatUserDto = {
-	firstName: string;
-	lastName: string;
+	userProfile: {
+		firstName: string;
+		lastName: string;
+	};
 } & BaseEntity;
 
 export type Chat = {

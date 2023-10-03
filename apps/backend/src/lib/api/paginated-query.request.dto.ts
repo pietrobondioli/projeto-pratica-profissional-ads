@@ -30,9 +30,9 @@ export class PaginatedQueryRequestDto {
   @IsDefined()
   @IsObject()
   @ApiPropertyOptional({
-    example: { field: 'createdAt', param: 'asc' },
+    example: { field: 'createdAt', param: 'ASC' },
     description: 'Order by field and param',
     required: false,
   })
-  readonly order: OrderBy = { field: 'createdAt', param: 'asc' };
+  readonly order: OrderBy = { field: 'createdAt', param: 'ASC' };
 }

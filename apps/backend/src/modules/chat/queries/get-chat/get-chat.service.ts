@@ -25,8 +25,18 @@ export class GetChatQueryHandler
       where: {
         id: chatId,
       },
-      relations: ['user1', 'user2', 'messages', 'messages.sender'],
+      relations: [
+        'user1',
+        'user1.userProfile',
+        'user2',
+        'user2.userProfile',
+        'messages',
+        'messages.sender',
+        'messages.sender.userProfile',
+      ],
     });
+
+    console.log(chat);
 
     if (!chat) {
       return new Err(new ChatNotFoundError());

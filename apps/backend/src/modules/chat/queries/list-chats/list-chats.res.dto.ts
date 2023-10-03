@@ -4,7 +4,7 @@ import { Expose, Type } from 'class-transformer';
 import { PaginatedResponseDto } from '#/be/lib/api/paginated.response.base';
 import { ResponseBase } from '#/be/lib/api/response.dto.base';
 
-class UserDto extends ResponseBase {
+class UserProfileDto {
   @Expose()
   @ApiProperty({
     example: 'John',
@@ -18,6 +18,16 @@ class UserDto extends ResponseBase {
     description: 'User last name',
   })
   readonly lastName: string;
+}
+
+class UserDto extends ResponseBase {
+  @Expose()
+  @Type(() => UserProfileDto)
+  @ApiProperty({
+    type: () => UserProfileDto,
+    description: 'User profile',
+  })
+  readonly userProfile: UserProfileDto;
 }
 
 class ChatDto extends ResponseBase {

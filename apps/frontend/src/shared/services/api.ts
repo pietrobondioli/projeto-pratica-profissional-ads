@@ -335,22 +335,19 @@ export async function createChat(
 
 export async function sendMessage(
 	authToken: string,
+	chatId: string,
 	request: {
-		chatId: string;
 		message: string;
 	},
 ) {
-	const response = await fetch(
-		`${API_URL}/chats/${request.chatId}/messages`,
-		{
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${authToken}`,
-			},
-			body: JSON.stringify({ message: request.message }),
+	const response = await fetch(`${API_URL}/chats/${chatId}/send-message`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${authToken}`,
 		},
-	);
+		body: JSON.stringify(request),
+	});
 
 	if (!response.ok) {
 		const error = await response.json();
@@ -361,8 +358,8 @@ export async function sendMessage(
 	return sentMessage as IdResponse;
 }
 
-export async function getChat(id: string, authToken: string) {
-	const response = await fetch(`${API_URL}/chats/${id}`, {
+export async function getChat(authToken: string, chatId: string) {
+	const response = await fetch(`${API_URL}/chats/${chatId}`, {
 		headers: {
 			Authorization: `Bearer ${authToken}`,
 		},
@@ -402,7 +399,7 @@ export async function listChats(
 	}
 
 	const chats = await response.json();
-	return chats as Chat[];
+	return chats as PaginatedResponse<Chat>;
 }
 
 export async function createEquipment(

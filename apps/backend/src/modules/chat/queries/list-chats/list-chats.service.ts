@@ -26,35 +26,21 @@ export class ListChatsQueryHandler
         {
           user1: { id: loggedUser.id },
           user2: {
-            userProfile: [
-              {
-                ...(targetUserSearch && {
-                  firstName: Like(`%${targetUserSearch}%`),
-                }),
-              },
-              {
-                ...(targetUserSearch && {
-                  lastName: Like(`%${targetUserSearch}%`),
-                }),
-              },
-            ],
+            userProfile: {
+              ...(targetUserSearch && {
+                firstName: Like(`%${targetUserSearch}%`),
+              }),
+            },
           },
         },
         {
           user2: { id: loggedUser.id },
           user1: {
-            userProfile: [
-              {
-                ...(targetUserSearch && {
-                  firstName: Like(`%${targetUserSearch}%`),
-                }),
-              },
-              {
-                ...(targetUserSearch && {
-                  lastName: Like(`%${targetUserSearch}%`),
-                }),
-              },
-            ],
+            userProfile: {
+              ...(targetUserSearch && {
+                firstName: Like(`%${targetUserSearch}%`),
+              }),
+            },
           },
         },
       ],
@@ -63,8 +49,16 @@ export class ListChatsQueryHandler
       order: {
         [order.field]: order.param,
       },
-      relations: ['user1', 'user2', 'messages'],
+      relations: [
+        'user1',
+        'user1.userProfile',
+        'user2',
+        'user2.userProfile',
+        'messages',
+      ],
     });
+
+    console.log(items);
 
     return new Ok({
       items: items,

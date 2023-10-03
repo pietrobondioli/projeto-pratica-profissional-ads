@@ -1,4 +1,4 @@
-import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Param, Post, Res } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
@@ -32,12 +32,13 @@ export class SendMessageHttpController {
     type: ApiErrorResponse,
   })
   async execute(
+    @Param('chatId') chatId: string,
     @Body() body: SendMessageReqDto,
     @Res() res: Response,
     @AuthUser() user: UserPayload,
   ) {
     const command = new SendMessageCommand({
-      chatId: body.chatId,
+      chatId,
       message: body.message,
       loggedUser: user,
     });

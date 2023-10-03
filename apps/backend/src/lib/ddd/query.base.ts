@@ -11,7 +11,7 @@ export class QueryBase<P, R extends Result<any, any>> extends Query<R> {
   }
 }
 
-export type OrderBy = { field: string; param: 'asc' | 'desc' };
+export type OrderBy = { field: string; param: 'ASC' | 'DESC' };
 
 export abstract class PaginatedQueryPayloadBase {
   readonly page: number;

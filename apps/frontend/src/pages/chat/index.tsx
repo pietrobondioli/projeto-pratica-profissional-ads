@@ -5,9 +5,10 @@ import { Container } from '#/fe/shared/components/container';
 import { FormItem, FormLabel } from '#/fe/shared/components/form';
 import { Input } from '#/fe/shared/components/input';
 import { Button } from '#/fe/shared/components/ui/button';
-import { getChat, listChats } from '#/fe/shared/services/api';
+import { getChat, listChats, sendMessage } from '#/fe/shared/services/api';
 import { Chat } from '#/fe/shared/services/api-types';
 import { useJwtToken, useLoggedUser } from '#/fe/shared/state/logged-user';
+import { toast } from 'react-toastify';
 
 function ChatList({
 	chats,
@@ -21,73 +22,106 @@ function ChatList({
 	return (
 		<div className="border-r h-full overflow-y-auto">
 			{chats.map((chat) => (
-				<Button
+				<div
 					key={chat.id}
 					onClick={() => onSelectChat(chat)}
-					className="w-full text-left p-4"
+					className="w-full text-left p-4 hover:bg-gray-200 cursor-pointer border-b"
 				>
 					Chat with:{' '}
 					{chat.user1.id === loggedUser?.id
-						? chat.user2.firstName
-						: chat.user1.firstName}
-				</Button>
+						? `${chat.user2.userProfile.firstName} ${chat.user2.userProfile.lastName}`
+						: `${chat.user1.userProfile.firstName} ${chat.user1.userProfile.lastName}`}
+				</div>
 			))}
 		</div>
 	);
 }
 
-function ChatBox({
-	chatId,
-	onSendMessage,
-}: {
-	chatId: string;
-	onSendMessage: (message: string) => void;
-}) {
+function ChatBox({ chatId }: { chatId: string }) {
 	const loggedUser = useLoggedUser();
 	const loggedJwt = useJwtToken();
 
-	const { data: chat, isLoading } = useQuery(
-		['chat', loggedJwt, chatId],
-		async () => {
-			if (loggedJwt) return getChat(loggedJwt, chatId);
+	const chatQry = useQuery(['chat', loggedJwt, chatId], async () => {
+		if (loggedJwt) return getChat(loggedJwt, chatId);
+	});
+
+	const messages = chatQry.data?.messages ?? [];
+
+	const [message, setMessage] = useState('');
+
+	const sendMessageMtt = useMutation(
+		async (message: string) => {
+			if (!loggedJwt || !chatId) return;
+
+			return await sendMessage(loggedJwt, chatId, {
+				message,
+			});
+		},
+		{
+			onSettled: () => {
+				chatQry.refetch();
+			},
+			onSuccess: () => {
+				toast.success('Message sent!');
+			},
+			onError: (err: any) => {
+				chatQry.refetch();
+			},
 		},
 	);
 
-	if (isLoading) return <div>Loading...</div>;
+	if (chatQry.isLoading) return <div>Loading...</div>;
 
 	return (
-		<div className="flex flex-col h-full">
-			<div className="overflow-y-auto p-4">
-				{chat?.messages.map((message) => (
+		<div className="flex flex-col h-full w-full">
+			<div className="overflow-y-auto p-4 flex-grow flex gap-4 flex-col">
+				{[...messages].reverse().map((message) => (
 					<div
 						key={message.id}
-						className={`p-2 ${
+						className={`flex ${
 							message.sender.id === loggedUser?.id
-								? 'text-right'
+								? 'justify-end'
 								: ''
 						}`}
 					>
-						<div>{message.content}</div>
-						<small>{message.createdAt.toString()}</small>
+						<div
+							className={`rounded-lg p-2 max-w-xs break-words ${
+								message.sender.id === loggedUser?.id
+									? 'bg-blue-700 text-white'
+									: 'bg-gray-200'
+							}`}
+						>
+							<div className="flex justify-between items-center mb-2 gap-2">
+								<div className="font-bold">
+									{message.sender.id === loggedUser?.id
+										? 'You'
+										: message.sender.userProfile.firstName}
+								</div>
+								<div className="text-sm text-gray-500">
+									{new Date(
+										message.createdAt,
+									).toLocaleString()}
+								</div>
+							</div>
+							{message.content}
+						</div>
 					</div>
 				))}
 			</div>
 
 			<div className="border-t p-4">
-				<form
-					onSubmit={(e) => {
-						e.preventDefault();
-					}}
-				>
-					<div className="flex">
-						<Input
-							name="message"
-							placeholder="Type a message..."
-							className="flex-grow mr-2"
-						/>
-						<Button type="submit">Send</Button>
-					</div>
-				</form>
+				<div className="flex">
+					<Input
+						name="message"
+						placeholder="Type a message..."
+						className="flex-grow mr-2"
+						value={message}
+						onChange={(e) => setMessage(e.target.value)}
+					/>
+					<Button onClick={() => sendMessageMtt.mutate(message)}>
+						Send
+					</Button>
+				</div>
 			</div>
 		</div>
 	);
@@ -101,24 +135,22 @@ function ChatPage() {
 	const [page, setPage] = useState(0);
 	const [userSearch, setUserSearch] = useState('');
 
-	const chatsQry = useQuery(['chats', loggedJwt, page, userSearch], () => {
-		if (!loggedJwt) return;
-		return listChats(loggedJwt, {
-			page,
-			limit: 10,
-			targetUserSearch: userSearch,
-		});
-	});
+	const { data: chats } = useQuery(
+		['chats', loggedJwt, page, userSearch],
+		() => {
+			if (!loggedJwt) return;
 
-	const chats = chatsQry.data ?? [];
-
-	const sendMessageMtt = useMutation(async (message: string) => {
-		return 'Ok';
-	});
+			return listChats(loggedJwt, {
+				page,
+				limit: 50,
+				targetUserSearch: userSearch,
+			});
+		},
+	);
 
 	return (
-		<Container>
-			<div className="border-r w-1/4 h-full overflow-y-auto">
+		<Container className="flex">
+			<div className="flex flex-col w-1/4 p-4 gap-4">
 				<FormItem>
 					<FormLabel>Usuário</FormLabel>
 					<Input
@@ -127,14 +159,14 @@ function ChatPage() {
 						onChange={(e) => setUserSearch(e.target.value)}
 					/>
 				</FormItem>
-				<ChatList chats={chats} onSelectChat={setSelectedChat} />
-			</div>
-			{selectedChat?.id && (
-				<ChatBox
-					chatId={selectedChat.id}
-					onSendMessage={(message) => sendMessageMtt.mutate(message)}
+				<ChatList
+					chats={chats?.items ?? []}
+					onSelectChat={setSelectedChat}
 				/>
-			)}
+			</div>
+			<div className="flex-grow max-h-screen">
+				{selectedChat?.id && <ChatBox chatId={selectedChat.id} />}
+			</div>
 		</Container>
 	);
 }
