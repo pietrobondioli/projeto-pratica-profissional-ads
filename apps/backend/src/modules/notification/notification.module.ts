@@ -6,17 +6,16 @@ import { TYPEORM_DATA_SOURCE } from '#/be/config/database/database.providers';
 
 import { UserModule } from '../user/user.module';
 
-import { OnEmailChangeSendEmailEventHandler } from '../user/event-handlers/on-email-change.send-email.event-handler';
-import { OnPasswordChangeSendEmailEventHandler } from '../user/event-handlers/on-password-change.send-email.event-handler';
-import { OnUserConfirmEmailSendEmailEventHandler } from '../user/event-handlers/on-user-confirm-email.send-email.event-handler';
-import { OnUserCreatedCreateProfileEventHandler } from '../user/event-handlers/on-user-created.create-profile.event-handler';
-import { OnUserCreatedSendEmailEventHandler } from '../user/event-handlers/on-user-created.send-email.event-handler';
-import { OnUserReqEmailChangeSendEmailEventHandler } from '../user/event-handlers/on-user-req-email-change.send-email.event-handler';
-import { OnUserReqNewVerificationTokenSendEmailEventHandler } from '../user/event-handlers/on-user-req-new-verification-token.send-email.event-handler';
-import { OnUserReqPasswordChangeSendEmailEventHandler } from '../user/event-handlers/on-user-req-password-change.send-email.event-handler';
+import { EquipmentModule } from '../equipment/equipment.module';
+import { ReservationModule } from '../reservation/reservation.module';
 import { ReadNotificationHttpController } from './commands/read-notification/read-notification.http.controller';
 import { ReadNotificationCommandHandler } from './commands/read-notification/read-notification.service';
 import { NotificationModel } from './db/notification.model';
+import { OnEquipmentCreatedNotifyUserEventHandler } from './event-handlers/on-equipment-created.notify-user.event-handler';
+import { OnEquipmentDeletedNotifyUserEventHandler } from './event-handlers/on-equipment-deleted.notify-user.event-handler';
+import { OnEquipmentUpdatedNotifyUserEventHandler } from './event-handlers/on-equipment-updated.notify-user.event-handler';
+import { OnReservationCanceledNotifyUsersEventHandler } from './event-handlers/on-reservation-canceled.notify-users.event-handler';
+import { OnReservationCreatedNotifyUsersEventHandler } from './event-handlers/on-reservation-created.notify-users.event-handler';
 import { NOTIFICATION_REPO } from './notification.di-tokens';
 import { ListUserNotificationsHttpController } from './queries/list-user-notifications/list-user-notifications.http.controller';
 import { ListUserNotificationsQueryHandler } from './queries/list-user-notifications/list-user-notifications.service';
@@ -37,18 +36,15 @@ const repositories: Provider[] = [
 ];
 
 const eventHandlers: Provider[] = [
-  OnEmailChangeSendEmailEventHandler,
-  OnPasswordChangeSendEmailEventHandler,
-  OnUserConfirmEmailSendEmailEventHandler,
-  OnUserCreatedCreateProfileEventHandler,
-  OnUserCreatedSendEmailEventHandler,
-  OnUserReqEmailChangeSendEmailEventHandler,
-  OnUserReqNewVerificationTokenSendEmailEventHandler,
-  OnUserReqPasswordChangeSendEmailEventHandler,
+  OnEquipmentCreatedNotifyUserEventHandler,
+  OnEquipmentUpdatedNotifyUserEventHandler,
+  OnEquipmentDeletedNotifyUserEventHandler,
+  OnReservationCreatedNotifyUsersEventHandler,
+  OnReservationCanceledNotifyUsersEventHandler,
 ];
 
 @Module({
-  imports: [CqrsModule, UserModule],
+  imports: [CqrsModule, UserModule, EquipmentModule, ReservationModule],
   controllers: [
     ReadNotificationHttpController,
     ListUserNotificationsHttpController,
