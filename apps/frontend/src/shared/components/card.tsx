@@ -22,7 +22,7 @@ export const CardHeader = ({
 	children: React.ReactNode;
 	className?: string;
 }) => {
-	return <div className={`px-4 py-2 ${className}`}>{children}</div>;
+	return <div className={`px-6 py-4 ${className}`}>{children}</div>;
 };
 
 export const CardTitle = ({
@@ -52,5 +52,5 @@ export const CardContent = ({
 	children: React.ReactNode;
 	className?: string;
 }) => {
-	return <div className={`px-4 py-2 ${className}`}>{children}</div>;
+	return <div className={`px-6 py-4 ${className}`}>{children}</div>;
 };

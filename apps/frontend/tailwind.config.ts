@@ -11,6 +11,14 @@ module.exports = {
 			},
 		},
 		extend: {
+			height: {
+				100: '25rem',
+				112: '28rem',
+				128: '32rem',
+				144: '36rem',
+				160: '40rem',
+				176: '44rem',
+			},
 			keyframes: {
 				'accordion-down': {
 					from: { height: 0 },

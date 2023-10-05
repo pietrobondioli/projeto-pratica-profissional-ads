@@ -77,7 +77,7 @@ export const EquipmentItem = ({
 	const isOwner = loggedUser?.id === equipment.owner.id;
 
 	return (
-		<div className="relative w-full h-full">
+		<div className="relative w-full h-112">
 			{isOwner ? (
 				<div className="absolute left-full transform -translate-x-1/2 flex gap-2 justify-start flex-col h-full px-4 -translate-y-6">
 					<button
@@ -100,16 +100,18 @@ export const EquipmentItem = ({
 				className="cursor-pointer w-full h-full grid grid-flow-row"
 				onClick={() => goToEquipment(equipment.id)}
 			>
-				<CardHeader className="flex flex-col">
-					<div className="max-w-[90%] rounded-sm overflow-hidden m-8 grow">
+				<CardHeader className="flex flex-col w-full min-w-0">
+					<div className="rounded-sm overflow-hidden m-8 flex items-center justify-center max-w-full">
 						{isLoading ? (
 							<Skeleton />
 						) : (
-							<img
-								src={media?.url}
-								alt="Equipment Picture"
-								className="w-full h-full object-contain"
-							/>
+							<div className="w-full h-[150px] flex">
+								<img
+									src={media?.url}
+									alt="Equipment Picture"
+									className="object-cover max-w-full max-h-full self-center"
+								/>
+							</div>
 						)}
 					</div>
 					<CardTitle>{equipment.title}</CardTitle>
@@ -117,11 +119,12 @@ export const EquipmentItem = ({
 						{owner?.userProfile.firstName}
 					</CardDescription>
 				</CardHeader>
-				<CardContent className="flex flex-col justify-between h-full">
-					<CardDescription className="line-clamp-3">
+				<CardContent className="flex flex-col justify-between">
+					<CardDescription className="line-clamp-3 break-all">
 						{equipment.description}
 					</CardDescription>
 					<CardDescription>
+						Diária:{' '}
 						{equipment.pricePerDay.toLocaleString('pt-BR', {
 							style: 'currency',
 							currency: 'BRL',

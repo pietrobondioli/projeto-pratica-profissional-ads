@@ -55,7 +55,7 @@ export const EquipmentList = ({
 				value={equipSearch}
 				onChange={(e) => setEquipSearch(e.target.value)}
 			/>
-			<div className="w-full grid gap-4 grid-cols-[repeat(auto-fill,minmax(18rem,1fr))] place-items-center">
+			<div className="w-full grid gap-6 grid-cols-[repeat(auto-fill,minmax(18rem,1fr))] place-items-center">
 				{equipments?.items.map((equipment) => (
 					<EquipmentItem
 						key={equipment.id}
