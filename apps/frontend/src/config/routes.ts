@@ -17,9 +17,9 @@ export const ROUTES = {
 		MY_PROFILE: '/user/my-profile',
 		PROFILE: '/user/:userId/profile',
 		EQUIPMENTS: '/user/:userId/equipments',
-		RESERVATIONS: '/user/:userId/reservations',
+		RESERVATIONS: '/user/reservations',
 		FEEDBACKS: '/user/:userId/feedbacks',
-		NOTIFICATIONS: '/user/:userId/notifications',
-		CHATS: '/user/:userId/chats',
+		NOTIFICATIONS: '/user/notifications',
+		CHATS: '/user/chats',
 	},
 } as const;
