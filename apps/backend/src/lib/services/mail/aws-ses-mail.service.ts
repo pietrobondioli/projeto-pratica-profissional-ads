@@ -41,7 +41,6 @@ export class AwsSESMailService implements MailService {
       subject: subject,
       html,
     };
-    console.log('Sending:', mailOptions);
 
     await this.transporter.sendMail(mailOptions);
   }

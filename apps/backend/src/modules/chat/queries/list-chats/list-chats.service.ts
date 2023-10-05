@@ -58,8 +58,6 @@ export class ListChatsQueryHandler
       ],
     });
 
-    console.log(items);
-
     return new Ok({
       items: items,
       page,

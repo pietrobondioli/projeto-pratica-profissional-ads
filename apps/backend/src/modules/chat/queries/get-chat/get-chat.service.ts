@@ -36,8 +36,6 @@ export class GetChatQueryHandler
       ],
     });
 
-    console.log(chat);
-
     if (!chat) {
       return new Err(new ChatNotFoundError());
     }
