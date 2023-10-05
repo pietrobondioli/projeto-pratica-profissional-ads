@@ -12,6 +12,9 @@ import { Equipment } from '../../domain/equipment.entity';
 import { PhotoNotFoundError } from '../../domain/errors/photo-not-found.error';
 import { EQUIPMENT_REPO } from '../../equipment.di-tokens';
 
+import { UserRepo } from '#/be/modules/user/db/user.model';
+import { UserNotFoundError } from '#/be/modules/user/domain/errors/user-not-found.error';
+import { USER_REPO } from '#/be/modules/user/user.di-tokens';
 import { CreateEquipmentCommand } from './create-equipment.command';
 
 @CommandHandler(CreateEquipmentCommand)
@@ -23,6 +26,8 @@ export class CreateEquipmentCommandHandler
     private readonly equipmentRepo: EquipmentRepo,
     @Inject(MEDIA_REPO)
     private readonly mediaRepo: MediaRepo,
+    @Inject(USER_REPO)
+    private readonly userRepo: UserRepo,
     private readonly eventEmitter: EventEmitter2,
   ) {}
 
@@ -31,6 +36,14 @@ export class CreateEquipmentCommandHandler
   ): Promise<CommandResult<CreateEquipmentCommand>> {
     const { loggedUser, title, photoId, description, pricePerDay } =
       command.payload;
+
+    const user = await this.userRepo.findOneBy({
+      id: loggedUser.id,
+    });
+
+    if (!user) {
+      return new Err(new UserNotFoundError());
+    }
 
     const photo = await this.mediaRepo.findOneBy({
       id: photoId,
@@ -45,6 +58,7 @@ export class CreateEquipmentCommandHandler
     equipment.description = description;
     equipment.photo = photo;
     equipment.pricePerDay = pricePerDay;
+    equipment.owner = user;
 
     await this.equipmentRepo.insert(equipment);
 

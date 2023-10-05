@@ -104,7 +104,7 @@ export const routesV1 = {
     tags: ['Media'],
     root: mediaRoot,
     commands: {
-      upload: `/${mediaRoot}`,
+      upload: `/${mediaRoot}/upload`,
     },
     queries: {
       get: `/${mediaRoot}/:mediaId`,

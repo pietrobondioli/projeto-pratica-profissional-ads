@@ -6,6 +6,7 @@ import { TYPEORM_DATA_SOURCE } from '#/be/config/database/database.providers';
 
 import { MediaModule } from '../media/media.module';
 
+import { UserModule } from '../user/user.module';
 import { CreateEquipmentHttpController } from './commands/create-equipment/create-equipment.http.controller';
 import { CreateEquipmentCommandHandler } from './commands/create-equipment/create-equipment.service';
 import { UpdateEquipmentHttpController } from './commands/update-equipment/update-equipment.http.controller';
@@ -39,7 +40,7 @@ const repositories: Provider[] = [
 ];
 
 @Module({
-  imports: [CqrsModule, MediaModule],
+  imports: [CqrsModule, MediaModule, UserModule],
   controllers: [
     CreateEquipmentHttpController,
     UpdateEquipmentHttpController,
