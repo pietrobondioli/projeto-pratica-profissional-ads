@@ -50,6 +50,7 @@ export const routesV1 = {
     queries: {
       get: `/${equipmentRoot}/:equipmentId`,
       list: `/${equipmentRoot}`,
+      get_availability: `/${equipmentRoot}/:equipmentId/availability`,
     },
   },
   reservation: {

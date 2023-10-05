@@ -13,6 +13,8 @@ import { UpdateEquipmentHttpController } from './commands/update-equipment/updat
 import { UpdateEquipmentCommandHandler } from './commands/update-equipment/update-equipment.service';
 import { EquipmentModel } from './db/equipment.model';
 import { EQUIPMENT_REPO } from './equipment.di-tokens';
+import { GetEquipmentAvailabilityHttpController } from './queries/get-equipment-avaiability/get-equipment-avaiability.http.controller';
+import { GetEquipmentAvailabilityAvailabilityQueryHandler } from './queries/get-equipment-avaiability/get-equipment-avaiability.service';
 import { GetEquipmentHttpController } from './queries/get-equipment/get-equipment.http.controller';
 import { GetEquipmentQueryHandler } from './queries/get-equipment/get-equipment.service';
 import { ListEquipmentsHttpController } from './queries/list-equipments/list-equipments.http.controller';
@@ -26,6 +28,7 @@ const commandHandlers: Provider[] = [
 const queryHandlers: Provider[] = [
   GetEquipmentQueryHandler,
   ListEquipmentsQueryHandler,
+  GetEquipmentAvailabilityAvailabilityQueryHandler,
 ];
 
 const mappers: Provider[] = [];
@@ -46,6 +49,7 @@ const repositories: Provider[] = [
     UpdateEquipmentHttpController,
     GetEquipmentHttpController,
     ListEquipmentsHttpController,
+    GetEquipmentAvailabilityHttpController,
   ],
   providers: [
     Logger,
