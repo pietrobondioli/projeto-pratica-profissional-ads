@@ -9,6 +9,7 @@ import { EQUIPMENT_REPO } from '../../equipment.di-tokens';
 
 import { Reservation } from '#/be/modules/reservation/domain/reservation.entity';
 import { eachDayOfInterval } from 'date-fns';
+import { LessThanOrEqual, MoreThanOrEqual } from 'typeorm';
 import { GetEquipmentAvailabilityQuery } from './get-equipment-avaiability.query';
 
 @QueryHandler(GetEquipmentAvailabilityQuery)
@@ -23,11 +24,15 @@ export class GetEquipmentAvailabilityAvailabilityQueryHandler
   async execute(
     query: GetEquipmentAvailabilityQuery,
   ): Promise<QueryResult<GetEquipmentAvailabilityQuery>> {
-    const { equipmentId } = query.payload;
+    const { equipmentId, startDate, endDate } = query.payload;
 
     const equipment = await this.equipmentRepo.findOne({
       where: {
         id: equipmentId,
+        reservations: {
+          startDate: MoreThanOrEqual(startDate),
+          endDate: LessThanOrEqual(endDate),
+        },
       },
       relations: ['reservations'],
     });

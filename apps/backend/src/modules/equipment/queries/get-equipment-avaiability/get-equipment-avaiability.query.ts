@@ -10,6 +10,8 @@ type EquipmentAvailability = {
 
 class Payload {
   readonly equipmentId: string;
+  readonly startDate: Date;
+  readonly endDate: Date;
 }
 
 export class GetEquipmentAvailabilityQuery extends QueryBase<
