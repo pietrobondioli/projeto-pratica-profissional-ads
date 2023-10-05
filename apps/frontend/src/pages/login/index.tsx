@@ -30,7 +30,7 @@ export function LoginPage() {
 		register,
 		handleSubmit,
 		formState: { errors },
-	} = useForm<z.infer<typeof loginSchema>>({
+	} = useForm<LoginData>({
 		resolver: zodResolver(loginSchema),
 		defaultValues: {
 			email: '',

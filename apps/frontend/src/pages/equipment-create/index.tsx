@@ -1,3 +1,10 @@
+import { Container } from '#/fe/shared/components/container';
+import { EquipmentForm } from '#/fe/shared/components/equipment-form';
+
 export default function EquipmentCreatePage() {
-	return <div>Not implemented.</div>;
+	return (
+		<Container>
+			<EquipmentForm />
+		</Container>
+	);
 }

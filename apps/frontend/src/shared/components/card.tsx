@@ -15,22 +15,42 @@ export const Card = ({ className, children, onClick }: CardProps) => {
 	);
 };
 
-export const CardHeader = ({ children }: { children: React.ReactNode }) => {
-	return <div className="px-4 py-2">{children}</div>;
+export const CardHeader = ({
+	children,
+	className,
+}: {
+	children: React.ReactNode;
+	className?: string;
+}) => {
+	return <div className={`px-4 py-2 ${className}`}>{children}</div>;
 };
 
-export const CardTitle = ({ children }: { children: React.ReactNode }) => {
-	return <h3 className="text-lg font-medium">{children}</h3>;
+export const CardTitle = ({
+	children,
+	className,
+}: {
+	children: string;
+	className?: string;
+}) => {
+	return <h3 className={`text-xl font-semibold ${className}`}>{children}</h3>;
 };
 
 export const CardDescription = ({
 	children,
+	className,
 }: {
 	children: React.ReactNode;
+	className?: string;
 }) => {
-	return <p className="text-gray-500">{children}</p>;
+	return <p className={`text-gray-700 ${className}`}>{children}</p>;
 };
 
-export const CardContent = ({ children }: { children: React.ReactNode }) => {
-	return <div className="px-4 py-2">{children}</div>;
+export const CardContent = ({
+	children,
+	className,
+}: {
+	children: React.ReactNode;
+	className?: string;
+}) => {
+	return <div className={`px-4 py-2 ${className}`}>{children}</div>;
 };

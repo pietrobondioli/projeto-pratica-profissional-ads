@@ -2,7 +2,6 @@ import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useDebounce } from '../hooks/useDebounce';
 import { listEquipments } from '../services/api';
-import { Container } from './container';
 import { EquipmentItem } from './equipment-item';
 import { Input } from './input';
 import { Skeleton } from './ui/skeleton';
@@ -50,13 +49,13 @@ export const EquipmentList = ({
 	const isLastPage = !equipments?.hasMore;
 
 	return (
-		<Container className="flex flex-col gap-4">
+		<div className="flex flex-col gap-8">
 			<Input
 				placeholder="Pesquisar equipamento"
 				value={equipSearch}
 				onChange={(e) => setEquipSearch(e.target.value)}
 			/>
-			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+			<div className="w-full grid gap-4 grid-cols-[repeat(auto-fill,minmax(18rem,1fr))] place-items-center">
 				{equipments?.items.map((equipment) => (
 					<EquipmentItem
 						key={equipment.id}
@@ -90,6 +89,6 @@ export const EquipmentList = ({
 					Next
 				</button>
 			</div>
-		</Container>
+		</div>
 	);
 };
