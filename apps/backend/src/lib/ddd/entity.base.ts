@@ -1,11 +1,13 @@
 export type EntityID = string;
 
 export class AppEntityBase {
-  constructor(userID: string) {
+  constructor(createdByUserId?: string) {
     this.createdAt = new Date();
     this.updatedAt = new Date();
-    this.createdBy = userID;
-    this.updatedBy = userID;
+    if (createdByUserId) {
+      this.createdBy = createdByUserId;
+      this.updatedBy = createdByUserId;
+    }
   }
 
   id: EntityID;

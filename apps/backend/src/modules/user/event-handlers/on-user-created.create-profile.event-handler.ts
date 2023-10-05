@@ -1,10 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
-import { UserProfileRepo } from '../../db/user-profile.model';
-import { UserRepo } from '../../db/user.model';
-import { UserCreatedEvent } from '../../domain/events/user-created.event';
-import { UserProfile } from '../../domain/user-profile.entity';
-import { USER_PROFILE_REPO, USER_REPO } from '../../user.di-tokens';
+import { UserProfileRepo } from '../db/user-profile.model';
+import { UserRepo } from '../db/user.model';
+import { UserCreatedEvent } from '../domain/events/user-created.event';
+import { UserProfile } from '../domain/user-profile.entity';
+import { USER_PROFILE_REPO, USER_REPO } from '../user.di-tokens';
 
 @Injectable()
 export class OnUserCreatedCreateProfileEventHandler {

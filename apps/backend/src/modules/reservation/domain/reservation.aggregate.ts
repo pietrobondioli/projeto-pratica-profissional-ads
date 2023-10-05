@@ -20,10 +20,11 @@ export class ReservationAggregate extends AggregateBase {
     );
   }
 
-  static canceled() {
+  static canceled(byUserId: string) {
     this.addDomainEvent(
       new ReservationCanceledEvent({
         reservationId: this._reservationId,
+        byUserId,
       }),
     );
   }

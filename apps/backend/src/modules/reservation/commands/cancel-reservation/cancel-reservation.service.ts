@@ -1,10 +1,8 @@
+import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { Err, Ok } from 'neverthrow';
-
-import { NotAuthorizedError } from '#/be/lib/exceptions/not-authorized.error';
 
 import { ReservationRepo } from '../../db/reservation.model';
 import { ReservationNotFoundError } from '../../domain/errors/reservation-not-found.error';
@@ -30,25 +28,27 @@ export class CancelReservationCommandHandler
       const { loggedUser, reservationId } = command.payload;
 
       const reservation = await this.reservationRepo.findOne({
-        where: {
-          id: reservationId,
-        },
-        relations: {
-          renter: true,
-        },
+        where: [
+          {
+            id: reservationId,
+            renter: { id: loggedUser.id },
+          },
+          {
+            id: reservationId,
+            equipment: { owner: { id: loggedUser.id } },
+          },
+        ],
       });
 
       if (!reservation) {
         return new Err(new ReservationNotFoundError());
       }
 
-      if (reservation.renter.id !== loggedUser.id) {
-        return new Err(new NotAuthorizedError());
-      }
-
       await this.reservationRepo.delete({
         id: reservationId,
       });
+
+      ReservationAggregate.entityID(reservation.id).canceled(loggedUser.id);
 
       ReservationAggregate.publishEvents(this.eventEmitter);
 

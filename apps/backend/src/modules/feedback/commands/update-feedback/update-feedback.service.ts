@@ -27,14 +27,11 @@ export class UpdateFeedbackCommandHandler
     try {
       const { loggedUser, feedbackId, rating, comment } = command.payload;
 
-      const feedback = await this.feedbackRepo.findOne({
-        where: {
-          id: feedbackId,
-          fromUser: {
-            id: loggedUser.id,
-          },
+      const feedback = await this.feedbackRepo.findOneBy({
+        id: feedbackId,
+        fromUser: {
+          id: loggedUser.id,
         },
-        relations: ['fromUser'],
       });
 
       if (!feedback) {

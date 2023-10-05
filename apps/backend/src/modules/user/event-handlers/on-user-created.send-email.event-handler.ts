@@ -1,9 +1,9 @@
 import { AwsSESMailService } from '#/be/lib/services/mail/aws-ses-mail.service';
 import { Inject, Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
-import { UserRepo } from '../../db/user.model';
-import { UserCreatedEvent } from '../../domain/events/user-created.event';
-import { USER_REPO } from '../../user.di-tokens';
+import { UserRepo } from '../db/user.model';
+import { UserCreatedEvent } from '../domain/events/user-created.event';
+import { USER_REPO } from '../user.di-tokens';
 
 @Injectable()
 export class OnUserCreatedSendEmailEventHandler {

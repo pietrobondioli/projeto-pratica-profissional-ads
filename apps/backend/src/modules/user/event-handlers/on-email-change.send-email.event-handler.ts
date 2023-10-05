@@ -1,7 +1,7 @@
 import { AwsSESMailService } from '#/be/lib/services/mail/aws-ses-mail.service';
 import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
-import { UserChangedEmailEvent } from '../../domain/events/user-changed-email.event';
+import { UserChangedEmailEvent } from '../domain/events/user-changed-email.event';
 
 @Injectable()
 export class OnEmailChangeSendEmailEventHandler {

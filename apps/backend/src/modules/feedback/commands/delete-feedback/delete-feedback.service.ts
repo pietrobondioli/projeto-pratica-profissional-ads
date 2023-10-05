@@ -4,8 +4,6 @@ import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Err, Ok } from 'neverthrow';
 
-import { NotAuthorizedError } from '#/be/lib/exceptions/not-authorized.error';
-
 import { FeedbackRepo } from '../../db/feedback.model';
 import { FeedbackNotFoundError } from '../../domain/errors/feedback-not-found.error';
 import { FeedbackAggregate } from '../../domain/feedback.aggregate';
@@ -29,19 +27,13 @@ export class DeleteFeedbackCommandHandler
     try {
       const { loggedUser, feedbackId } = command.payload;
 
-      const feedback = await this.feedbackRepo.findOne({
-        where: {
-          id: feedbackId,
-        },
-        relations: ['fromUser'],
+      const feedback = await this.feedbackRepo.findOneBy({
+        id: feedbackId,
+        fromUser: { id: loggedUser.id },
       });
 
       if (!feedback) {
         return new Err(new FeedbackNotFoundError());
-      }
-
-      if (feedback.fromUser.id !== loggedUser.id) {
-        return new Err(new NotAuthorizedError());
       }
 
       await this.feedbackRepo.delete(feedback.id);
