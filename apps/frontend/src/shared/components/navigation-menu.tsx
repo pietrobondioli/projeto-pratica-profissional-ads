@@ -62,21 +62,15 @@ export const MenuItemList: React.FC<MenuItemListProps> = ({ children }) => {
 };
 
 type MenuItemProps = {
-	href?: string;
 	onSelect?: () => void;
 	children: React.ReactNode;
 };
 
-export const MenuItem: React.FC<MenuItemProps> = ({
-	href,
-	onSelect,
-	children,
-}) => {
+export const MenuItem: React.FC<MenuItemProps> = ({ onSelect, children }) => {
 	const { setIsMenuOpen } = useContext(NavigationMenuContext);
 
 	return (
-		<a
-			href={href}
+		<div
 			className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:cursor-pointer"
 			onClick={() => {
 				setIsMenuOpen(false);
@@ -84,7 +78,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({
 			}}
 		>
 			{children}
-		</a>
+		</div>
 	);
 };
 

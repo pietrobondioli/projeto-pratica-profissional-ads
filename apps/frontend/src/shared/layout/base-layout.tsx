@@ -23,22 +23,32 @@ const NavBar = () => {
 					<MenuTitle>Menu</MenuTitle>
 					<MenuItemList>
 						<MenuItem
-							href={ROUTES.USER.MY_PROFILE}
 							onSelect={() => navigate(ROUTES.USER.MY_PROFILE)}
 						>
 							Meu perfil
 						</MenuItem>
 						<MenuItem
-							href={ROUTES.CHAT.ROOT}
-							onSelect={() => navigate(ROUTES.CHAT.ROOT)}
+							onSelect={() => navigate(ROUTES.USER.EQUIPMENTS)}
 						>
+							Meus equipamentos
+						</MenuItem>
+						<MenuItem
+							onSelect={() => navigate(ROUTES.USER.RESERVATIONS)}
+						>
+							Minhas reservas
+						</MenuItem>
+						<MenuItem onSelect={() => navigate(ROUTES.USER.CHATS)}>
 							Chats
 						</MenuItem>
 						<MenuItem
-							href={ROUTES.USER.NOTIFICATIONS}
 							onSelect={() => navigate(ROUTES.USER.NOTIFICATIONS)}
 						>
 							Notificações
+						</MenuItem>
+						<MenuItem
+							onSelect={() => navigate(ROUTES.USER.FEEDBACKS)}
+						>
+							Meus feedbacks
 						</MenuItem>
 						<MenuItem
 							onSelect={() => {

@@ -16,15 +16,10 @@ export const ROUTES = {
 		ROOT: '/user',
 		MY_PROFILE: '/user/my-profile',
 		PROFILE: '/user/:userId/profile',
-		FAVORITES: '/user/:userId/favorites',
-		EQUIPMENT: '/user/:userId/equipment',
+		EQUIPMENTS: '/user/:userId/equipments',
 		RESERVATIONS: '/user/:userId/reservations',
-		GIVEN_FEEDBACKS: '/user/:userId/given-feedbacks',
-		RECEIVED_FEEDBACKS: '/user/:userId/received-feedbacks',
+		FEEDBACKS: '/user/:userId/feedbacks',
 		NOTIFICATIONS: '/user/:userId/notifications',
-	},
-	CHAT: {
-		ROOT: '/chat',
-		MESSAGES: '/chat/:chatId/messages',
+		CHATS: '/user/:userId/chats',
 	},
 } as const;

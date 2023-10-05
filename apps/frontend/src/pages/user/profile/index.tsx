@@ -35,8 +35,6 @@ function UserProfilePage() {
 		},
 	);
 
-	console.log(user);
-
 	const { data: media } = useQuery(
 		['media', user?.userProfile.profilePicture?.id],
 		async () => {
@@ -66,7 +64,6 @@ function UserProfilePage() {
 	const {
 		register,
 		handleSubmit,
-		watch,
 		reset,
 		formState: { errors },
 	} = useForm({
@@ -85,9 +82,6 @@ function UserProfilePage() {
 			});
 		}
 	}, [user, reset]);
-
-	console.log(watch());
-	console.log(errors);
 
 	const handleEditToggle = () => {
 		setIsEditMode(!isEditMode);

@@ -85,7 +85,7 @@ export type Equipment = {
 	description: string;
 	pricePerDay: number;
 	availabilityStatus: boolean;
-	photo: BaseEntity;
+	photo: Media;
 	owner: User;
 } & BaseEntity;
 

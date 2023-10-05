@@ -9,7 +9,7 @@ import { useLoggedUserActions } from '#/fe/shared/state/logged-user';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { z } from 'zod';
 
@@ -23,6 +23,9 @@ const loginSchema = z.object({
 type LoginData = z.infer<typeof loginSchema>;
 
 export function LoginPage() {
+	const [searchParams, setSearchParams] = useSearchParams();
+	const returnTo = searchParams.get('returnTo');
+
 	const {
 		register,
 		handleSubmit,
@@ -52,6 +55,10 @@ export function LoginPage() {
 		{
 			onSuccess: (token) => {
 				loginAction(token.jwtToken, token.user);
+				if (returnTo) {
+					navigate(returnTo);
+					return;
+				}
 				navigate(ROUTES.HOME);
 			},
 			onError: (error: any) => {
