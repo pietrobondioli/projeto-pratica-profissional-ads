@@ -72,6 +72,12 @@ function ChatBox({ chatId }: { chatId: string }) {
 
 	if (chatQry.isLoading) return <div>Loading...</div>;
 
+	const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+		if (event.key === 'Enter') {
+			sendMessageMtt.mutate(message);
+		}
+	};
+
 	return (
 		<div className="flex flex-col h-full w-full">
 			<div className="overflow-y-auto p-4 flex-grow flex gap-4 flex-col">
@@ -117,6 +123,7 @@ function ChatBox({ chatId }: { chatId: string }) {
 						className="flex-grow mr-2"
 						value={message}
 						onChange={(e) => setMessage(e.target.value)}
+						onKeyDown={handleKeyDown}
 					/>
 					<Button onClick={() => sendMessageMtt.mutate(message)}>
 						Send
@@ -149,8 +156,8 @@ function ChatPage() {
 	);
 
 	return (
-		<Container className="flex">
-			<div className="flex flex-col w-1/4 p-4 gap-4">
+		<Container className="max-h-screen flex">
+			<div className="flex flex-col w-1/3 p-4 gap-4 lg:w-1/4">
 				<FormItem>
 					<FormLabel>Usuário</FormLabel>
 					<Input

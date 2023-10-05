@@ -25,7 +25,7 @@ export default function UserNotificationListPage() {
 	}
 
 	return (
-		<Container>
+		<Container className="flex flex-col gap-4">
 			{notifications?.items.map((notification: Notification) => (
 				<NotificationItem
 					key={notification.id}
