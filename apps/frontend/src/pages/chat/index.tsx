@@ -132,7 +132,7 @@ function ChatPage() {
 
 	const loggedJwt = useJwtToken();
 
-	const [page, setPage] = useState(0);
+	const [page, setPage] = useState(1);
 	const [userSearch, setUserSearch] = useState('');
 
 	const { data: chats } = useQuery(

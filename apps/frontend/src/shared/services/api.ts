@@ -94,8 +94,6 @@ export async function requestConfirmAccountToken(body: { email: string }) {
 		const error = await response.json();
 		throw new Error(error.message);
 	}
-
-	return;
 }
 
 export async function confirmAccount(body: { token: string }) {
@@ -135,8 +133,6 @@ export async function requestChangeEmail(
 		const error = await response.json();
 		throw new Error(error.message);
 	}
-
-	return;
 }
 
 export async function changeEmail(body: { email: string; newEmail: string }) {
@@ -152,8 +148,6 @@ export async function changeEmail(body: { email: string; newEmail: string }) {
 		const error = await response.json();
 		throw new Error(error.message);
 	}
-
-	return;
 }
 
 export async function requestChangePassword(body: { email: string }) {
@@ -169,8 +163,6 @@ export async function requestChangePassword(body: { email: string }) {
 		const error = await response.json();
 		throw new Error(error.message);
 	}
-
-	return;
 }
 
 export async function changePassword(body: {
@@ -189,8 +181,6 @@ export async function changePassword(body: {
 		const error = await response.json();
 		throw new Error(error.message);
 	}
-
-	return;
 }
 
 export async function updateUserProfile(
@@ -264,8 +254,6 @@ export async function cancelReservation(
 		const error = await response.json();
 		throw new Error(error.message);
 	}
-
-	return;
 }
 
 export async function getReservation(id: string, authToken: string) {
@@ -457,6 +445,21 @@ export async function updateEquipment(
 	return updatedEquipment as IdResponse;
 }
 
+export async function deleteEquipment(authToken: string, equipmentId: string) {
+	const response = await fetch(`${API_URL}/equipments/${equipmentId}`, {
+		method: 'DELETE',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${authToken}`,
+		},
+	});
+
+	if (!response.ok) {
+		const error = await response.json();
+		throw new Error(error.message);
+	}
+}
+
 export async function getEquipment(equipmentId: string) {
 	const response = await fetch(`${API_URL}/equipments/${equipmentId}`);
 
@@ -472,14 +475,15 @@ export async function getEquipment(equipmentId: string) {
 export async function listEquipments(
 	request: PaginatedReq & {
 		title?: string;
+		userId?: string;
 	},
 ) {
-	const { title, limit, page, order } = request;
+	const { title = '', userId = '', limit, page, order } = request;
 
 	const response = await fetch(
-		`${API_URL}/equipments?title=${
-			title ?? ''
-		}&limit=${limit}&page=${page}&orderBy=${order?.field}:${order?.param}`,
+		`${API_URL}/equipments?title=${title}&userId=${userId}&limit=${limit}&page=${page}${
+			order ? `&orderBy=${order?.field}:${order?.param}` : ''
+		}`,
 	);
 
 	if (!response.ok) {
@@ -556,8 +560,6 @@ export async function deleteFeedback(authToken: string, feedbackId: string) {
 		const error = await response.json();
 		throw new Error(error.message);
 	}
-
-	return;
 }
 
 export async function getFeedback(authToken: string, feedbackId: string) {
@@ -649,8 +651,6 @@ export async function readNotification(id: string, authToken: string) {
 		const error = await response.json();
 		throw new Error(error.message);
 	}
-
-	return;
 }
 
 export async function getUserNotifications(authToken: string) {

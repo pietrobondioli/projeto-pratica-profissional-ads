@@ -21,6 +21,7 @@ export type PaginatedResponse<T> = {
 	limit: number;
 	page: number;
 	items: T[];
+	hasMore: boolean;
 };
 
 type UserProfile = {
