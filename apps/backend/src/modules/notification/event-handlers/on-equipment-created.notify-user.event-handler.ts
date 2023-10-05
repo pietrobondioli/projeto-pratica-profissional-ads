@@ -38,8 +38,10 @@ export class OnEquipmentCreatedNotifyUserEventHandler {
       }
 
       const notification = new Notification();
-      notification.message = `Your equipment ${equipment.title} has been created`;
+      notification.message = `Seu equipamento ${equipment.title} foi criado`;
       notification.user = user;
+
+      await this.notificationRepo.save(notification);
     } catch {}
   }
 }

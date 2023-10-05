@@ -1,4 +1,5 @@
 import { useMemo, useRef, useState } from 'react';
+import { BsCardImage } from 'react-icons/bs';
 import { FaTimes, FaUpload } from 'react-icons/fa';
 
 type UploadInputProps = {
@@ -62,11 +63,15 @@ export const PhotoUploadInput = ({
 						className="w-8 h-8 text-white absolute cursor-pointer"
 						onClick={() => inputRef.current?.click()}
 					/>
-					<img
-						src={imgSrc}
-						alt="Uploaded file"
-						className="w-full h-full object-cover"
-					/>
+					{imgSrc ? (
+						<img
+							src={imgSrc}
+							alt="Uploaded file"
+							className="w-full h-full object-cover"
+						/>
+					) : (
+						<BsCardImage className="w-full h-full object-cover" />
+					)}
 					<button
 						type="button"
 						className="absolute top-0 right-0 p-1 text-red-500 rounded-full bg-white hover:bg-red-100 mr-1 mt-1"

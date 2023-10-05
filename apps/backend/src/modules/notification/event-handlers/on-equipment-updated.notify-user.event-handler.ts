@@ -38,8 +38,10 @@ export class OnEquipmentUpdatedNotifyUserEventHandler {
       }
 
       const notification = new Notification();
-      notification.message = `Your equipment ${equipment.title} has been updated`;
+      notification.message = `Seu equipamento ${equipment.title} foi atualizado`;
       notification.user = user;
+
+      await this.notificationRepo.save(notification);
     } catch {}
   }
 }

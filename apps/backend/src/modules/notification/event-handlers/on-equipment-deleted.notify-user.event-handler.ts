@@ -28,8 +28,10 @@ export class OnEquipmentDeletedNotifyUserEventHandler {
       }
 
       const notification = new Notification();
-      notification.message = `Your equipment ${equipmentName} has been deleted`;
+      notification.message = `Seu equipamento ${equipmentName} foi deletado`;
       notification.user = user;
+
+      await this.notificationRepo.save(notification);
     } catch {}
   }
 }

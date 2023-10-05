@@ -639,13 +639,19 @@ export async function getMedia(mediaId: string) {
 	return media as Media;
 }
 
-export async function readNotification(id: string, authToken: string) {
-	const response = await fetch(`${API_URL}/notifications/${id}/read`, {
-		method: 'PATCH',
-		headers: {
-			Authorization: `Bearer ${authToken}`,
+export async function readNotification(
+	authToken: string,
+	notificationId: string,
+) {
+	const response = await fetch(
+		`${API_URL}/notifications/${notificationId}/read`,
+		{
+			method: 'PATCH',
+			headers: {
+				Authorization: `Bearer ${authToken}`,
+			},
 		},
-	});
+	);
 
 	if (!response.ok) {
 		const error = await response.json();
@@ -654,7 +660,8 @@ export async function readNotification(id: string, authToken: string) {
 }
 
 export async function getUserNotifications(authToken: string) {
-	const response = await fetch(`${API_URL}/notifications`, {
+	// TODO: add a infinite scroll to notification page using this query
+	const response = await fetch(`${API_URL}/notifications?limit=100&page=1`, {
 		headers: {
 			Authorization: `Bearer ${authToken}`,
 		},
