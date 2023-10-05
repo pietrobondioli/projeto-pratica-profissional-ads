@@ -2,6 +2,7 @@ import {
 	Chat,
 	ChatWithMessages,
 	Equipment,
+	EquipmentAvailability,
 	Feedback,
 	IdResponse,
 	Media,
@@ -493,6 +494,31 @@ export async function listEquipments(
 
 	const equipments = await response.json();
 	return equipments as PaginatedResponse<Equipment>;
+}
+
+export async function getEquipmentAvailability(
+	equipmentId: string,
+	request: {
+		startDate: string;
+		endDate: string;
+	},
+) {
+	const { startDate, endDate } = request;
+
+	const response = await fetch(
+		`${API_URL}/equipments/${equipmentId}/availability?startDate=${startDate}&endDate=${endDate}`,
+	);
+
+	if (!response.ok) {
+		const error = await response.json();
+		throw new Error(error.message);
+	}
+
+	const availability = (await response.json()) as EquipmentAvailability;
+	availability.notAvailableDates = availability.notAvailableDates.map(
+		(date) => new Date(date),
+	);
+	return availability;
 }
 
 export async function createFeedback(

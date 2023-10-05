@@ -96,3 +96,7 @@ export type Media = {
 	mimeType: string;
 	url: string;
 } & BaseEntity;
+
+export type EquipmentAvailability = {
+	notAvailableDates: Date[];
+};

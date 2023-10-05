@@ -4,6 +4,7 @@ import { ToastContainer } from 'react-toastify';
 import Router from './router';
 import { ThemeProvider } from './shared/components/theme-provider';
 
+import 'react-datepicker/dist/react-datepicker.css';
 import 'react-toastify/dist/ReactToastify.min.css';
 import './shared/styles/globals.css';
 
