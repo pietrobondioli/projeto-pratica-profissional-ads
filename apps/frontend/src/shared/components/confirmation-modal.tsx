@@ -15,7 +15,7 @@ const ConfirmationModal = ({
 	return (
 		<Modal isOpen={isOpen} onClose={onClose}>
 			<div className="p-4">
-				<h2 className="text-lg font-medium mb-4">Confirm Action</h2>
+				<h2 className="text-lg font-medium mb-4">Confirmar ação</h2>
 				<p className="mb-4">{children}</p>
 				<div className="flex justify-end">
 					<button
@@ -25,9 +25,9 @@ const ConfirmationModal = ({
 						}}
 						className="mr-2"
 					>
-						Cancel
+						Cancelar
 					</button>
-					<button onClick={onConfirm}>Confirm</button>
+					<button onClick={onConfirm}>Confirmar</button>
 				</div>
 			</div>
 		</Modal>

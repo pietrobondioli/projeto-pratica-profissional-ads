@@ -138,7 +138,7 @@ export const EquipmentItem = ({
 				onConfirm={deleteMtt.mutate}
 				onDeny={handleDeleteDeny}
 			>
-				Are you sure you want to delete this equipment?
+				Tem certeza que deseja excluir este equipamento?
 			</ConfirmationModal>
 		</div>
 	);

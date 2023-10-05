@@ -14,7 +14,7 @@ const NavBar = () => {
 	const { logout } = useLoggedUserActions();
 
 	return (
-		<div className="flex justify-between items-center p-4 bg-white shadow-md w-full">
+		<div className="flex justify-between items-center p-4 bg-white shadow-md w-full fixed">
 			<a href={ROUTES.HOME} className="text-2xl font-bold">
 				EquipRent
 			</a>
