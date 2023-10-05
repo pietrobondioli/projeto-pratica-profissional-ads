@@ -12,6 +12,8 @@ import { EquipmentAggregate } from '../../domain/equipment.aggregate';
 import { EquipmentNotFoundError } from '../../domain/errors/equipment-not-found.error';
 import { PhotoNotFoundError } from '../../domain/errors/photo-not-found.error';
 
+import { UserRepo } from '#/be/modules/user/db/user.model';
+import { USER_REPO } from '#/be/modules/user/user.di-tokens';
 import { EQUIPMENT_REPO } from './../../equipment.di-tokens';
 import { UpdateEquipmentCommand } from './update-equipment.command';
 
@@ -24,6 +26,8 @@ export class UpdateEquipmentCommandHandler
     private readonly equipmentRepo: EquipmentRepo,
     @Inject(MEDIA_REPO)
     private readonly mediaRepo: MediaRepo,
+    @Inject(USER_REPO)
+    private readonly userRepo: UserRepo,
     private readonly eventEmitter: EventEmitter2,
   ) {}
 
@@ -38,10 +42,12 @@ export class UpdateEquipmentCommandHandler
         title,
         pricePerDay,
         availabilityStatus,
+        loggedUser,
       } = command.payload;
 
       const equipment = await this.equipmentRepo.findOneBy({
         id: equipmentId,
+        owner: { id: loggedUser.id },
       });
 
       if (!equipment) {
@@ -64,6 +70,8 @@ export class UpdateEquipmentCommandHandler
       if (availabilityStatus) equipment.availabilityStatus = availabilityStatus;
 
       await this.equipmentRepo.save(equipment);
+
+      EquipmentAggregate.entityID(equipment.id).userId(loggedUser.id).updated();
 
       EquipmentAggregate.publishEvents(this.eventEmitter);
 

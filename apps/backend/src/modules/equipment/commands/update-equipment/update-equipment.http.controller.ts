@@ -14,6 +14,10 @@ import { ApiErrorResponse } from '#/be/lib/api/api-error.response.dto';
 import { IdResponse } from '#/be/lib/api/id.response.dto';
 import { Authenticated } from '#/be/lib/application/decorators/authenticated.decorator';
 
+import {
+  AuthUser,
+  UserPayload,
+} from '#/be/lib/application/decorators/auth-user.decorator';
 import { Response } from 'express';
 import { UpdateEquipmentCommand } from './update-equipment.command';
 import { UpdateEquipmentDto } from './update-equipment.req.dto';
@@ -38,9 +42,11 @@ export class UpdateEquipmentHttpController {
     @Param('equipmentId') equipmentId: string,
     @Body() body: UpdateEquipmentDto,
     @Res() res: Response,
+    @AuthUser() user: UserPayload,
   ) {
     const command = new UpdateEquipmentCommand({
       equipmentId,
+      loggedUser: user,
       ...body,
     });
 
