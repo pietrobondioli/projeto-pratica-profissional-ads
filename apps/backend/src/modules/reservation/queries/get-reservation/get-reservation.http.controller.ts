@@ -7,6 +7,10 @@ import { routesV1 } from '#/be/config/routes/app.routes';
 import { ApiErrorResponse } from '#/be/lib/api/api-error.response.dto';
 import { Authenticated } from '#/be/lib/application/decorators/authenticated.decorator';
 
+import {
+  AuthUser,
+  UserPayload,
+} from '#/be/lib/application/decorators/auth-user.decorator';
 import { GetReservationQuery } from './get-reservation.query';
 import { GetReservationResDto } from './get-reservation.res.dto';
 
@@ -26,9 +30,13 @@ export class GetReservationHttpController {
     status: HttpStatus.BAD_REQUEST,
     type: ApiErrorResponse,
   })
-  async execute(@Param('reservationId') reservationId: string) {
+  async execute(
+    @Param('reservationId') reservationId: string,
+    @AuthUser() user: UserPayload,
+  ) {
     const query = new GetReservationQuery({
       reservationId,
+      loggedUser: user,
     });
 
     const result = await this.queryBus.execute(query);

@@ -20,9 +20,23 @@ export class ListUserReservationsQueryHandler
   async execute(
     query: ListUserReservationsQuery,
   ): Promise<QueryResult<ListUserReservationsQuery>> {
-    const { page, limit, order } = query.payload;
+    const { page, limit, order, loggedUser } = query.payload;
 
     const [reservations, total] = await this.reservationRepo.findAndCount({
+      where: [
+        {
+          renter: {
+            id: loggedUser.id,
+          },
+        },
+        {
+          equipment: {
+            owner: {
+              id: loggedUser.id,
+            },
+          },
+        },
+      ],
       skip: Math.max(0, (page - 1) * limit),
       take: limit,
       order: {

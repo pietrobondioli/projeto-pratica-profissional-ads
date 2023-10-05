@@ -21,12 +21,25 @@ export class GetReservationQueryHandler
   async execute(
     query: GetReservationQuery,
   ): Promise<QueryResult<GetReservationQuery>> {
-    const { reservationId } = query.payload;
+    const { reservationId, loggedUser } = query.payload;
 
     const reservation = await this.reservationRepo.findOne({
-      where: {
-        id: reservationId,
-      },
+      where: [
+        {
+          id: reservationId,
+          renter: {
+            id: loggedUser.id,
+          },
+        },
+        {
+          id: reservationId,
+          equipment: {
+            owner: {
+              id: loggedUser.id,
+            },
+          },
+        },
+      ],
       relations: ['equipment', 'renter', 'payment'],
     });
 
