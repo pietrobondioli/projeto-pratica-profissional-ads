@@ -7,6 +7,11 @@ export enum NotificationStatus {
 }
 
 export class Notification extends AppEntityBase {
+  constructor(createdByUserId?: string) {
+    super(createdByUserId);
+    this.status = NotificationStatus.UNREAD;
+  }
+
   user: User;
 
   message: string;
