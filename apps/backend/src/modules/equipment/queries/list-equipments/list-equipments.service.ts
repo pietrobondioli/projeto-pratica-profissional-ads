@@ -21,11 +21,12 @@ export class ListEquipmentsQueryHandler
   async execute(
     query: ListEquipmentsQuery,
   ): Promise<QueryResult<ListEquipmentsQuery>> {
-    const { title, page, limit, order } = query.payload;
+    const { title, userId, page, limit, order } = query.payload;
 
-    const equipments = await this.equipmentRepo.find({
+    const [equipments, total] = await this.equipmentRepo.findAndCount({
       where: {
         ...(title && { title: Like(`%${title}%`) }),
+        ...(userId && { owner: { id: userId } }),
       },
       skip: Math.max(0, (page - 1) * limit),
       take: limit,
@@ -40,6 +41,7 @@ export class ListEquipmentsQueryHandler
       page,
       limit,
       total: equipments.length,
+      hasMore: page * limit < total,
     });
   }
 }

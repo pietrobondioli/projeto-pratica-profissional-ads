@@ -20,7 +20,7 @@ export class ListUserFeedbacksQueryHandler
   ): Promise<QueryResult<ListUserFeedbacksQuery>> {
     const { userId, page, limit, order } = query.payload;
 
-    const items = await this.feedbackRepo.find({
+    const [feedbacks, total] = await this.feedbackRepo.findAndCount({
       where: {
         fromUser: { id: userId },
       },
@@ -32,10 +32,11 @@ export class ListUserFeedbacksQueryHandler
     });
 
     return new Ok({
-      items: items,
+      items: feedbacks,
       page,
       limit,
-      total: items.length,
+      total: feedbacks.length,
+      hasMore: page * limit < total,
     });
   }
 }

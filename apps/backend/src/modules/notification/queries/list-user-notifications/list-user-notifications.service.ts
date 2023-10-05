@@ -22,7 +22,7 @@ export class ListUserNotificationsQueryHandler
   ): Promise<QueryResult<ListUserNotificationsQuery>> {
     const { loggedUser, page, limit, order } = query.payload;
 
-    const items = await this.notificationRepo.find({
+    const [notifications, total] = await this.notificationRepo.findAndCount({
       where: {
         user: {
           id: loggedUser.id,
@@ -36,10 +36,11 @@ export class ListUserNotificationsQueryHandler
     });
 
     return new Ok({
-      items: items,
+      items: notifications,
       page,
       limit,
-      total: items.length,
+      total: notifications.length,
+      hasMore: page * limit < total,
     });
   }
 }

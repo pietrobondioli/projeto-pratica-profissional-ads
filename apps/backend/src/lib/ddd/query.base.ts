@@ -24,6 +24,7 @@ export class PaginatedQueryResultBase<T = unknown> {
   readonly page: number;
   readonly limit: number;
   readonly total: number;
+  readonly hasMore: boolean;
 }
 
 export class PaginatedQueryBase<

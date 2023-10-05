@@ -11,4 +11,12 @@ export class ListEquipmentsReqDto extends PaginatedQueryRequestDto {
     description: 'Equipment title',
   })
   readonly title?: string;
+
+  @IsOptional()
+  @IsString()
+  @ApiPropertyOptional({
+    example: 'User1',
+    description: 'User id',
+  })
+  readonly userId?: string;
 }

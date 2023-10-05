@@ -22,7 +22,7 @@ export class ListUserReservationsQueryHandler
   ): Promise<QueryResult<ListUserReservationsQuery>> {
     const { page, limit, order } = query.payload;
 
-    const items = await this.reservationRepo.find({
+    const [reservations, total] = await this.reservationRepo.findAndCount({
       skip: Math.max(0, (page - 1) * limit),
       take: limit,
       order: {
@@ -32,10 +32,11 @@ export class ListUserReservationsQueryHandler
     });
 
     return new Ok({
-      items: items,
+      items: reservations,
       page,
       limit,
-      total: items.length,
+      total: reservations.length,
+      hasMore: page * limit < total,
     });
   }
 }

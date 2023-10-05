@@ -11,6 +11,7 @@ import { EquipmentNotFoundError } from '../../domain/errors/equipment-not-found.
 
 class Payload extends PaginatedQueryPayloadBase {
   readonly title?: string;
+  readonly userId?: string;
 }
 
 export class ListEquipmentsQuery extends PaginatedQueryBase<

@@ -21,7 +21,7 @@ export class ListChatsQueryHandler
   async execute(query: ListChatsQuery): Promise<QueryResult<ListChatsQuery>> {
     const { loggedUser, targetUserSearch, page, limit, order } = query.payload;
 
-    const items = await this.chatRepo.find({
+    const [chats, total] = await this.chatRepo.findAndCount({
       where: [
         {
           user1: { id: loggedUser.id },
@@ -59,10 +59,11 @@ export class ListChatsQueryHandler
     });
 
     return new Ok({
-      items: items,
+      items: chats,
       page,
       limit,
-      total: items.length,
+      total: chats.length,
+      hasMore: page * limit < total,
     });
   }
 }

@@ -20,5 +20,9 @@ export abstract class PaginatedResponseDto<T> {
   @ApiProperty({ example: 0, description: 'Page number' })
   readonly page: number;
 
+  @Expose()
+  @ApiProperty({ example: false, description: 'Whether there are more items' })
+  readonly hasMore: boolean;
+
   public abstract items: T[];
 }

@@ -27,7 +27,13 @@ export class ListEquipmentsHttpController {
     type: ApiErrorResponse,
   })
   async execute(@Query() qry: ListEquipmentsReqDto) {
-    const query = new ListEquipmentsQuery(qry);
+    const query = new ListEquipmentsQuery({
+      title: qry.title,
+      userId: qry.userId,
+      page: qry.page,
+      limit: qry.limit,
+      order: qry.order,
+    });
 
     const result = await this.queryBus.execute(query);
 
