@@ -76,7 +76,7 @@ export function RegisterPage() {
 	}
 
 	return (
-		<Container>
+		<Container className="flex items-center justify-center">
 			<form
 				onSubmit={handleSubmit(onSubmit)}
 				className="flex w-96 flex-col gap-4 items-stretch p-12 mx-auto"

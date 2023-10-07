@@ -106,10 +106,10 @@ export default function EquipmentPage() {
 					className="w-full h-96 object-cover rounded-md"
 				/>
 			</div>
-			<div className="w-1/2 p-12 flex flex-col justify-between">
+			<div className="w-1/2 p-12 flex flex-col gap-16">
 				<div>
 					<h1 className="text-2xl font-bold">{equipment.title}</h1>
-					<p className="text-gray-500 mb-4">
+					<p className="text-gray-500 mb-4 break-all">
 						{equipment.description}
 					</p>
 					<p className="text-gray-500 mb-4">

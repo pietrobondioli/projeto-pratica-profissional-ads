@@ -75,7 +75,7 @@ export function LoginPage() {
 	}
 
 	return (
-		<Container>
+		<Container className="flex items-center justify-center">
 			<form
 				onSubmit={handleSubmit(onSubmit)}
 				className="flex  flex-col gap-4 items-stretch p-12 w-96 mx-auto"
