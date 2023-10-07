@@ -1,9 +1,9 @@
+import { NotAuthorizedError } from '#/be/lib/exceptions/not-authorized.error';
 import { QueryResult } from '@nestjs-architects/typed-cqrs';
 import { Inject } from '@nestjs/common';
 import { IInferredQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Err, Ok } from 'neverthrow';
 import { UserRepo } from '../../db/user.model';
-import { UserNotFoundError } from '../../domain/errors/user-not-found.error';
 import { USER_REPO } from '../../user.di-tokens';
 import { GetMeQuery } from './get-me.query';
 
@@ -25,7 +25,7 @@ export class GetMeQueryHandler implements IInferredQueryHandler<GetMeQuery> {
     });
 
     if (!user) {
-      return new Err(new UserNotFoundError());
+      return new Err(new NotAuthorizedError());
     }
 
     return new Ok(user);

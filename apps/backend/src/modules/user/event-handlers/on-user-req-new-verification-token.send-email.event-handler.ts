@@ -1,3 +1,4 @@
+import { AppConfig } from '#/be/config/env/env.types';
 import { AwsSESMailService } from '#/be/lib/services/mail/aws-ses-mail.service';
 import { Inject, Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
@@ -11,6 +12,7 @@ export class OnUserReqNewVerificationTokenSendEmailEventHandler {
     @Inject(USER_REPO)
     private readonly userRepo: UserRepo,
     private readonly mailService: AwsSESMailService,
+    private readonly appConfig: AppConfig,
   ) {}
 
   @OnEvent(UserRequestedEmailConfirmationTokenEvent.name, {
@@ -19,8 +21,11 @@ export class OnUserReqNewVerificationTokenSendEmailEventHandler {
   })
   async handle(event: UserRequestedEmailConfirmationTokenEvent): Promise<any> {
     try {
-      const user = await this.userRepo.findOneBy({
-        id: event.payload.userId,
+      const user = await this.userRepo.findOne({
+        where: {
+          id: event.payload.userId,
+        },
+        relations: ['userProfile'],
       });
 
       if (!user) {
@@ -32,10 +37,10 @@ export class OnUserReqNewVerificationTokenSendEmailEventHandler {
         subject: 'Confirm your email',
         html: `
         <p>
-          Please confirm your email by clicking on the link below.
+          Olá, ${user?.userProfile.firstName}! Por favor, confirme seu email clicando no link abaixo.
         </p>
         <p>
-          <a href="/confirm-email?token=${event.payload.token.token}">Confirm email</a>
+          <a href="${this.appConfig.appUrl}/confirm-email/${event.payload.token.token}">Confirmar email</a>
         </p>
       `,
       });

@@ -65,4 +65,10 @@ export class GetMeResDto extends ResponseBase {
     description: 'The profile of the user',
   })
   readonly userProfile: UserProfileDto;
+
+  @Expose()
+  @ApiProperty({
+    description: 'If the email of the user is confirmed',
+  })
+  readonly confirmedEmail: boolean;
 }

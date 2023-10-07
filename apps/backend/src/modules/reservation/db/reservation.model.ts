@@ -18,6 +18,9 @@ export class ReservationModel extends BaseModel implements Reservation {
   @ManyToOne(() => UserModel, (user) => user.reservations)
   renter: UserModel;
 
+  @ManyToOne(() => UserModel, (user) => user.reservations)
+  rentee: UserModel;
+
   @Column()
   startDate: Date;
 

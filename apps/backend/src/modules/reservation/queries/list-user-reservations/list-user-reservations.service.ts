@@ -30,10 +30,8 @@ export class ListUserReservationsQueryHandler
           },
         },
         {
-          equipment: {
-            owner: {
-              id: loggedUser.id,
-            },
+          rentee: {
+            id: loggedUser.id,
           },
         },
       ],
@@ -42,7 +40,7 @@ export class ListUserReservationsQueryHandler
       order: {
         [order.field]: order.param,
       },
-      relations: ['equipment', 'renter', 'payment'],
+      relations: ['equipment', 'renter', 'rentee', 'payment'],
     });
 
     return new Ok({

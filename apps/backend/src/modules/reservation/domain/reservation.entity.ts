@@ -15,6 +15,8 @@ export class Reservation extends AppEntityBase {
 
   renter: User;
 
+  rentee: User;
+
   startDate: Date;
 
   endDate: Date;

@@ -32,6 +32,7 @@ import { OnPasswordChangeSendEmailEventHandler } from './event-handlers/on-passw
 import { OnUserConfirmEmailSendEmailEventHandler } from './event-handlers/on-user-confirm-email.send-email.event-handler';
 import { OnUserCreatedCreateProfileEventHandler } from './event-handlers/on-user-created.create-profile.event-handler';
 import { OnUserCreatedSendEmailEventHandler } from './event-handlers/on-user-created.send-email.event-handler';
+import { OnUserCreatedSendVerificationTokenEmailEventHandler } from './event-handlers/on-user-created.send-verification-token-email.event-handler';
 import { OnUserReqEmailChangeSendEmailEventHandler } from './event-handlers/on-user-req-email-change.send-email.event-handler';
 import { OnUserReqNewVerificationTokenSendEmailEventHandler } from './event-handlers/on-user-req-new-verification-token.send-email.event-handler';
 import { OnUserReqPasswordChangeSendEmailEventHandler } from './event-handlers/on-user-req-password-change.send-email.event-handler';
@@ -101,6 +102,7 @@ const eventHandlers: Provider[] = [
   OnUserReqEmailChangeSendEmailEventHandler,
   OnUserReqNewVerificationTokenSendEmailEventHandler,
   OnUserReqPasswordChangeSendEmailEventHandler,
+  OnUserCreatedSendVerificationTokenEmailEventHandler,
 ];
 
 @Module({

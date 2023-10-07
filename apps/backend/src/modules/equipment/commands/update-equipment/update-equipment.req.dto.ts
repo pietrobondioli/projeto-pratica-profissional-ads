@@ -20,7 +20,7 @@ export class UpdateEquipmentDto {
   readonly title: string;
 
   @IsOptional()
-  @MaxLength(512)
+  @MaxLength(2048)
   @MinLength(5)
   @ApiPropertyOptional({
     example: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',

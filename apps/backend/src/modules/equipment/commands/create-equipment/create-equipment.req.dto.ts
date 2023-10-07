@@ -20,7 +20,7 @@ export class CreateEquipmentRequestDto {
     example: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     description: 'Equipment description',
   })
-  @MaxLength(512)
+  @MaxLength(2048)
   @MinLength(5)
   readonly description: string;
 

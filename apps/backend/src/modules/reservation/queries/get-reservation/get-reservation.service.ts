@@ -33,14 +33,12 @@ export class GetReservationQueryHandler
         },
         {
           id: reservationId,
-          equipment: {
-            owner: {
-              id: loggedUser.id,
-            },
+          rentee: {
+            id: loggedUser.id,
           },
         },
       ],
-      relations: ['equipment', 'renter', 'payment'],
+      relations: ['equipment', 'renter', 'rentee', 'payment'],
     });
 
     if (!reservation) {

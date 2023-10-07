@@ -52,9 +52,7 @@ export class CreateReservationCommandHandler
         where: {
           id: equipmentId,
         },
-        relations: {
-          reservations: true,
-        },
+        relations: ['reservations', 'owner'],
       });
 
       if (!equipment) {
@@ -83,6 +81,7 @@ export class CreateReservationCommandHandler
       const reservation = new Reservation(loggedUser.id);
       reservation.equipment = equipment;
       reservation.renter = user;
+      reservation.rentee = equipment.owner;
       reservation.startDate = startDate;
       reservation.endDate = endDate;
       reservation.totalPrice = this.calculateTotalPrice(

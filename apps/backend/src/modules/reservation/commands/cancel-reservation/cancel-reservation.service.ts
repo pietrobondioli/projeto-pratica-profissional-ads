@@ -35,7 +35,7 @@ export class CancelReservationCommandHandler
           },
           {
             id: reservationId,
-            equipment: { owner: { id: loggedUser.id } },
+            rentee: { id: loggedUser.id },
           },
         ],
       });

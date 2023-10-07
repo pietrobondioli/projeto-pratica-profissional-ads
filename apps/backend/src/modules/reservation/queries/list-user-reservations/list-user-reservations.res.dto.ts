@@ -30,6 +30,14 @@ class ReservationDto extends ResponseBase {
   renter: UserDto;
 
   @Expose()
+  @Type(() => UserDto)
+  @ApiProperty({
+    type: UserDto,
+    description: 'Rentee id object',
+  })
+  rentee: UserDto;
+
+  @Expose()
   @ApiProperty({
     example: '2021-01-01T00:00:00.000Z',
     description: 'Start date',
