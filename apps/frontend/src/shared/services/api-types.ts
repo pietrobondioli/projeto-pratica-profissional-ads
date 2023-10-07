@@ -86,6 +86,7 @@ export type Reservation = {
 	totalPrice: number;
 	paymentStatus: 'Pending' | 'Paid' | 'Failed';
 	payment: BaseEntity;
+	feedbacks: BaseEntity[];
 } & BaseEntity;
 
 export type Equipment = {

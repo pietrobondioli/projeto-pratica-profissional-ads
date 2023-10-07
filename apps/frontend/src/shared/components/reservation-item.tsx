@@ -1,5 +1,6 @@
 import { ROUTES } from '#/fe/config/routes';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { isPast } from 'date-fns';
 import { useState } from 'react';
 import { FaExternalLinkAlt } from 'react-icons/fa';
 import { generatePath, useNavigate } from 'react-router-dom';
@@ -7,6 +8,7 @@ import { toast } from 'react-toastify';
 import { useLoggedUser } from '../hooks/useLoggedUser';
 import { cancelReservation, getEquipment, getUser } from '../services/api';
 import { Reservation } from '../services/api-types';
+import FeedbackModal from './feedback-modal';
 import PaymentModal from './payment-modal';
 import StartChatModal from './start-chat-modal';
 
@@ -24,6 +26,7 @@ export function ReservationItem({
 	const navigate = useNavigate();
 
 	const [paymentModalIsOpen, setPaymentModalIsOpen] = useState(false);
+	const [feedbackModalIsOpen, setFeedbackModalIsOpen] = useState(false);
 	const [startChatModalIsOpen, setStartChatModalIsOpen] = useState(false);
 
 	const { data: equipment } = useQuery(
@@ -73,6 +76,12 @@ export function ReservationItem({
 			<PaymentModal
 				isOpen={paymentModalIsOpen}
 				onClose={() => setPaymentModalIsOpen(false)}
+				reservationId={reservation.id}
+				invalidateReservations={refetchItems}
+			/>
+			<FeedbackModal
+				isOpen={feedbackModalIsOpen}
+				onClose={() => setFeedbackModalIsOpen(false)}
 				reservationId={reservation.id}
 				invalidateReservations={refetchItems}
 			/>
@@ -129,6 +138,16 @@ export function ReservationItem({
 							Pagar
 						</button>
 					)}
+					{reservation.feedbacks.length === 0 &&
+						reservation.paymentStatus === 'Paid' &&
+						isPast(new Date(reservation.endDate)) && (
+							<button
+								className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+								onClick={() => setFeedbackModalIsOpen(true)}
+							>
+								Dar Feedback
+							</button>
+						)}
 					<button
 						className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
 						onClick={() => setStartChatModalIsOpen(true)}
