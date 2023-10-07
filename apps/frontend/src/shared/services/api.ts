@@ -23,7 +23,7 @@ export async function apiFetch(
 ): Promise<Response> {
 	const authToken = useLoggedUserStore.getState().state.jwtToken;
 
-	const response = await apiFetch(`${API_URL}${url}`, {
+	const response = await fetch(`${API_URL}${url}`, {
 		...options,
 		headers: {
 			'Content-Type': 'application/json',
@@ -41,7 +41,7 @@ export async function apiFetch(
 }
 
 export async function login(email: string, password: string) {
-	const response = await apiFetch(`${API_URL}/auth/login`, {
+	const response = await apiFetch(`/auth/login`, {
 		method: 'POST',
 		body: JSON.stringify({ email, password }),
 	});
@@ -56,7 +56,7 @@ export async function login(email: string, password: string) {
 }
 
 export async function createUser(body: { email: string; password: string }) {
-	const response = await apiFetch(`${API_URL}/users`, {
+	const response = await apiFetch(`/users`, {
 		method: 'POST',
 		body: JSON.stringify(body),
 	});
@@ -71,7 +71,7 @@ export async function createUser(body: { email: string; password: string }) {
 }
 
 export async function getUser(userId: string) {
-	const response = await apiFetch(`${API_URL}/users/${userId}`);
+	const response = await apiFetch(`/users/${userId}`);
 
 	if (!response.ok) {
 		const error = await response.json();
@@ -83,7 +83,7 @@ export async function getUser(userId: string) {
 }
 
 export async function getMe() {
-	const response = await apiFetch(`${API_URL}/users/me`);
+	const response = await apiFetch(`/users/me`);
 
 	if (!response.ok) {
 		const error = await response.json();
@@ -95,16 +95,13 @@ export async function getMe() {
 }
 
 export async function requestConfirmAccountToken(body: { email: string }) {
-	const response = await apiFetch(
-		`${API_URL}/users/request-confirm-account-token`,
-		{
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify(body),
+	const response = await apiFetch(`/users/request-confirm-account-token`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
 		},
-	);
+		body: JSON.stringify(body),
+	});
 
 	if (!response.ok) {
 		const error = await response.json();
@@ -113,7 +110,7 @@ export async function requestConfirmAccountToken(body: { email: string }) {
 }
 
 export async function confirmAccount(body: { token: string }) {
-	const response = await apiFetch(`${API_URL}/users/confirm-account`, {
+	const response = await apiFetch(`/users/confirm-account`, {
 		method: 'GET',
 		body: JSON.stringify(body),
 	});
@@ -128,7 +125,7 @@ export async function confirmAccount(body: { token: string }) {
 }
 
 export async function requestChangeEmail(body: { newEmail: string }) {
-	const response = await apiFetch(`${API_URL}/users/request-change-email`, {
+	const response = await apiFetch(`/users/request-change-email`, {
 		method: 'POST',
 		body: JSON.stringify(body),
 	});
@@ -140,7 +137,7 @@ export async function requestChangeEmail(body: { newEmail: string }) {
 }
 
 export async function changeEmail(body: { email: string; newEmail: string }) {
-	const response = await apiFetch(`${API_URL}/users/change-email`, {
+	const response = await apiFetch(`/users/change-email`, {
 		method: 'POST',
 		body: JSON.stringify(body),
 	});
@@ -152,13 +149,10 @@ export async function changeEmail(body: { email: string; newEmail: string }) {
 }
 
 export async function requestChangePassword(body: { email: string }) {
-	const response = await apiFetch(
-		`${API_URL}/users/request-change-password`,
-		{
-			method: 'POST',
-			body: JSON.stringify(body),
-		},
-	);
+	const response = await apiFetch(`/users/request-change-password`, {
+		method: 'POST',
+		body: JSON.stringify(body),
+	});
 
 	if (!response.ok) {
 		const error = await response.json();
@@ -170,7 +164,7 @@ export async function changePassword(body: {
 	email: string;
 	newPassword: string;
 }) {
-	const response = await apiFetch(`${API_URL}/users/change-password`, {
+	const response = await apiFetch(`/users/change-password`, {
 		method: 'POST',
 		body: JSON.stringify(body),
 	});
@@ -189,7 +183,7 @@ export async function updateUserProfile(body: {
 	description?: string;
 	profilePictureId?: string;
 }) {
-	const response = await apiFetch(`${API_URL}/users/profile`, {
+	const response = await apiFetch(`/users/profile`, {
 		method: 'PATCH',
 		body: JSON.stringify(body),
 	});
@@ -208,7 +202,7 @@ export async function createReservation(request: {
 	startDate: string;
 	endDate: string;
 }) {
-	const response = await apiFetch(`${API_URL}/reservations`, {
+	const response = await apiFetch(`/reservations`, {
 		method: 'POST',
 		body: JSON.stringify(request),
 	});
@@ -223,12 +217,9 @@ export async function createReservation(request: {
 }
 
 export async function cancelReservation(reservationId: string) {
-	const response = await apiFetch(
-		`${API_URL}/reservations/${reservationId}`,
-		{
-			method: 'DELETE',
-		},
-	);
+	const response = await apiFetch(`/reservations/${reservationId}`, {
+		method: 'DELETE',
+	});
 
 	if (!response.ok) {
 		const error = await response.json();
@@ -237,7 +228,7 @@ export async function cancelReservation(reservationId: string) {
 }
 
 export async function getReservation(id: string) {
-	const response = await apiFetch(`${API_URL}/reservations/${id}`);
+	const response = await apiFetch(`/reservations/${id}`);
 
 	if (!response.ok) {
 		const error = await response.json();
@@ -252,7 +243,7 @@ export async function listReservations(request: PaginatedReq) {
 	const { limit, page, order } = request;
 
 	const response = await apiFetch(
-		`${API_URL}/reservations?limit=${limit}&page=${page}&orderBy=${order?.field}:${order?.param}`,
+		`/reservations?limit=${limit}&page=${page}&orderBy=${order?.field}:${order?.param}`,
 	);
 
 	if (!response.ok) {
@@ -268,7 +259,7 @@ export async function createChat(request: {
 	withUserId: string;
 	message: string;
 }) {
-	const response = await apiFetch(`${API_URL}/chats`, {
+	const response = await apiFetch(`/chats`, {
 		method: 'POST',
 		body: JSON.stringify(request),
 	});
@@ -288,7 +279,7 @@ export async function sendMessage(
 		message: string;
 	},
 ) {
-	const response = await apiFetch(`${API_URL}/chats/${chatId}/send-message`, {
+	const response = await apiFetch(`/chats/${chatId}/send-message`, {
 		method: 'POST',
 		body: JSON.stringify(request),
 	});
@@ -303,7 +294,7 @@ export async function sendMessage(
 }
 
 export async function getChat(chatId: string) {
-	const response = await apiFetch(`${API_URL}/chats/${chatId}`);
+	const response = await apiFetch(`/chats/${chatId}`);
 
 	if (!response.ok) {
 		const error = await response.json();
@@ -322,7 +313,7 @@ export async function listChats(
 	const { targetUserSearch, limit, page, order } = request;
 
 	const response = await apiFetch(
-		`${API_URL}/chats?targetUserSearch=${
+		`/chats?targetUserSearch=${
 			targetUserSearch || ''
 		}&limit=${limit}&page=${page}&orderBy=${order?.field}:${order?.param}`,
 	);
@@ -342,7 +333,7 @@ export async function createEquipment(request: {
 	photoId: string;
 	pricePerDay: number;
 }) {
-	const response = await apiFetch(`${API_URL}/equipments`, {
+	const response = await apiFetch(`/equipments`, {
 		method: 'POST',
 		body: JSON.stringify(request),
 	});
@@ -365,7 +356,7 @@ export async function updateEquipment(
 		pricePerDay?: number;
 	},
 ) {
-	const response = await apiFetch(`${API_URL}/equipments/${equipmentId}`, {
+	const response = await apiFetch(`/equipments/${equipmentId}`, {
 		method: 'PATCH',
 		body: JSON.stringify(request),
 	});
@@ -380,7 +371,7 @@ export async function updateEquipment(
 }
 
 export async function deleteEquipment(equipmentId: string) {
-	const response = await apiFetch(`${API_URL}/equipments/${equipmentId}`, {
+	const response = await apiFetch(`/equipments/${equipmentId}`, {
 		method: 'DELETE',
 	});
 
@@ -391,7 +382,7 @@ export async function deleteEquipment(equipmentId: string) {
 }
 
 export async function getEquipment(equipmentId: string) {
-	const response = await apiFetch(`${API_URL}/equipments/${equipmentId}`);
+	const response = await apiFetch(`/equipments/${equipmentId}`);
 
 	if (!response.ok) {
 		const error = await response.json();
@@ -411,7 +402,7 @@ export async function listEquipments(
 	const { title = '', userId = '', limit, page, order } = request;
 
 	const response = await apiFetch(
-		`${API_URL}/equipments?title=${title}&userId=${userId}&limit=${limit}&page=${page}${
+		`/equipments?title=${title}&userId=${userId}&limit=${limit}&page=${page}${
 			order ? `&orderBy=${order?.field}:${order?.param}` : ''
 		}`,
 	);
@@ -435,7 +426,7 @@ export async function getEquipmentAvailability(
 	const { startDate, endDate } = request;
 
 	const response = await apiFetch(
-		`${API_URL}/equipments/${equipmentId}/availability?startDate=${startDate}&endDate=${endDate}`,
+		`/equipments/${equipmentId}/availability?startDate=${startDate}&endDate=${endDate}`,
 	);
 
 	if (!response.ok) {
@@ -455,7 +446,7 @@ export async function createFeedback(request: {
 	rating: number;
 	comment: string;
 }) {
-	const response = await apiFetch(`${API_URL}/feedbacks`, {
+	const response = await apiFetch(`/feedbacks`, {
 		method: 'POST',
 		body: JSON.stringify(request),
 	});
@@ -476,7 +467,7 @@ export async function updateFeedback(
 		comment: string;
 	},
 ) {
-	const response = await apiFetch(`${API_URL}/feedbacks/${feedbackId}`, {
+	const response = await apiFetch(`/feedbacks/${feedbackId}`, {
 		method: 'PATCH',
 		body: JSON.stringify(request),
 	});
@@ -491,7 +482,7 @@ export async function updateFeedback(
 }
 
 export async function deleteFeedback(feedbackId: string) {
-	const response = await apiFetch(`${API_URL}/feedbacks/${feedbackId}`, {
+	const response = await apiFetch(`/feedbacks/${feedbackId}`, {
 		method: 'DELETE',
 	});
 
@@ -502,7 +493,7 @@ export async function deleteFeedback(feedbackId: string) {
 }
 
 export async function getFeedback(feedbackId: string) {
-	const response = await apiFetch(`${API_URL}/feedback/${feedbackId}`);
+	const response = await apiFetch(`/feedback/${feedbackId}`);
 
 	if (!response.ok) {
 		const error = await response.json();
@@ -521,7 +512,7 @@ export async function listFeedbacks(
 	const { userId, limit, page, order } = request;
 
 	const response = await apiFetch(
-		`${API_URL}/feedback?userId=${
+		`/feedback?userId=${
 			userId || ''
 		}&limit=${limit}&page=${page}&orderBy=${order?.field}:${order?.param}`,
 	);
@@ -539,7 +530,7 @@ export async function uploadMedia(file: File) {
 	const formData = new FormData();
 	formData.append('file', file);
 
-	const response = await apiFetch(`${API_URL}/media/upload`, {
+	const response = await apiFetch(`/media/upload`, {
 		method: 'POST',
 
 		body: formData,
@@ -555,7 +546,7 @@ export async function uploadMedia(file: File) {
 }
 
 export async function getMedia(mediaId: string) {
-	const response = await apiFetch(`${API_URL}/media/${mediaId}`);
+	const response = await apiFetch(`/media/${mediaId}`);
 
 	if (!response.ok) {
 		const error = await response.json();
@@ -567,12 +558,9 @@ export async function getMedia(mediaId: string) {
 }
 
 export async function readNotification(notificationId: string) {
-	const response = await apiFetch(
-		`${API_URL}/notifications/${notificationId}/read`,
-		{
-			method: 'PATCH',
-		},
-	);
+	const response = await apiFetch(`/notifications/${notificationId}/read`, {
+		method: 'PATCH',
+	});
 
 	if (!response.ok) {
 		const error = await response.json();
@@ -582,9 +570,7 @@ export async function readNotification(notificationId: string) {
 
 export async function getUserNotifications() {
 	// TODO: add a infinite scroll to notification page using this query
-	const response = await apiFetch(
-		`${API_URL}/notifications?limit=100&page=1`,
-	);
+	const response = await apiFetch(`/notifications?limit=100&page=1`);
 
 	if (!response.ok) {
 		const error = await response.json();
