@@ -51,6 +51,8 @@ export class PayForReservationCommandHandler
       reservation.payment = createdPayment;
       reservation.paymentStatus = PaymentStatus.PAID;
 
+      await this.reservationRepo.save(reservation);
+
       PaymentAggregate.publishEvents(this.eventEmitter);
 
       return new Ok(createdPayment.id);

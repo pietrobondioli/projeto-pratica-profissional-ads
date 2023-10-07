@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { useLoggedUser } from '../hooks/useLoggedUser';
 import { cancelReservation, getEquipment, getUser } from '../services/api';
 import { Reservation } from '../services/api-types';
+import PaymentModal from './payment-modal';
 import StartChatModal from './start-chat-modal';
 
 type ReservationItemProps = {
@@ -22,6 +23,7 @@ export function ReservationItem({
 
 	const navigate = useNavigate();
 
+	const [paymentModalIsOpen, setPaymentModalIsOpen] = useState(false);
 	const [startChatModalIsOpen, setStartChatModalIsOpen] = useState(false);
 
 	const { data: equipment } = useQuery(
@@ -68,6 +70,12 @@ export function ReservationItem({
 
 	return (
 		<>
+			<PaymentModal
+				isOpen={paymentModalIsOpen}
+				onClose={() => setPaymentModalIsOpen(false)}
+				reservationId={reservation.id}
+				invalidateReservations={refetchItems}
+			/>
 			<StartChatModal
 				isOpen={startChatModalIsOpen}
 				onClose={() => setStartChatModalIsOpen(false)}
@@ -112,13 +120,32 @@ export function ReservationItem({
 						Status do Pagamento: {reservation.paymentStatus}
 					</p>
 				</div>
-				<button
-					className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-					onClick={() => handleCancel(reservation.id)}
-				>
-					Cancel
-				</button>
-			</div>{' '}
+				<div className="flex gap-4 flex-col">
+					{reservation.paymentStatus === 'Pending' && (
+						<button
+							className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+							onClick={() => setPaymentModalIsOpen(true)}
+						>
+							Pagar
+						</button>
+					)}
+					<button
+						className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+						onClick={() => setStartChatModalIsOpen(true)}
+					>
+						Falar com o{' '}
+						{loggedUserIsOwner ? 'Locatário' : 'Proprietário'}
+					</button>
+					{reservation.paymentStatus === 'Pending' && (
+						<button
+							className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+							onClick={() => handleCancel(reservation.id)}
+						>
+							Cancel
+						</button>
+					)}
+				</div>
+			</div>
 		</>
 	);
 }

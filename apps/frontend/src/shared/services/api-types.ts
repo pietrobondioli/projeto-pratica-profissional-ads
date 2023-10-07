@@ -75,6 +75,8 @@ export type Notification = {
 	status: 'Read' | 'Unread';
 } & BaseEntity;
 
+export type PaymentMethod = 'CreditCard' | 'Pix';
+
 export type Reservation = {
 	equipment: BaseEntity;
 	renter: BaseEntity;

@@ -11,6 +11,7 @@ import {
 	Notification,
 	PaginatedReq,
 	PaginatedResponse,
+	PaymentMethod,
 	Reservation,
 	User,
 } from './api-types';
@@ -164,6 +165,19 @@ export async function listReservations(request: PaginatedReq) {
 	return await apiFetch<PaginatedResponse<Reservation>>(
 		`/reservations?limit=${limit}&page=${page}&orderBy=${order?.field}:${order?.param}`,
 	);
+}
+
+export async function payForReservation({
+	reservationId,
+	paymentMethod,
+}: {
+	reservationId: string;
+	paymentMethod: PaymentMethod;
+}) {
+	return await apiFetch<IdResponse>(`/payments`, {
+		method: 'POST',
+		body: JSON.stringify({ reservationId, paymentMethod }),
+	});
 }
 
 export async function createChat(request: {
