@@ -42,8 +42,8 @@ import { UserModule } from './user/user.module';
     MediaModule,
     EquipmentModule,
     ReservationModule,
-    FeedbackModule,
     PaymentModule,
+    FeedbackModule,
     NotificationModule,
   ],
 })

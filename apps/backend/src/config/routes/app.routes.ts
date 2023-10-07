@@ -3,6 +3,7 @@ const authRoot = 'auth';
 const usersRoot = 'users';
 const equipmentRoot = 'equipments';
 const reservationRoot = 'reservations';
+const paymentRoot = 'payments';
 const feedbackRoot = 'feedbacks';
 const chatRoot = 'chats';
 const notificationRoot = 'notifications';
@@ -63,6 +64,13 @@ export const routesV1 = {
     queries: {
       get: `/${reservationRoot}/:reservationId`,
       list: `/${reservationRoot}`,
+    },
+  },
+  payment: {
+    tags: ['Payment'],
+    root: 'payment',
+    commands: {
+      pay_for_reservation: `/${paymentRoot}`,
     },
   },
   feedback: {

@@ -4,14 +4,15 @@ import { DataSource } from 'typeorm';
 
 import { TYPEORM_DATA_SOURCE } from '#/be/config/database/database.providers';
 
+import { ReservationModule } from '../reservation/reservation.module';
+import { PayForReservationHttpController } from './commands/pay-for-reservation/pay-for-reservation.http.controller';
+import { PayForReservationCommandHandler } from './commands/pay-for-reservation/pay-for-reservation.service';
 import { PaymentModel } from './db/payment.model';
 import { PAYMENT_REPO } from './payment.di-tokens';
 
-const commandHandlers: Provider[] = [];
+const commandHandlers: Provider[] = [PayForReservationCommandHandler];
 
 const queryHandlers: Provider[] = [];
-
-const mappers: Provider[] = [];
 
 const repositories: Provider[] = [
   {
@@ -23,15 +24,9 @@ const repositories: Provider[] = [
 ];
 
 @Module({
-  imports: [CqrsModule],
-  controllers: [],
-  providers: [
-    Logger,
-    ...repositories,
-    ...commandHandlers,
-    ...queryHandlers,
-    ...mappers,
-  ],
+  imports: [CqrsModule, ReservationModule],
+  controllers: [PayForReservationHttpController],
+  providers: [Logger, ...repositories, ...commandHandlers, ...queryHandlers],
   exports: [...repositories],
 })
 export class PaymentModule {}
