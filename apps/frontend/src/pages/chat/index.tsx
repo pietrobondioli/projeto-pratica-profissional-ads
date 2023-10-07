@@ -5,9 +5,9 @@ import { Container } from '#/fe/shared/components/container';
 import { FormItem, FormLabel } from '#/fe/shared/components/form';
 import { Input } from '#/fe/shared/components/input';
 import { Button } from '#/fe/shared/components/ui/button';
+import { useLoggedUser } from '#/fe/shared/hooks/useLoggedUser';
 import { getChat, listChats, sendMessage } from '#/fe/shared/services/api';
 import { Chat } from '#/fe/shared/services/api-types';
-import { useLoggedUser } from '#/fe/shared/state/logged-user';
 import { toast } from 'react-toastify';
 
 function ChatList({

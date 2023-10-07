@@ -2,7 +2,7 @@ import { ROUTES } from '#/fe/config/routes';
 import { Container } from '#/fe/shared/components/container';
 import { EquipmentList } from '#/fe/shared/components/equipment-list';
 import { Button } from '#/fe/shared/components/ui/button';
-import { useLoggedUser } from '#/fe/shared/state/logged-user';
+import { useLoggedUser } from '#/fe/shared/hooks/useLoggedUser';
 import { generatePath, useNavigate } from 'react-router-dom';
 
 const UserEquipmentsPage = () => {

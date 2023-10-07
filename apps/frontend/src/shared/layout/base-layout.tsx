@@ -1,26 +1,38 @@
 import { ROUTES } from '#/fe/config/routes';
+import { FaUserAlt } from 'react-icons/fa';
 import { Outlet, useNavigate } from 'react-router-dom';
+import Avatar from '../components/avatar';
 import {
+	MenuIcon,
 	MenuItem,
 	MenuItemList,
-	MenuTitle,
 	NavigationMenu,
 } from '../components/navigation-menu';
+import { useLoggedUser } from '../hooks/useLoggedUser';
+import { useMediaUrl } from '../hooks/useMedia';
 import { useIsLogged, useLoggedUserActions } from '../state/logged-user';
 
 const NavBar = () => {
 	const navigate = useNavigate();
 	const userIsLogged = useIsLogged();
+	const loggedUser = useLoggedUser();
+	const userPictureUrl = useMediaUrl(
+		loggedUser?.userProfile.profilePicture?.id,
+	);
 	const { LOGOUT } = useLoggedUserActions();
 
 	return (
-		<div className="flex justify-between items-center p-4 bg-white shadow-md w-full fixed">
+		<div className="flex justify-between items-center p-4 bg-white shadow-md w-full fixed z-50">
 			<a href={ROUTES.HOME} className="text-2xl font-bold">
 				EquipRent
 			</a>
 			{userIsLogged ? (
 				<NavigationMenu>
-					<MenuTitle>Menu</MenuTitle>
+					<MenuIcon>
+						<Avatar src={userPictureUrl} alt="Profile Picture">
+							<FaUserAlt />
+						</Avatar>
+					</MenuIcon>
 					<MenuItemList>
 						<MenuItem
 							onSelect={() => navigate(ROUTES.USER.MY_PROFILE)}

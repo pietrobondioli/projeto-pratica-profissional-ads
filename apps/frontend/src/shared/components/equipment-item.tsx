@@ -1,4 +1,5 @@
 import { ROUTES } from '#/fe/config/routes';
+import { useLoggedUser } from '#/fe/shared/hooks/useLoggedUser';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
@@ -6,7 +7,6 @@ import { generatePath, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { deleteEquipment, getMedia, getUser } from '../services/api';
 import { Equipment } from '../services/api-types';
-import { useLoggedUser } from '../state/logged-user';
 import {
 	Card,
 	CardContent,
@@ -95,19 +95,19 @@ export const EquipmentItem = ({
 				<div></div>
 			)}
 			<Card
-				className="cursor-pointer w-full h-full grid grid-flow-row"
+				className="cursor-pointer w-full h-full grid grid-flow-row group"
 				onClick={() => goToEquipment(equipment.id)}
 			>
 				<CardHeader className="flex flex-col w-full min-w-0">
-					<div className="rounded-sm overflow-hidden m-8 flex items-center justify-center max-w-full">
+					<div className="m-8 max-w-full">
 						{isLoading ? (
 							<Skeleton />
 						) : (
-							<div className="w-full h-[150px] flex">
+							<div className="w-full h-[150px] flex place-content-center rounded-sm overflow-hidden">
 								<img
 									src={media?.url}
 									alt="Equipment Picture"
-									className="object-cover max-w-full max-h-full self-center"
+									className="object-cover max-w-full max-h-full self-center group-hover:scale-105"
 								/>
 							</div>
 						)}

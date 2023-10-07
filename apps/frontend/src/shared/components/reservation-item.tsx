@@ -3,9 +3,9 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { FaExternalLinkAlt } from 'react-icons/fa';
 import { generatePath, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { useLoggedUser } from '../hooks/useLoggedUser';
 import { cancelReservation, getEquipment, getUser } from '../services/api';
 import { Reservation } from '../services/api-types';
-import { useLoggedUser } from '../state/logged-user';
 
 type ReservationItemProps = {
 	reservation: Reservation;

@@ -4,30 +4,15 @@ import { immer } from 'zustand/middleware/immer';
 
 const STORAGE_KEY = 'LoggedUser';
 
-type User = {
-	id: string;
-	email: string;
-	userProfile: {
-		firstName: string;
-		lastName: string;
-		contact: string;
-		address: string;
-		description: string;
-		profilePicture?: {
-			id: string;
-		};
-	};
-};
-
 type LoggedUserState = {
 	isLogged: boolean;
 	jwtToken?: string;
-	user?: User;
+	userId?: string;
 };
 
 type LoggedUserActions = {
 	LOGIN: (token: string) => void;
-	SET_USER: (user: User) => void;
+	SET_USER_ID: (userId: string) => void;
 	LOGOUT: () => void;
 };
 
@@ -50,15 +35,15 @@ export const useLoggedUserStore = create<LoggedUserStore>()(
 						s.state.isLogged = true;
 						s.state.jwtToken = token;
 					}),
-				SET_USER: (user) =>
+				SET_USER_ID: (userId) =>
 					set((s) => {
-						s.state.user = user;
+						s.state.userId = userId;
 					}),
 				LOGOUT: () =>
 					set((s) => {
 						s.state.isLogged = false;
 						s.state.jwtToken = undefined;
-						s.state.user = undefined;
+						s.state.userId = undefined;
 					}),
 			},
 		})),
@@ -74,7 +59,7 @@ export const useLoggedUserActions = () => useLoggedUserStore((s) => s.actions);
 
 export const useLoggedUserState = () => useLoggedUserStore((s) => s.state);
 
-export const useLoggedUser = () => useLoggedUserStore((s) => s.state.user);
+export const useLoggedUserId = () => useLoggedUserStore((s) => s.state.userId);
 
 export const useIsLogged = () => useLoggedUserStore((s) => s.state.isLogged);
 

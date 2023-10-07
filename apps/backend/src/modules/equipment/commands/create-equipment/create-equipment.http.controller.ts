@@ -21,6 +21,7 @@ import { CreateEquipmentRequestDto } from './create-equipment.req.dto';
 export class CreateEquipmentHttpController {
   constructor(private readonly commandBus: CommandBus) {}
 
+  @Post(routesV1.equipment.commands.create)
   @ApiOperation({ summary: 'Creates a new equipment.' })
   @ApiResponse({
     status: HttpStatus.CREATED,
@@ -30,7 +31,6 @@ export class CreateEquipmentHttpController {
     status: HttpStatus.BAD_REQUEST,
     type: ApiErrorResponse,
   })
-  @Post(routesV1.equipment.commands.create)
   async execute(
     @Body() body: CreateEquipmentRequestDto,
     @AuthUser() user: UserPayload,

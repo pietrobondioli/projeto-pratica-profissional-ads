@@ -4,8 +4,9 @@ import { FormItem, FormLabel, FormMessage } from '#/fe/shared/components/form';
 import { HideableInput } from '#/fe/shared/components/hideable-input';
 import { Input } from '#/fe/shared/components/input';
 import { Button } from '#/fe/shared/components/ui/button';
-import { getMe, login } from '#/fe/shared/services/api';
+import { login } from '#/fe/shared/services/api';
 import { useLoggedUserActions } from '#/fe/shared/state/logged-user';
+import { getPayloadFromJWT } from '#/fe/shared/utils/decodeUserJwtPayload';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
@@ -39,7 +40,7 @@ export function LoginPage() {
 	});
 
 	const navigate = useNavigate();
-	const { LOGIN, SET_USER } = useLoggedUserActions();
+	const { LOGIN, LOGOUT, SET_USER_ID } = useLoggedUserActions();
 
 	const loginMutation = useMutation(
 		async (data: LoginData) => {
@@ -47,9 +48,11 @@ export function LoginPage() {
 
 			LOGIN(loginRes.token);
 
-			const user = await getMe();
+			const user = getPayloadFromJWT(loginRes.token);
 
-			SET_USER(user);
+			if (!user) throw new Error('Token inválido.');
+
+			SET_USER_ID(user?.id);
 
 			return {
 				jwtToken: loginRes.token,
@@ -65,6 +68,7 @@ export function LoginPage() {
 				navigate(ROUTES.HOME);
 			},
 			onError: (error: any) => {
+				LOGOUT();
 				toast.error(error.message);
 			},
 		},

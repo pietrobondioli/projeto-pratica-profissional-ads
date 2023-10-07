@@ -1,8 +1,8 @@
 import { ROUTES } from '#/fe/config/routes';
 import { Container } from '#/fe/shared/components/container';
 import { EquipmentForm } from '#/fe/shared/components/equipment-form';
+import { useLoggedUser } from '#/fe/shared/hooks/useLoggedUser';
 import { getEquipment } from '#/fe/shared/services/api';
-import { useLoggedUser } from '#/fe/shared/state/logged-user';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';

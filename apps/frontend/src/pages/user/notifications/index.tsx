@@ -1,9 +1,9 @@
 import { Container } from '#/fe/shared/components/container';
 import { NotificationItem } from '#/fe/shared/components/notification-item';
 import { Skeleton } from '#/fe/shared/components/ui/skeleton';
+import { useLoggedUser } from '#/fe/shared/hooks/useLoggedUser';
 import { getUserNotifications } from '#/fe/shared/services/api';
 import { Notification } from '#/fe/shared/services/api-types';
-import { useLoggedUser } from '#/fe/shared/state/logged-user';
 import { useQuery } from '@tanstack/react-query';
 
 export default function UserNotificationListPage() {
