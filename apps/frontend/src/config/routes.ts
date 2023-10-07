@@ -1,4 +1,6 @@
 export const ROUTES = {
+	ANY: '*',
+	NOT_FOUND: '/not-found',
 	HOME: '/',
 	LOGIN: '/login',
 	LOGOUT: '/logout',
