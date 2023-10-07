@@ -19,6 +19,7 @@ import UserReservationListPage from '../pages/user/reservations';
 import BaseLayout from '../shared/layout/base-layout';
 import { useIsLogged } from '../shared/state/logged-user';
 import ProtectedRoute from './ProtectedRoute';
+import { EnsureUserConfirmedEmail } from './behaviors/ensure-user-confirmed-email';
 
 function Router() {
 	const isUserLogged = useIsLogged();
@@ -54,42 +55,44 @@ function Router() {
 					<Route
 						element={<ProtectedRoute isAllowed={isUserLogged} />}
 					>
-						<Route
-							path={ROUTES.EQUIPMENT.CREATE}
-							element={<EquipmentCreatePage />}
-						/>
-						<Route
-							path={ROUTES.EQUIPMENT.EDIT}
-							element={<EquipmentEditPage />}
-						/>
-						<Route
-							path={ROUTES.USER.MY_PROFILE}
-							element={<UserProfilePage />}
-						/>
-						<Route
-							path={ROUTES.USER.PROFILE}
-							element={<UserProfilePage />}
-						/>
-						<Route
-							path={ROUTES.USER.EQUIPMENTS}
-							element={<UserEquipmentListPage />}
-						/>
-						<Route
-							path={ROUTES.USER.RESERVATIONS}
-							element={<UserReservationListPage />}
-						/>
-						<Route
-							path={ROUTES.USER.FEEDBACKS}
-							element={<UserFeedbackListPage />}
-						/>
-						<Route
-							path={ROUTES.USER.NOTIFICATIONS}
-							element={<UserNotificationListPage />}
-						/>
-						<Route
-							path={ROUTES.USER.CHATS}
-							element={<ChatPage />}
-						/>
+						<Route element={<EnsureUserConfirmedEmail />}>
+							<Route
+								path={ROUTES.EQUIPMENT.CREATE}
+								element={<EquipmentCreatePage />}
+							/>
+							<Route
+								path={ROUTES.EQUIPMENT.EDIT}
+								element={<EquipmentEditPage />}
+							/>
+							<Route
+								path={ROUTES.USER.MY_PROFILE}
+								element={<UserProfilePage />}
+							/>
+							<Route
+								path={ROUTES.USER.PROFILE}
+								element={<UserProfilePage />}
+							/>
+							<Route
+								path={ROUTES.USER.EQUIPMENTS}
+								element={<UserEquipmentListPage />}
+							/>
+							<Route
+								path={ROUTES.USER.RESERVATIONS}
+								element={<UserReservationListPage />}
+							/>
+							<Route
+								path={ROUTES.USER.FEEDBACKS}
+								element={<UserFeedbackListPage />}
+							/>
+							<Route
+								path={ROUTES.USER.NOTIFICATIONS}
+								element={<UserNotificationListPage />}
+							/>
+							<Route
+								path={ROUTES.USER.CHATS}
+								element={<ChatPage />}
+							/>{' '}
+						</Route>
 					</Route>
 				</Route>
 			</Routes>

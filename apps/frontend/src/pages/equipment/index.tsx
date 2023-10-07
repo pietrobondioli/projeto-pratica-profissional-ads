@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { addYears, subYears } from 'date-fns';
+import { addDays, addYears } from 'date-fns';
 import { useMemo, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -55,7 +55,7 @@ export default function EquipmentPage() {
 			if (!equipmentId) return;
 
 			return await getEquipmentAvailability(equipmentId, {
-				startDate: subYears(new Date(), 1).toISOString(),
+				startDate: addDays(new Date(), 1).toISOString(),
 				endDate: addYears(new Date(), 1).toISOString(),
 			});
 		},
@@ -154,6 +154,7 @@ export default function EquipmentPage() {
 										}}
 										startDate={startDate}
 										endDate={endDate}
+										minDate={addDays(new Date(), 1)}
 										excludeDates={
 											equipmentAvailability?.notAvailableDates
 										}

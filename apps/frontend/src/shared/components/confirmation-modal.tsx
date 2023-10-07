@@ -21,7 +21,7 @@ const ConfirmationModal = ({
 					<button
 						onClick={() => {
 							onDeny();
-							onClose();
+							onClose?.();
 						}}
 						className="mr-2"
 					>

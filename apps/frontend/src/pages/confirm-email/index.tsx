@@ -2,12 +2,14 @@ import { ROUTES } from '#/fe/config/routes';
 import { Container } from '#/fe/shared/components/container';
 import Loading from '#/fe/shared/components/loading';
 import { confirmAccount } from '#/fe/shared/services/api';
+import { useLoggedUserActions } from '#/fe/shared/state/logged-user';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 export function ConfirmEmailPage() {
 	const { token } = useParams();
+	const { LOGOUT } = useLoggedUserActions();
 	const navigate = useNavigate();
 
 	const { isLoading } = useQuery(
@@ -24,6 +26,7 @@ export function ConfirmEmailPage() {
 		},
 		{
 			onSuccess: () => {
+				LOGOUT();
 				toast.success('Email confirmado com sucesso!');
 				navigate(ROUTES.HOME);
 			},

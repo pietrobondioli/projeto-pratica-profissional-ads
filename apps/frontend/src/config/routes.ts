@@ -24,7 +24,7 @@ export const ROUTES = {
 		NOTIFICATIONS: '/user/notifications',
 		CHATS: '/user/chats',
 	},
-	CONFIRM_EMAIL: '/confirm-account/:token',
+	CONFIRM_EMAIL: '/confirm-email/:token',
 	CHANGE_EMAIL: '/change-email/:token',
 	CHANGE_PASSWORD: '/change-password/:token',
 } as const;

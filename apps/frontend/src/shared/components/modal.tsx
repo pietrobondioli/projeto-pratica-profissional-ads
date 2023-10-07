@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 
 export type ModalProps = {
 	isOpen: boolean;
-	onClose: () => void;
+	onClose?: () => void;
 	children?: ReactNode;
 };
 
@@ -11,7 +11,7 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
 	useEffect(() => {
 		const handleEscapeKey = (event: KeyboardEvent) => {
 			if (event.key === 'Escape') {
-				onClose();
+				onClose?.();
 			}
 		};
 

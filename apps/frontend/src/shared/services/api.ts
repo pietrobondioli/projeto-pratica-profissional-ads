@@ -87,7 +87,7 @@ export async function requestConfirmAccountToken(body: { email: string }) {
 
 export async function confirmAccount(body: { token: string }) {
 	return await apiFetch<IdResponse>(`/users/confirm-account`, {
-		method: 'GET',
+		method: 'POST',
 		body: JSON.stringify(body),
 	});
 }

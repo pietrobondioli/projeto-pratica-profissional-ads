@@ -6,6 +6,7 @@ import { ThemeProvider } from './shared/components/theme-provider';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import 'react-toastify/dist/ReactToastify.min.css';
+import toastifyConfig from './config/toastify';
 import './shared/styles/globals.css';
 
 const queryClient = new QueryClient();
@@ -14,7 +15,7 @@ function App() {
 	return (
 		<ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
 			<QueryClientProvider client={queryClient}>
-				<ToastContainer />
+				<ToastContainer {...toastifyConfig} />
 				<Router />
 			</QueryClientProvider>
 		</ThemeProvider>
