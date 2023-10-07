@@ -27,13 +27,18 @@ export class GetEquipmentAvailabilityAvailabilityQueryHandler
     const { equipmentId, startDate, endDate } = query.payload;
 
     const equipment = await this.equipmentRepo.findOne({
-      where: {
-        id: equipmentId,
-        reservations: {
-          startDate: MoreThanOrEqual(startDate),
-          endDate: LessThanOrEqual(endDate),
+      where: [
+        {
+          id: equipmentId,
         },
-      },
+        {
+          id: equipmentId,
+          reservations: {
+            startDate: MoreThanOrEqual(startDate),
+            endDate: LessThanOrEqual(endDate),
+          },
+        },
+      ],
       relations: ['reservations'],
     });
 
