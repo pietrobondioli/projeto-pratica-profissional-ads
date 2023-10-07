@@ -19,16 +19,18 @@ const API_URL = import.meta.env.VITE_API_URL as string;
 
 export async function apiFetch(
 	url: string,
-	options?: RequestInit,
+	options?: RequestInit & { isJson?: boolean },
 ): Promise<Response> {
+	const { isJson = true, ...rest } = options || {};
+
 	const authToken = useLoggedUserStore.getState().state.jwtToken;
 
 	const response = await fetch(`${API_URL}${url}`, {
-		...options,
+		...rest,
 		headers: {
-			'Content-Type': 'application/json',
-			...options?.headers,
+			...rest?.headers,
 			...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
+			...(isJson ? { 'Content-Type': 'application/json' } : {}),
 		},
 	});
 
@@ -532,8 +534,8 @@ export async function uploadMedia(file: File) {
 
 	const response = await apiFetch(`/media/upload`, {
 		method: 'POST',
-
 		body: formData,
+		isJson: false,
 	});
 
 	if (!response.ok) {

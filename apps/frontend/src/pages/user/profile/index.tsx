@@ -1,9 +1,14 @@
 import { Container } from '#/fe/shared/components/container';
 import { FormItem, FormLabel, FormMessage } from '#/fe/shared/components/form';
 import { Input } from '#/fe/shared/components/input';
-import { Avatar, AvatarImage } from '#/fe/shared/components/ui/avatar';
+import { PhotoUploadInput } from '#/fe/shared/components/photo-upload-input';
 import { Button } from '#/fe/shared/components/ui/button';
-import { getMe, getMedia, updateUserProfile } from '#/fe/shared/services/api';
+import {
+	getMe,
+	getMedia,
+	updateUserProfile,
+	uploadMedia,
+} from '#/fe/shared/services/api';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useEffect, useMemo, useState } from 'react';
@@ -17,9 +22,10 @@ const userProfileSchema = z.object({
 	contact: z.string().optional(),
 	address: z.string().optional(),
 	description: z.string().optional(),
+	profilePictureId: z.string().optional(),
 });
 
-type UserProfile = z.infer<typeof userProfileSchema>;
+type UserProfileSchema = z.infer<typeof userProfileSchema>;
 
 function UserProfilePage() {
 	const { data: user, isLoading } = useQuery(['userProfile'], async () => {
@@ -41,6 +47,9 @@ function UserProfilePage() {
 	);
 
 	const [isEditMode, setIsEditMode] = useState(false);
+	const handleEditToggle = () => {
+		setIsEditMode(!isEditMode);
+	};
 
 	const defaultValues = useMemo(() => {
 		return {
@@ -49,6 +58,7 @@ function UserProfilePage() {
 			contact: user?.userProfile.contact,
 			address: user?.userProfile.address,
 			description: user?.userProfile.description,
+			profilePictureId: user?.userProfile.profilePicture?.id,
 		};
 	}, [user]);
 
@@ -56,8 +66,9 @@ function UserProfilePage() {
 		register,
 		handleSubmit,
 		reset,
+		setValue,
 		formState: { errors },
-	} = useForm({
+	} = useForm<UserProfileSchema>({
 		resolver: zodResolver(userProfileSchema),
 		defaultValues,
 	});
@@ -70,16 +81,30 @@ function UserProfilePage() {
 				contact: user?.userProfile.contact,
 				address: user?.userProfile.address,
 				description: user?.userProfile.description,
+				profilePictureId: user?.userProfile.profilePicture?.id,
 			});
 		}
 	}, [user, reset]);
 
-	const handleEditToggle = () => {
-		setIsEditMode(!isEditMode);
-	};
+	const uploadMediaMtt = useMutation(
+		async (file: File) => {
+			return await uploadMedia(file);
+		},
+		{
+			onSuccess: (media) => {
+				setValue('profilePictureId', media?.id);
+				toast.success(
+					'Nova imagem enviada! Click em salvar para confirmar.',
+				);
+			},
+			onError: (error) => {
+				toast.error('Erro ao enviar imagem!');
+			},
+		},
+	);
 
 	const updateProfile = useMutation(
-		async (updatedProfile: UserProfile) => {
+		async (updatedProfile: UserProfileSchema) => {
 			return await updateUserProfile(updatedProfile);
 		},
 		{
@@ -90,7 +115,7 @@ function UserProfilePage() {
 		},
 	);
 
-	const handleSaveChanges = (updatedProfile: UserProfile) => {
+	const handleSaveChanges = (updatedProfile: UserProfileSchema) => {
 		updateProfile.mutate(updatedProfile);
 	};
 
@@ -106,13 +131,18 @@ function UserProfilePage() {
 			</div>
 
 			<div className="flex">
-				<Avatar>
-					<AvatarImage src={media?.url} alt="Profile Picture" />
-				</Avatar>
 				<form
 					onSubmit={handleSubmit(handleSaveChanges)}
 					className="flex gap-4 flex-col justify-stretch w-full"
 				>
+					<FormItem>
+						<FormLabel>Photo</FormLabel>
+						<PhotoUploadInput
+							defaultFileUrl={media?.url}
+							onSubmit={(file) => uploadMediaMtt.mutate(file)}
+							readOnly={!isEditMode}
+						/>
+					</FormItem>
 					<FormItem>
 						<FormLabel>Nome</FormLabel>
 						<Input
