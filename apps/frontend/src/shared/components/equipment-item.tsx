@@ -76,7 +76,7 @@ export const EquipmentItem = ({
 
 	return (
 		<div className="relative w-full h-112">
-			{isOwner ? (
+			{isOwner && (
 				<div className="absolute left-full transform -translate-x-1/2 flex gap-2 justify-start flex-col h-full px-4 -translate-y-6">
 					<button
 						onClick={handleEditClick}
@@ -91,8 +91,6 @@ export const EquipmentItem = ({
 						<FaTrash />
 					</button>
 				</div>
-			) : (
-				<div></div>
 			)}
 			<Card
 				className="cursor-pointer w-full h-full grid grid-flow-row group"

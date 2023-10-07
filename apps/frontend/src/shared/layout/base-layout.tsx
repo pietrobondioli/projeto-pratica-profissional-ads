@@ -1,6 +1,6 @@
 import { ROUTES } from '#/fe/config/routes';
 import { FaUserAlt } from 'react-icons/fa';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, generatePath, useNavigate } from 'react-router-dom';
 import Avatar from '../components/avatar';
 import {
 	MenuIcon,
@@ -58,7 +58,14 @@ const NavBar = () => {
 							Notificações
 						</MenuItem>
 						<MenuItem
-							onSelect={() => navigate(ROUTES.USER.FEEDBACKS)}
+							onSelect={() =>
+								loggedUser &&
+								navigate(
+									generatePath(ROUTES.USER.FEEDBACKS, {
+										userId: loggedUser?.id,
+									}),
+								)
+							}
 						>
 							Meus feedbacks
 						</MenuItem>

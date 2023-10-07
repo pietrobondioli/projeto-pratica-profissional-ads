@@ -29,6 +29,7 @@ export class ListUserFeedbacksQueryHandler
       order: {
         [order.field]: order.param,
       },
+      relations: ['fromUser', 'reservation'],
     });
 
     return new Ok({

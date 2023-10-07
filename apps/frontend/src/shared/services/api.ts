@@ -323,7 +323,7 @@ export async function deleteFeedback(feedbackId: string) {
 }
 
 export async function getFeedback(feedbackId: string) {
-	return await apiFetch<Feedback>(`/feedback/${feedbackId}`);
+	return await apiFetch<Feedback>(`/feedbacks/${feedbackId}`);
 }
 
 export async function listFeedbacks(
@@ -334,9 +334,9 @@ export async function listFeedbacks(
 	const { userId, limit, page, order } = request;
 
 	return await apiFetch<PaginatedResponse<Feedback>>(
-		`/feedback?userId=${
-			userId || ''
-		}&limit=${limit}&page=${page}&orderBy=${order?.field}:${order?.param}`,
+		`/feedbacks?userId=${userId || ''}&limit=${limit}&page=${page}${
+			order ? `&orderBy=${order?.field}:${order?.param}` : ''
+		}`,
 	);
 }
 

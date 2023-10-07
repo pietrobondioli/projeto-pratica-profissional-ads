@@ -11,7 +11,6 @@ export const ROUTES = {
 		CREATE: '/equipment/create',
 	},
 	RESERVATION: {
-		ROOT: '/reservation/:reservationId',
 		PAYMENT: '/reservation/:reservationId/payment',
 	},
 	USER: {

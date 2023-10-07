@@ -21,8 +21,11 @@ export class GetFeedbackQueryHandler
   ): Promise<QueryResult<GetFeedbackQuery>> {
     const { feedbackId } = query.payload;
 
-    const feedback = await this.feedbackRepo.findOneBy({
-      id: feedbackId,
+    const feedback = await this.feedbackRepo.findOne({
+      where: {
+        id: feedbackId,
+      },
+      relations: ['fromUser', 'reservation'],
     });
 
     if (!feedback) {
