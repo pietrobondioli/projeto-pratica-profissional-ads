@@ -28,7 +28,7 @@ export function ReservationItem({
 	);
 
 	const { data: owner } = useQuery(['owner', equipment?.owner.id], () => {
-		if (!equipment) return;
+		if (!equipment) throw new Error('No equipment');
 
 		return getUser(equipment.owner.id);
 	});

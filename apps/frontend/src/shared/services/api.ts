@@ -17,11 +17,11 @@ import {
 
 const API_URL = import.meta.env.VITE_API_URL as string;
 
-export async function apiFetch(
+export async function apiFetch<T = void>(
 	url: string,
 	options?: RequestInit & { isJson?: boolean },
-): Promise<Response> {
-	const { isJson = true, ...rest } = options || {};
+): Promise<T> {
+	const { isJson = true, ...rest } = options ?? {};
 
 	const authToken = useLoggedUserStore.getState().state.jwtToken;
 
@@ -39,142 +39,89 @@ export async function apiFetch(
 		toast.error('Sua sessão expirou, faça login novamente');
 	}
 
-	return response;
+	let body: any;
+
+	try {
+		body = await response.json();
+	} catch (error) {
+		body = {};
+	}
+
+	if (!response.ok) {
+		throw new Error(body.message);
+	}
+
+	return body as T;
 }
 
 export async function login(email: string, password: string) {
-	const response = await apiFetch(`/auth/login`, {
+	return await apiFetch<{ token: string }>(`/auth/login`, {
 		method: 'POST',
 		body: JSON.stringify({ email, password }),
 	});
-
-	if (!response.ok) {
-		const error = await response.json();
-		throw new Error(error.message);
-	}
-
-	const token = await response.json();
-	return token as { token: string };
 }
 
 export async function createUser(body: { email: string; password: string }) {
-	const response = await apiFetch(`/users`, {
+	return await apiFetch<IdResponse>(`/users`, {
 		method: 'POST',
 		body: JSON.stringify(body),
 	});
-
-	if (!response.ok) {
-		const error = await response.json();
-		throw new Error(error.message);
-	}
-
-	const createdUser = await response.json();
-	return createdUser as IdResponse;
 }
 
 export async function getUser(userId: string) {
-	const response = await apiFetch(`/users/${userId}`);
-
-	if (!response.ok) {
-		const error = await response.json();
-		throw new Error(error.message);
-	}
-
-	const user = await response.json();
-	return user as User;
+	return await apiFetch<User>(`/users/${userId}`);
 }
 
 export async function getMe() {
-	const response = await apiFetch(`/users/me`);
-
-	if (!response.ok) {
-		const error = await response.json();
-		throw new Error(error.message);
-	}
-
-	const user = await response.json();
-	return user as User;
+	return await apiFetch<User>(`/users/me`);
 }
 
 export async function requestConfirmAccountToken(body: { email: string }) {
-	const response = await apiFetch(`/users/request-confirm-account-token`, {
+	return await apiFetch(`/users/request-confirm-account-token`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
 		},
 		body: JSON.stringify(body),
 	});
-
-	if (!response.ok) {
-		const error = await response.json();
-		throw new Error(error.message);
-	}
 }
 
 export async function confirmAccount(body: { token: string }) {
-	const response = await apiFetch(`/users/confirm-account`, {
+	return await apiFetch<IdResponse>(`/users/confirm-account`, {
 		method: 'GET',
 		body: JSON.stringify(body),
 	});
-
-	if (!response.ok) {
-		const error = await response.json();
-		throw new Error(error.message);
-	}
-
-	const confirmedUser = await response.json();
-	return confirmedUser as IdResponse;
 }
 
 export async function requestChangeEmail(body: { newEmail: string }) {
-	const response = await apiFetch(`/users/request-change-email`, {
+	return await apiFetch(`/users/request-change-email`, {
 		method: 'POST',
 		body: JSON.stringify(body),
 	});
-
-	if (!response.ok) {
-		const error = await response.json();
-		throw new Error(error.message);
-	}
 }
 
 export async function changeEmail(body: { email: string; newEmail: string }) {
-	const response = await apiFetch(`/users/change-email`, {
+	return await apiFetch(`/users/change-email`, {
 		method: 'POST',
 		body: JSON.stringify(body),
 	});
-
-	if (!response.ok) {
-		const error = await response.json();
-		throw new Error(error.message);
-	}
 }
 
 export async function requestChangePassword(body: { email: string }) {
-	const response = await apiFetch(`/users/request-change-password`, {
+	return await apiFetch(`/users/request-change-password`, {
 		method: 'POST',
 		body: JSON.stringify(body),
 	});
-
-	if (!response.ok) {
-		const error = await response.json();
-		throw new Error(error.message);
-	}
 }
 
 export async function changePassword(body: {
 	email: string;
 	newPassword: string;
 }) {
-	const response = await apiFetch(`/users/change-password`, {
+	return await apiFetch(`/users/change-password`, {
 		method: 'POST',
 		body: JSON.stringify(body),
 	});
-
-	if (!response.ok) {
-		const error = await response.json();
-		throw new Error(error.message);
-	}
 }
 
 export async function updateUserProfile(body: {
@@ -185,18 +132,10 @@ export async function updateUserProfile(body: {
 	description?: string;
 	profilePictureId?: string;
 }) {
-	const response = await apiFetch(`/users/profile`, {
+	return await apiFetch<IdResponse>(`/users/profile`, {
 		method: 'PATCH',
 		body: JSON.stringify(body),
 	});
-
-	if (!response.ok) {
-		const error = await response.json();
-		throw new Error(error.message);
-	}
-
-	const updatedUser = await response.json();
-	return updatedUser as IdResponse;
 }
 
 export async function createReservation(request: {
@@ -204,75 +143,38 @@ export async function createReservation(request: {
 	startDate: string;
 	endDate: string;
 }) {
-	const response = await apiFetch(`/reservations`, {
+	return await apiFetch<IdResponse>(`/reservations`, {
 		method: 'POST',
 		body: JSON.stringify(request),
 	});
-
-	if (!response.ok) {
-		const error = await response.json();
-		throw new Error(error.message);
-	}
-
-	const createdReservation = await response.json();
-	return createdReservation as IdResponse;
 }
 
 export async function cancelReservation(reservationId: string) {
-	const response = await apiFetch(`/reservations/${reservationId}`, {
+	return await apiFetch(`/reservations/${reservationId}`, {
 		method: 'DELETE',
 	});
-
-	if (!response.ok) {
-		const error = await response.json();
-		throw new Error(error.message);
-	}
 }
 
 export async function getReservation(id: string) {
-	const response = await apiFetch(`/reservations/${id}`);
-
-	if (!response.ok) {
-		const error = await response.json();
-		throw new Error(error.message);
-	}
-
-	const reservation = await response.json();
-	return reservation as Reservation;
+	return await apiFetch<Reservation>(`/reservations/${id}`);
 }
 
 export async function listReservations(request: PaginatedReq) {
 	const { limit, page, order } = request;
 
-	const response = await apiFetch(
+	return await apiFetch<PaginatedResponse<Reservation>>(
 		`/reservations?limit=${limit}&page=${page}&orderBy=${order?.field}:${order?.param}`,
 	);
-
-	if (!response.ok) {
-		const error = await response.json();
-		throw new Error(error.message);
-	}
-
-	const reservations = await response.json();
-	return reservations as PaginatedResponse<Reservation>;
 }
 
 export async function createChat(request: {
 	withUserId: string;
 	message: string;
 }) {
-	const response = await apiFetch(`/chats`, {
+	return await apiFetch<IdResponse>(`/chats`, {
 		method: 'POST',
 		body: JSON.stringify(request),
 	});
-
-	if (!response.ok) {
-		const error = await response.json();
-		throw new Error(error.message);
-	}
-
-	const createdChat = await response.json();
-	return createdChat as IdResponse;
 }
 
 export async function sendMessage(
@@ -281,30 +183,14 @@ export async function sendMessage(
 		message: string;
 	},
 ) {
-	const response = await apiFetch(`/chats/${chatId}/send-message`, {
+	return await apiFetch<IdResponse>(`/chats/${chatId}/send-message`, {
 		method: 'POST',
 		body: JSON.stringify(request),
 	});
-
-	if (!response.ok) {
-		const error = await response.json();
-		throw new Error(error.message);
-	}
-
-	const sentMessage = await response.json();
-	return sentMessage as IdResponse;
 }
 
 export async function getChat(chatId: string) {
-	const response = await apiFetch(`/chats/${chatId}`);
-
-	if (!response.ok) {
-		const error = await response.json();
-		throw new Error(error.message);
-	}
-
-	const chat = await response.json();
-	return chat as ChatWithMessages;
+	return await apiFetch<ChatWithMessages>(`/chats/${chatId}`);
 }
 
 export async function listChats(
@@ -314,19 +200,11 @@ export async function listChats(
 ) {
 	const { targetUserSearch, limit, page, order } = request;
 
-	const response = await apiFetch(
+	return await apiFetch<PaginatedResponse<Chat>>(
 		`/chats?targetUserSearch=${
 			targetUserSearch || ''
 		}&limit=${limit}&page=${page}&orderBy=${order?.field}:${order?.param}`,
 	);
-
-	if (!response.ok) {
-		const error = await response.json();
-		throw new Error(error.message);
-	}
-
-	const chats = await response.json();
-	return chats as PaginatedResponse<Chat>;
 }
 
 export async function createEquipment(request: {
@@ -335,18 +213,10 @@ export async function createEquipment(request: {
 	photoId: string;
 	pricePerDay: number;
 }) {
-	const response = await apiFetch(`/equipments`, {
+	return await apiFetch<IdResponse>(`/equipments`, {
 		method: 'POST',
 		body: JSON.stringify(request),
 	});
-
-	if (!response.ok) {
-		const error = await response.json();
-		throw new Error(error.message);
-	}
-
-	const createdEquipment = await response.json();
-	return createdEquipment as IdResponse;
 }
 
 export async function updateEquipment(
@@ -358,41 +228,20 @@ export async function updateEquipment(
 		pricePerDay?: number;
 	},
 ) {
-	const response = await apiFetch(`/equipments/${equipmentId}`, {
+	return await apiFetch<IdResponse>(`/equipments/${equipmentId}`, {
 		method: 'PATCH',
 		body: JSON.stringify(request),
 	});
-
-	if (!response.ok) {
-		const error = await response.json();
-		throw new Error(error.message);
-	}
-
-	const updatedEquipment = await response.json();
-	return updatedEquipment as IdResponse;
 }
 
 export async function deleteEquipment(equipmentId: string) {
-	const response = await apiFetch(`/equipments/${equipmentId}`, {
+	return await apiFetch(`/equipments/${equipmentId}`, {
 		method: 'DELETE',
 	});
-
-	if (!response.ok) {
-		const error = await response.json();
-		throw new Error(error.message);
-	}
 }
 
 export async function getEquipment(equipmentId: string) {
-	const response = await apiFetch(`/equipments/${equipmentId}`);
-
-	if (!response.ok) {
-		const error = await response.json();
-		throw new Error(error.message);
-	}
-
-	const equipment = await response.json();
-	return equipment as Equipment;
+	return await apiFetch<Equipment>(`/equipments/${equipmentId}`);
 }
 
 export async function listEquipments(
@@ -403,19 +252,11 @@ export async function listEquipments(
 ) {
 	const { title = '', userId = '', limit, page, order } = request;
 
-	const response = await apiFetch(
+	return await apiFetch<PaginatedResponse<Equipment>>(
 		`/equipments?title=${title}&userId=${userId}&limit=${limit}&page=${page}${
 			order ? `&orderBy=${order?.field}:${order?.param}` : ''
 		}`,
 	);
-
-	if (!response.ok) {
-		const error = await response.json();
-		throw new Error(error.message);
-	}
-
-	const equipments = await response.json();
-	return equipments as PaginatedResponse<Equipment>;
 }
 
 export async function getEquipmentAvailability(
@@ -427,19 +268,14 @@ export async function getEquipmentAvailability(
 ) {
 	const { startDate, endDate } = request;
 
-	const response = await apiFetch(
+	const availability = await apiFetch<EquipmentAvailability>(
 		`/equipments/${equipmentId}/availability?startDate=${startDate}&endDate=${endDate}`,
 	);
 
-	if (!response.ok) {
-		const error = await response.json();
-		throw new Error(error.message);
-	}
-
-	const availability = (await response.json()) as EquipmentAvailability;
 	availability.notAvailableDates = availability.notAvailableDates.map(
 		(date) => new Date(date),
 	);
+
 	return availability;
 }
 
@@ -448,18 +284,10 @@ export async function createFeedback(request: {
 	rating: number;
 	comment: string;
 }) {
-	const response = await apiFetch(`/feedbacks`, {
+	return await apiFetch<IdResponse>(`/feedbacks`, {
 		method: 'POST',
 		body: JSON.stringify(request),
 	});
-
-	if (!response.ok) {
-		const error = await response.json();
-		throw new Error(error.message);
-	}
-
-	const createdFeedback = await response.json();
-	return createdFeedback as IdResponse;
 }
 
 export async function updateFeedback(
@@ -469,41 +297,20 @@ export async function updateFeedback(
 		comment: string;
 	},
 ) {
-	const response = await apiFetch(`/feedbacks/${feedbackId}`, {
+	return await apiFetch<IdResponse>(`/feedbacks/${feedbackId}`, {
 		method: 'PATCH',
 		body: JSON.stringify(request),
 	});
-
-	if (!response.ok) {
-		const error = await response.json();
-		throw new Error(error.message);
-	}
-
-	const updatedFeedback = await response.json();
-	return updatedFeedback as IdResponse;
 }
 
 export async function deleteFeedback(feedbackId: string) {
-	const response = await apiFetch(`/feedbacks/${feedbackId}`, {
+	return await apiFetch(`/feedbacks/${feedbackId}`, {
 		method: 'DELETE',
 	});
-
-	if (!response.ok) {
-		const error = await response.json();
-		throw new Error(error.message);
-	}
 }
 
 export async function getFeedback(feedbackId: string) {
-	const response = await apiFetch(`/feedback/${feedbackId}`);
-
-	if (!response.ok) {
-		const error = await response.json();
-		throw new Error(error.message);
-	}
-
-	const feedback = await response.json();
-	return feedback as Feedback;
+	return await apiFetch<Feedback>(`/feedback/${feedbackId}`);
 }
 
 export async function listFeedbacks(
@@ -513,72 +320,37 @@ export async function listFeedbacks(
 ) {
 	const { userId, limit, page, order } = request;
 
-	const response = await apiFetch(
+	return await apiFetch<PaginatedResponse<Feedback>>(
 		`/feedback?userId=${
 			userId || ''
 		}&limit=${limit}&page=${page}&orderBy=${order?.field}:${order?.param}`,
 	);
-
-	if (!response.ok) {
-		const error = await response.json();
-		throw new Error(error.message);
-	}
-
-	const feedbacks = await response.json();
-	return feedbacks as PaginatedResponse<Feedback>;
 }
 
 export async function uploadMedia(file: File) {
 	const formData = new FormData();
 	formData.append('file', file);
 
-	const response = await apiFetch(`/media/upload`, {
+	return await apiFetch<IdResponse>(`/media/upload`, {
 		method: 'POST',
 		body: formData,
 		isJson: false,
 	});
-
-	if (!response.ok) {
-		const error = await response.json();
-		throw new Error(error.message);
-	}
-
-	const uploadedMedia = await response.json();
-	return uploadedMedia as IdResponse;
 }
 
 export async function getMedia(mediaId: string) {
-	const response = await apiFetch(`/media/${mediaId}`);
-
-	if (!response.ok) {
-		const error = await response.json();
-		throw new Error(error.message);
-	}
-
-	const media = await response.json();
-	return media as Media;
+	return await apiFetch<Media>(`/media/${mediaId}`);
 }
 
 export async function readNotification(notificationId: string) {
-	const response = await apiFetch(`/notifications/${notificationId}/read`, {
+	return await apiFetch(`/notifications/${notificationId}/read`, {
 		method: 'PATCH',
 	});
-
-	if (!response.ok) {
-		const error = await response.json();
-		throw new Error(error.message);
-	}
 }
 
 export async function getUserNotifications() {
 	// TODO: add a infinite scroll to notification page using this query
-	const response = await apiFetch(`/notifications?limit=100&page=1`);
-
-	if (!response.ok) {
-		const error = await response.json();
-		throw new Error(error.message);
-	}
-
-	const notifications = await response.json();
-	return notifications as PaginatedResponse<Notification>;
+	return await apiFetch<PaginatedResponse<Notification>>(
+		`/notifications?limit=100&page=1`,
+	);
 }

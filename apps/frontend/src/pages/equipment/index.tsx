@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { addYears, subYears } from 'date-fns';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -8,12 +8,14 @@ import { toast } from 'react-toastify';
 import { ROUTES } from '#/fe/config/routes';
 import { Container } from '#/fe/shared/components/container';
 import { FormItem, FormLabel } from '#/fe/shared/components/form';
+import { Input } from '#/fe/shared/components/input';
+import StartChatModal from '#/fe/shared/components/start-chat-modal';
 import { Button } from '#/fe/shared/components/ui/button';
+import { useMediaUrl } from '#/fe/shared/hooks/useMedia';
 import {
 	createReservation,
 	getEquipment,
 	getEquipmentAvailability,
-	getMedia,
 } from '#/fe/shared/services/api';
 import { useIsLogged } from '#/fe/shared/state/logged-user';
 
@@ -22,8 +24,7 @@ export default function EquipmentPage() {
 	const navigate = useNavigate();
 	const userIsLogged = useIsLogged();
 
-	const [startDate, setStartDate] = useState<Date | null>(null);
-	const [endDate, setEndDate] = useState<Date | null>(null);
+	const [startChatModalIsOpen, setStartChatModalIsOpen] = useState(false);
 
 	const { data: equipment, isLoading } = useQuery(
 		['equipment', equipmentId],
@@ -33,13 +34,20 @@ export default function EquipmentPage() {
 		},
 	);
 
-	const { data: media } = useQuery(
-		['media', equipment?.photo.id],
-		async () => {
-			if (!equipment?.photo.id) return;
-			return await getMedia(equipment.photo.id);
-		},
-	);
+	const [startDate, setStartDate] = useState<Date | null>(null);
+	const [endDate, setEndDate] = useState<Date | null>(null);
+	const totalDays = useMemo(() => {
+		if (!startDate || !endDate) return 0;
+		return Math.ceil(
+			(endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24),
+		);
+	}, [startDate, endDate]);
+	const totalPrice = useMemo(() => {
+		if (!equipment) return 0;
+		return totalDays * equipment.pricePerDay;
+	}, [equipment, totalDays]);
+
+	const mediaUrl = useMediaUrl(equipment?.photo.id);
 
 	const { data: equipmentAvailability } = useQuery(
 		['equipmentAvailability', equipmentId],
@@ -82,7 +90,8 @@ export default function EquipmentPage() {
 		},
 		{
 			onSuccess: () => {
-				toast.success('Equipmento reservado com sucesso!');
+				toast.success('Equipamento reservado com sucesso!');
+				navigate(ROUTES.USER.RESERVATIONS);
 			},
 			onError: (error: any) => {
 				toast.error(`Erro ao reservar equipamento: ${error.message}`);
@@ -98,66 +107,93 @@ export default function EquipmentPage() {
 	if (!equipment) return <div>Equipment not found</div>;
 
 	return (
-		<Container className="flex gap-4">
-			<div className="w-1/2 p-12">
-				<img
-					src={media?.url}
-					alt={equipment.title}
-					className="w-full h-96 object-cover rounded-md"
-				/>
-			</div>
-			<div className="w-1/2 p-12 flex flex-col gap-16">
-				<div>
-					<h1 className="text-2xl font-bold">{equipment.title}</h1>
-					<p className="text-gray-500 mb-4 break-all">
-						{equipment.description}
-					</p>
-					<p className="text-gray-500 mb-4">
-						Preço por dia: R${equipment.pricePerDay}
-					</p>
-					<p className="text-gray-500 mb-4">
-						Disponibilidade:
-						{equipment.availabilityStatus
-							? 'Disponível'
-							: 'Não disponível'}
-					</p>
+		<>
+			<StartChatModal
+				isOpen={startChatModalIsOpen}
+				onClose={() => setStartChatModalIsOpen(false)}
+				withUserId={equipment.owner.id}
+				suggestedMessage={`Olá, gostaria de alugar seu equipamento ${equipment.title}`}
+			/>
+			<Container className="flex gap-4">
+				<div className="w-1/2 p-12">
+					<img
+						src={mediaUrl}
+						alt={equipment.title}
+						className="w-full h-96 object-cover rounded-md"
+					/>
 				</div>
-				<div className="flex flex-col gap-4">
-					<FormItem>
-						<FormLabel>Data da reserva</FormLabel>
-						<DatePicker
-							selected={startDate}
-							onChange={(dates) => {
-								const [start, end] = dates;
-								setStartDate(start);
-								setEndDate(end);
-							}}
-							startDate={startDate}
-							endDate={endDate}
-							excludeDates={
-								equipmentAvailability?.notAvailableDates
-							}
-							selectsRange
-							customInput={
-								<input className="border border-gray-300 rounded-md p-2" />
-							}
-						/>
-					</FormItem>
+				<div className="w-1/2 p-12 flex flex-col gap-16">
+					<div>
+						<h1 className="text-2xl font-bold">
+							{equipment.title}
+						</h1>
+						<p className="text-gray-500 mb-4 break-all">
+							{equipment.description}
+						</p>
+						<p className="text-gray-500 mb-4">
+							Preço por dia: R${equipment.pricePerDay}
+						</p>
+						<p className="text-gray-500 mb-4">
+							Disponibilidade:
+							{equipment.availabilityStatus
+								? 'Disponível'
+								: 'Não disponível'}
+						</p>
+					</div>
+					<div className="flex flex-col gap-4">
+						<div className="flex flex-col gap-4">
+							<div className="flex gap-4">
+								<FormItem>
+									<FormLabel>Data da reserva</FormLabel>
+									<DatePicker
+										selected={startDate}
+										onChange={(dates) => {
+											const [start, end] = dates;
+											setStartDate(start);
+											setEndDate(end);
+										}}
+										startDate={startDate}
+										endDate={endDate}
+										excludeDates={
+											equipmentAvailability?.notAvailableDates
+										}
+										selectsRange
+										customInput={
+											<input className="border border-gray-300 rounded-md p-2" />
+										}
+									/>
+								</FormItem>
+								<FormItem>
+									<FormLabel>Total da reserva</FormLabel>
+									<Input readOnly value={totalPrice} />
+								</FormItem>
+							</div>
 
-					<Button
-						onClick={handleReserveClick}
-						disabled={
-							!equipment.availabilityStatus ||
-							reserveEquipmentMutation.isLoading
-						}
-						variant="secondary"
-					>
-						{reserveEquipmentMutation.isLoading
-							? 'Reservando...'
-							: 'Reservar'}
-					</Button>
+							<Button
+								onClick={() => {
+									handleReserveClick();
+								}}
+								disabled={
+									!equipment.availabilityStatus ||
+									reserveEquipmentMutation.isLoading
+								}
+								variant="secondary"
+							>
+								{reserveEquipmentMutation.isLoading
+									? 'Reservando...'
+									: 'Reservar'}
+							</Button>
+						</div>
+						Ou
+						<Button
+							onClick={() => setStartChatModalIsOpen(true)}
+							variant="default"
+						>
+							Falar com o locador
+						</Button>
+					</div>
 				</div>
-			</div>
-		</Container>
+			</Container>
+		</>
 	);
 }

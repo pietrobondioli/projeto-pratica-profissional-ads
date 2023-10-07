@@ -1,10 +1,10 @@
 import { ReactNode, useEffect } from 'react';
-import ReactDOM from 'react-dom';
+import { createPortal } from 'react-dom';
 
 export type ModalProps = {
 	isOpen: boolean;
 	onClose: () => void;
-	children: ReactNode;
+	children?: ReactNode;
 };
 
 const Modal = ({ isOpen, onClose, children }: ModalProps) => {
@@ -33,7 +33,7 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
 		return null;
 	}
 
-	return ReactDOM.createPortal(
+	return createPortal(
 		<div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
 			<div
 				className="bg-white rounded-lg shadow-lg overflow-hidden"
