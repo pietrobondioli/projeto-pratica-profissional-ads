@@ -17,7 +17,7 @@ function ChatList({
 	chats: Chat[];
 	onSelectChat: (chat: Chat) => void;
 }) {
-	const loggedUser = useLoggedUser();
+	const { loggedUser } = useLoggedUser();
 
 	return (
 		<div className="border-r h-full overflow-y-auto">
@@ -38,7 +38,7 @@ function ChatList({
 }
 
 function ChatBox({ chatId }: { chatId: string }) {
-	const loggedUser = useLoggedUser();
+	const { loggedUser } = useLoggedUser();
 
 	const chatQry = useQuery(['chat', chatId], async () => {
 		return getChat(chatId);

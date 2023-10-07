@@ -61,6 +61,7 @@ export function LoginPage() {
 		},
 		{
 			onSuccess: () => {
+				toast.success('Login realizado com sucesso!');
 				if (returnTo) {
 					navigate(returnTo);
 					return;
@@ -69,7 +70,7 @@ export function LoginPage() {
 			},
 			onError: (error: any) => {
 				LOGOUT();
-				toast.error(error.message);
+				toast.error(`Erro ao fazer login: ${error.message}`);
 			},
 		},
 	);

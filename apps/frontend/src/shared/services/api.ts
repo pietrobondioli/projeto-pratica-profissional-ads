@@ -1,4 +1,3 @@
-import { toast } from 'react-toastify';
 import { useLoggedUserStore } from '../state/logged-user';
 import {
 	Chat,
@@ -7,6 +6,7 @@ import {
 	EquipmentAvailability,
 	Feedback,
 	IdResponse,
+	MeUser,
 	Media,
 	Notification,
 	PaginatedReq,
@@ -36,7 +36,6 @@ export async function apiFetch<T = void>(
 
 	if (response.status === 401) {
 		useLoggedUserStore.getState().actions.LOGOUT();
-		toast.error('Sua sessão expirou, faça login novamente');
 	}
 
 	let body: any;
@@ -73,7 +72,7 @@ export async function getUser(userId: string) {
 }
 
 export async function getMe() {
-	return await apiFetch<User>(`/users/me`);
+	return await apiFetch<MeUser>(`/users/me`);
 }
 
 export async function requestConfirmAccountToken(body: { email: string }) {
@@ -100,7 +99,7 @@ export async function requestChangeEmail(body: { newEmail: string }) {
 	});
 }
 
-export async function changeEmail(body: { email: string; newEmail: string }) {
+export async function changeEmail(body: { token: string }) {
 	return await apiFetch(`/users/change-email`, {
 		method: 'POST',
 		body: JSON.stringify(body),
@@ -115,7 +114,7 @@ export async function requestChangePassword(body: { email: string }) {
 }
 
 export async function changePassword(body: {
-	email: string;
+	token: string;
 	newPassword: string;
 }) {
 	return await apiFetch(`/users/change-password`, {

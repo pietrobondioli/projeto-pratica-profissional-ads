@@ -6,7 +6,7 @@ import { useLoggedUser } from '#/fe/shared/hooks/useLoggedUser';
 import { generatePath, useNavigate } from 'react-router-dom';
 
 const UserEquipmentsPage = () => {
-	const loggedUser = useLoggedUser();
+	const { loggedUser } = useLoggedUser();
 	const navigate = useNavigate();
 
 	return (

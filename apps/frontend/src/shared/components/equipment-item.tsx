@@ -29,7 +29,7 @@ export const EquipmentItem = ({
 }: EquipmentItemProps) => {
 	const navigate = useNavigate();
 
-	const loggedUser = useLoggedUser();
+	const { loggedUser } = useLoggedUser();
 
 	const { data: owner } = useQuery(['user', equipment.owner.id], async () => {
 		if (equipment.owner.id) return getUser(equipment.owner.id);

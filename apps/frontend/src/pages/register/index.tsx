@@ -10,15 +10,22 @@ import { FormItem, FormLabel, FormMessage } from '#/fe/shared/components/form';
 import { HideableInput } from '#/fe/shared/components/hideable-input';
 import { Input } from '#/fe/shared/components/input';
 import { createUser } from '#/fe/shared/services/api';
+import { validatePasswordCharacters } from '#/fe/shared/utils/validatePassword';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 
 const registerSchema = z
 	.object({
 		email: z.string().email({ message: 'Formato de email inválido.' }),
-		password: z.string().min(6, {
-			message: 'A senha deve ter no mínimo 6 caracteres.',
-		}),
+		password: z
+			.string()
+			.min(6, {
+				message: 'A senha deve ter no mínimo 6 caracteres.',
+			})
+			.refine((v) => validatePasswordCharacters(v), {
+				message:
+					'A senha deve conter letras maiúsculas, minúsculas, números e símbolos.',
+			}),
 		confirmPassword: z.string().min(6, {
 			message: 'A senha deve ter no mínimo 6 caracteres.',
 		}),

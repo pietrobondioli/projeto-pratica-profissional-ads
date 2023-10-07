@@ -38,6 +38,10 @@ export type User = {
 	userProfile: UserProfile;
 } & BaseEntity;
 
+export type MeUser = {
+	confirmedEmail: boolean;
+} & User;
+
 type ChatUserDto = {
 	userProfile: {
 		firstName: string;
@@ -74,6 +78,7 @@ export type Notification = {
 export type Reservation = {
 	equipment: BaseEntity;
 	renter: BaseEntity;
+	rentee: BaseEntity;
 	startDate: string;
 	endDate: string;
 	totalPrice: number;

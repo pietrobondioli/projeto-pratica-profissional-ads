@@ -7,7 +7,7 @@ import { Notification } from '#/fe/shared/services/api-types';
 import { useQuery } from '@tanstack/react-query';
 
 export default function UserNotificationListPage() {
-	const loggedUser = useLoggedUser();
+	const { loggedUser } = useLoggedUser();
 
 	const { data: notifications, isLoading } = useQuery(
 		['notifications'],

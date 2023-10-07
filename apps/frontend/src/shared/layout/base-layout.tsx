@@ -15,7 +15,7 @@ import { useIsLogged, useLoggedUserActions } from '../state/logged-user';
 const NavBar = () => {
 	const navigate = useNavigate();
 	const userIsLogged = useIsLogged();
-	const loggedUser = useLoggedUser();
+	const { loggedUser } = useLoggedUser();
 	const userPictureUrl = useMediaUrl(
 		loggedUser?.userProfile.profilePicture?.id,
 	);

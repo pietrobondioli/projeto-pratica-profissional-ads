@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 
 export default function EquipmentEditPage() {
 	const { equipmentId } = useParams();
-	const loggedUser = useLoggedUser();
+	const { loggedUser } = useLoggedUser();
 	const navigate = useNavigate();
 
 	const { data: equipment, isLoading } = useQuery(

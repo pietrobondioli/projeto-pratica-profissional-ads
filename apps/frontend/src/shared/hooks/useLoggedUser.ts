@@ -6,7 +6,7 @@ export function useLoggedUser() {
 	const userId = useLoggedUserId();
 	const userIsLogged = useIsLogged();
 
-	const { data: user } = useQuery(
+	const { data: loggedUser, refetch } = useQuery(
 		['user', userId, userIsLogged],
 		() => {
 			return getMe();
@@ -17,5 +17,5 @@ export function useLoggedUser() {
 		},
 	);
 
-	return user;
+	return { loggedUser, invalidate: refetch };
 }
