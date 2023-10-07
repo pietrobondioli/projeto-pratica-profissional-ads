@@ -18,6 +18,13 @@
 			"cwd": "${workspaceRoot}/apps/backend",
 			"console": "integratedTerminal",
 			"protocol": "inspector"
+		},
+		{
+			"type": "chrome",
+			"request": "launch",
+			"name": "Debug W/ Chrome",
+			"url": "http://localhost:5173",
+			"webRoot": "${workspaceFolder}/apps/frontend/src"
 		}
 	]
 }
