@@ -58,6 +58,7 @@ function ChatBox({ chatId }: { chatId: string }) {
 		},
 		{
 			onSettled: () => {
+				setMessage('');
 				chatQry.refetch();
 			},
 			onSuccess: () => {
@@ -80,38 +81,45 @@ function ChatBox({ chatId }: { chatId: string }) {
 	return (
 		<div className="flex flex-col h-full w-full">
 			<div className="overflow-y-auto p-4 flex-grow flex gap-4 flex-col">
-				{[...messages].reverse().map((message) => (
-					<div
-						key={message.id}
-						className={`flex ${
-							message.sender.id === loggedUser?.id
-								? 'justify-end'
-								: ''
-						}`}
-					>
+				{messages
+					.sort(
+						(a, b) =>
+							new Date(a.createdAt).getTime() -
+							new Date(b.createdAt).getTime(),
+					)
+					.map((message) => (
 						<div
-							className={`rounded-lg p-2 max-w-xs break-words ${
+							key={message.id}
+							className={`flex ${
 								message.sender.id === loggedUser?.id
-									? 'bg-blue-700 text-white'
-									: 'bg-gray-200'
+									? 'justify-end'
+									: ''
 							}`}
 						>
-							<div className="flex justify-between items-center mb-2 gap-2">
-								<div className="font-bold">
-									{message.sender.id === loggedUser?.id
-										? 'You'
-										: message.sender.userProfile.firstName}
+							<div
+								className={`rounded-lg p-2 max-w-xs break-words ${
+									message.sender.id === loggedUser?.id
+										? 'bg-blue-700 text-white'
+										: 'bg-gray-200'
+								}`}
+							>
+								<div className="flex justify-between items-center mb-2 gap-2">
+									<div className="font-bold">
+										{message.sender.id === loggedUser?.id
+											? 'You'
+											: message.sender.userProfile
+													.firstName}
+									</div>
+									<div className="text-sm text-gray-500">
+										{new Date(
+											message.createdAt,
+										).toLocaleString()}
+									</div>
 								</div>
-								<div className="text-sm text-gray-500">
-									{new Date(
-										message.createdAt,
-									).toLocaleString()}
-								</div>
+								{message.content}
 							</div>
-							{message.content}
 						</div>
-					</div>
-				))}
+					))}
 			</div>
 
 			<div className="border-t p-4">
