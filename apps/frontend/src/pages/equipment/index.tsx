@@ -15,13 +15,12 @@ import {
 	getEquipmentAvailability,
 	getMedia,
 } from '#/fe/shared/services/api';
-import { useJwtToken } from '#/fe/shared/state/logged-user';
+import { useIsLogged } from '#/fe/shared/state/logged-user';
 
 export default function EquipmentPage() {
 	const { equipmentId } = useParams<{ equipmentId: string }>();
 	const navigate = useNavigate();
-
-	const jwtToken = useJwtToken();
+	const userIsLogged = useIsLogged();
 
 	const [startDate, setStartDate] = useState<Date | null>(null);
 	const [endDate, setEndDate] = useState<Date | null>(null);
@@ -56,7 +55,7 @@ export default function EquipmentPage() {
 
 	const reserveEquipmentMutation = useMutation(
 		async () => {
-			if (!jwtToken) {
+			if (!userIsLogged) {
 				toast.error(
 					'Você precisa estar logado para reservar equipamentos.',
 				);
@@ -75,7 +74,7 @@ export default function EquipmentPage() {
 			if (!startDate || !endDate)
 				throw new Error('Nenhum período selecionado.');
 
-			return await createReservation(jwtToken, {
+			return await createReservation({
 				equipmentId,
 				startDate: startDate.toISOString(),
 				endDate: endDate.toISOString(),

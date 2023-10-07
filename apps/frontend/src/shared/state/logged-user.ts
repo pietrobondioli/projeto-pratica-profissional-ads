@@ -26,8 +26,9 @@ type LoggedUserState = {
 };
 
 type LoggedUserActions = {
-	login: (token: string, user: User) => void;
-	logout: () => void;
+	LOGIN: (token: string) => void;
+	SET_USER: (user: User) => void;
+	LOGOUT: () => void;
 };
 
 type LoggedUserStore = {
@@ -44,13 +45,16 @@ export const useLoggedUserStore = create<LoggedUserStore>()(
 		immer((set) => ({
 			state: INITIAL_STATE,
 			actions: {
-				login: (token, user) =>
+				LOGIN: (token) =>
 					set((s) => {
 						s.state.isLogged = true;
 						s.state.jwtToken = token;
+					}),
+				SET_USER: (user) =>
+					set((s) => {
 						s.state.user = user;
 					}),
-				logout: () =>
+				LOGOUT: () =>
 					set((s) => {
 						s.state.isLogged = false;
 						s.state.jwtToken = undefined;

@@ -3,7 +3,6 @@ import { FC } from 'react';
 import { toast } from 'react-toastify';
 import { readNotification } from '../services/api';
 import { Notification } from '../services/api-types';
-import { useJwtToken } from '../state/logged-user';
 
 type NotificationItemProps = {
 	notification: Notification;
@@ -14,14 +13,11 @@ export const NotificationItem: FC<NotificationItemProps> = ({
 	notification,
 	refetchNotifications,
 }) => {
-	const jwtToken = useJwtToken();
 	const isUnread = notification.status === 'Unread';
 
 	const markAsReadMtt = useMutation(
 		async () => {
-			if (!jwtToken) return;
-
-			return await readNotification(jwtToken, notification.id);
+			return await readNotification(notification.id);
 		},
 		{
 			onSuccess: () => {

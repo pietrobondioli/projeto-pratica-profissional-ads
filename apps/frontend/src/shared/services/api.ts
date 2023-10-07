@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify';
+import { useLoggedUserStore } from '../state/logged-user';
 import {
 	Chat,
 	ChatWithMessages,
@@ -15,12 +17,32 @@ import {
 
 const API_URL = import.meta.env.VITE_API_URL as string;
 
-export async function login(email: string, password: string) {
-	const response = await fetch(`${API_URL}/auth/login`, {
-		method: 'POST',
+export async function apiFetch(
+	url: string,
+	options?: RequestInit,
+): Promise<Response> {
+	const authToken = useLoggedUserStore.getState().state.jwtToken;
+
+	const response = await apiFetch(`${API_URL}${url}`, {
+		...options,
 		headers: {
 			'Content-Type': 'application/json',
+			...options?.headers,
+			...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
 		},
+	});
+
+	if (response.status === 401) {
+		useLoggedUserStore.getState().actions.LOGOUT();
+		toast.error('Sua sessão expirou, faça login novamente');
+	}
+
+	return response;
+}
+
+export async function login(email: string, password: string) {
+	const response = await apiFetch(`${API_URL}/auth/login`, {
+		method: 'POST',
 		body: JSON.stringify({ email, password }),
 	});
 
@@ -34,11 +56,8 @@ export async function login(email: string, password: string) {
 }
 
 export async function createUser(body: { email: string; password: string }) {
-	const response = await fetch(`${API_URL}/users`, {
+	const response = await apiFetch(`${API_URL}/users`, {
 		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-		},
 		body: JSON.stringify(body),
 	});
 
@@ -52,7 +71,7 @@ export async function createUser(body: { email: string; password: string }) {
 }
 
 export async function getUser(userId: string) {
-	const response = await fetch(`${API_URL}/users/${userId}`);
+	const response = await apiFetch(`${API_URL}/users/${userId}`);
 
 	if (!response.ok) {
 		const error = await response.json();
@@ -63,12 +82,8 @@ export async function getUser(userId: string) {
 	return user as User;
 }
 
-export async function getMe(authToken: string) {
-	const response = await fetch(`${API_URL}/users/me`, {
-		headers: {
-			Authorization: `Bearer ${authToken}`,
-		},
-	});
+export async function getMe() {
+	const response = await apiFetch(`${API_URL}/users/me`);
 
 	if (!response.ok) {
 		const error = await response.json();
@@ -80,7 +95,7 @@ export async function getMe(authToken: string) {
 }
 
 export async function requestConfirmAccountToken(body: { email: string }) {
-	const response = await fetch(
+	const response = await apiFetch(
 		`${API_URL}/users/request-confirm-account-token`,
 		{
 			method: 'POST',
@@ -98,11 +113,8 @@ export async function requestConfirmAccountToken(body: { email: string }) {
 }
 
 export async function confirmAccount(body: { token: string }) {
-	const response = await fetch(`${API_URL}/users/confirm-account`, {
+	const response = await apiFetch(`${API_URL}/users/confirm-account`, {
 		method: 'GET',
-		headers: {
-			'Content-Type': 'application/json',
-		},
 		body: JSON.stringify(body),
 	});
 
@@ -115,18 +127,9 @@ export async function confirmAccount(body: { token: string }) {
 	return confirmedUser as IdResponse;
 }
 
-export async function requestChangeEmail(
-	authToken: string,
-	body: {
-		newEmail: string;
-	},
-) {
-	const response = await fetch(`${API_URL}/users/request-change-email`, {
+export async function requestChangeEmail(body: { newEmail: string }) {
+	const response = await apiFetch(`${API_URL}/users/request-change-email`, {
 		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${authToken}`,
-		},
 		body: JSON.stringify(body),
 	});
 
@@ -137,11 +140,8 @@ export async function requestChangeEmail(
 }
 
 export async function changeEmail(body: { email: string; newEmail: string }) {
-	const response = await fetch(`${API_URL}/users/change-email`, {
+	const response = await apiFetch(`${API_URL}/users/change-email`, {
 		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-		},
 		body: JSON.stringify(body),
 	});
 
@@ -152,13 +152,13 @@ export async function changeEmail(body: { email: string; newEmail: string }) {
 }
 
 export async function requestChangePassword(body: { email: string }) {
-	const response = await fetch(`${API_URL}/users/request-change-password`, {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
+	const response = await apiFetch(
+		`${API_URL}/users/request-change-password`,
+		{
+			method: 'POST',
+			body: JSON.stringify(body),
 		},
-		body: JSON.stringify(body),
-	});
+	);
 
 	if (!response.ok) {
 		const error = await response.json();
@@ -170,11 +170,8 @@ export async function changePassword(body: {
 	email: string;
 	newPassword: string;
 }) {
-	const response = await fetch(`${API_URL}/users/change-password`, {
+	const response = await apiFetch(`${API_URL}/users/change-password`, {
 		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-		},
 		body: JSON.stringify(body),
 	});
 
@@ -184,23 +181,16 @@ export async function changePassword(body: {
 	}
 }
 
-export async function updateUserProfile(
-	authToken: string,
-	body: {
-		firstName?: string;
-		lastName?: string;
-		contact?: string;
-		address?: string;
-		description?: string;
-		profilePictureId?: string;
-	},
-) {
-	const response = await fetch(`${API_URL}/users/profile`, {
+export async function updateUserProfile(body: {
+	firstName?: string;
+	lastName?: string;
+	contact?: string;
+	address?: string;
+	description?: string;
+	profilePictureId?: string;
+}) {
+	const response = await apiFetch(`${API_URL}/users/profile`, {
 		method: 'PATCH',
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${authToken}`,
-		},
 		body: JSON.stringify(body),
 	});
 
@@ -213,20 +203,13 @@ export async function updateUserProfile(
 	return updatedUser as IdResponse;
 }
 
-export async function createReservation(
-	authToken: string,
-	request: {
-		equipmentId: string;
-		startDate: string;
-		endDate: string;
-	},
-) {
-	const response = await fetch(`${API_URL}/reservations`, {
+export async function createReservation(request: {
+	equipmentId: string;
+	startDate: string;
+	endDate: string;
+}) {
+	const response = await apiFetch(`${API_URL}/reservations`, {
 		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${authToken}`,
-		},
 		body: JSON.stringify(request),
 	});
 
@@ -239,17 +222,13 @@ export async function createReservation(
 	return createdReservation as IdResponse;
 }
 
-export async function cancelReservation(
-	authToken: string,
-	reservationId: string,
-) {
-	const response = await fetch(`${API_URL}/reservations/${reservationId}`, {
-		method: 'DELETE',
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${authToken}`,
+export async function cancelReservation(reservationId: string) {
+	const response = await apiFetch(
+		`${API_URL}/reservations/${reservationId}`,
+		{
+			method: 'DELETE',
 		},
-	});
+	);
 
 	if (!response.ok) {
 		const error = await response.json();
@@ -257,12 +236,8 @@ export async function cancelReservation(
 	}
 }
 
-export async function getReservation(id: string, authToken: string) {
-	const response = await fetch(`${API_URL}/reservations/${id}`, {
-		headers: {
-			Authorization: `Bearer ${authToken}`,
-		},
-	});
+export async function getReservation(id: string) {
+	const response = await apiFetch(`${API_URL}/reservations/${id}`);
 
 	if (!response.ok) {
 		const error = await response.json();
@@ -273,19 +248,11 @@ export async function getReservation(id: string, authToken: string) {
 	return reservation as Reservation;
 }
 
-export async function listReservations(
-	authToken: string,
-	request: PaginatedReq,
-) {
+export async function listReservations(request: PaginatedReq) {
 	const { limit, page, order } = request;
 
-	const response = await fetch(
+	const response = await apiFetch(
 		`${API_URL}/reservations?limit=${limit}&page=${page}&orderBy=${order?.field}:${order?.param}`,
-		{
-			headers: {
-				Authorization: `Bearer ${authToken}`,
-			},
-		},
 	);
 
 	if (!response.ok) {
@@ -297,19 +264,12 @@ export async function listReservations(
 	return reservations as PaginatedResponse<Reservation>;
 }
 
-export async function createChat(
-	authToken: string,
-	request: {
-		withUserId: string;
-		message: string;
-	},
-) {
-	const response = await fetch(`${API_URL}/chats`, {
+export async function createChat(request: {
+	withUserId: string;
+	message: string;
+}) {
+	const response = await apiFetch(`${API_URL}/chats`, {
 		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${authToken}`,
-		},
 		body: JSON.stringify(request),
 	});
 
@@ -323,18 +283,13 @@ export async function createChat(
 }
 
 export async function sendMessage(
-	authToken: string,
 	chatId: string,
 	request: {
 		message: string;
 	},
 ) {
-	const response = await fetch(`${API_URL}/chats/${chatId}/send-message`, {
+	const response = await apiFetch(`${API_URL}/chats/${chatId}/send-message`, {
 		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${authToken}`,
-		},
 		body: JSON.stringify(request),
 	});
 
@@ -347,12 +302,8 @@ export async function sendMessage(
 	return sentMessage as IdResponse;
 }
 
-export async function getChat(authToken: string, chatId: string) {
-	const response = await fetch(`${API_URL}/chats/${chatId}`, {
-		headers: {
-			Authorization: `Bearer ${authToken}`,
-		},
-	});
+export async function getChat(chatId: string) {
+	const response = await apiFetch(`${API_URL}/chats/${chatId}`);
 
 	if (!response.ok) {
 		const error = await response.json();
@@ -364,22 +315,16 @@ export async function getChat(authToken: string, chatId: string) {
 }
 
 export async function listChats(
-	authToken: string,
 	request: PaginatedReq & {
 		targetUserSearch?: string;
 	},
 ) {
 	const { targetUserSearch, limit, page, order } = request;
 
-	const response = await fetch(
+	const response = await apiFetch(
 		`${API_URL}/chats?targetUserSearch=${
 			targetUserSearch || ''
 		}&limit=${limit}&page=${page}&orderBy=${order?.field}:${order?.param}`,
-		{
-			headers: {
-				Authorization: `Bearer ${authToken}`,
-			},
-		},
 	);
 
 	if (!response.ok) {
@@ -391,21 +336,14 @@ export async function listChats(
 	return chats as PaginatedResponse<Chat>;
 }
 
-export async function createEquipment(
-	authToken: string,
-	request: {
-		title: string;
-		description: string;
-		photoId: string;
-		pricePerDay: number;
-	},
-) {
-	const response = await fetch(`${API_URL}/equipments`, {
+export async function createEquipment(request: {
+	title: string;
+	description: string;
+	photoId: string;
+	pricePerDay: number;
+}) {
+	const response = await apiFetch(`${API_URL}/equipments`, {
 		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${authToken}`,
-		},
 		body: JSON.stringify(request),
 	});
 
@@ -419,7 +357,6 @@ export async function createEquipment(
 }
 
 export async function updateEquipment(
-	authToken: string,
 	equipmentId: string,
 	request: {
 		title?: string;
@@ -428,12 +365,8 @@ export async function updateEquipment(
 		pricePerDay?: number;
 	},
 ) {
-	const response = await fetch(`${API_URL}/equipments/${equipmentId}`, {
+	const response = await apiFetch(`${API_URL}/equipments/${equipmentId}`, {
 		method: 'PATCH',
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${authToken}`,
-		},
 		body: JSON.stringify(request),
 	});
 
@@ -446,13 +379,9 @@ export async function updateEquipment(
 	return updatedEquipment as IdResponse;
 }
 
-export async function deleteEquipment(authToken: string, equipmentId: string) {
-	const response = await fetch(`${API_URL}/equipments/${equipmentId}`, {
+export async function deleteEquipment(equipmentId: string) {
+	const response = await apiFetch(`${API_URL}/equipments/${equipmentId}`, {
 		method: 'DELETE',
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${authToken}`,
-		},
 	});
 
 	if (!response.ok) {
@@ -462,7 +391,7 @@ export async function deleteEquipment(authToken: string, equipmentId: string) {
 }
 
 export async function getEquipment(equipmentId: string) {
-	const response = await fetch(`${API_URL}/equipments/${equipmentId}`);
+	const response = await apiFetch(`${API_URL}/equipments/${equipmentId}`);
 
 	if (!response.ok) {
 		const error = await response.json();
@@ -481,7 +410,7 @@ export async function listEquipments(
 ) {
 	const { title = '', userId = '', limit, page, order } = request;
 
-	const response = await fetch(
+	const response = await apiFetch(
 		`${API_URL}/equipments?title=${title}&userId=${userId}&limit=${limit}&page=${page}${
 			order ? `&orderBy=${order?.field}:${order?.param}` : ''
 		}`,
@@ -505,7 +434,7 @@ export async function getEquipmentAvailability(
 ) {
 	const { startDate, endDate } = request;
 
-	const response = await fetch(
+	const response = await apiFetch(
 		`${API_URL}/equipments/${equipmentId}/availability?startDate=${startDate}&endDate=${endDate}`,
 	);
 
@@ -521,20 +450,13 @@ export async function getEquipmentAvailability(
 	return availability;
 }
 
-export async function createFeedback(
-	authToken: string,
-	request: {
-		reservationId: string;
-		rating: number;
-		comment: string;
-	},
-) {
-	const response = await fetch(`${API_URL}/feedbacks`, {
+export async function createFeedback(request: {
+	reservationId: string;
+	rating: number;
+	comment: string;
+}) {
+	const response = await apiFetch(`${API_URL}/feedbacks`, {
 		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${authToken}`,
-		},
 		body: JSON.stringify(request),
 	});
 
@@ -548,19 +470,14 @@ export async function createFeedback(
 }
 
 export async function updateFeedback(
-	authToken: string,
 	feedbackId: string,
 	request: {
 		rating: number;
 		comment: string;
 	},
 ) {
-	const response = await fetch(`${API_URL}/feedbacks/${feedbackId}`, {
+	const response = await apiFetch(`${API_URL}/feedbacks/${feedbackId}`, {
 		method: 'PATCH',
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${authToken}`,
-		},
 		body: JSON.stringify(request),
 	});
 
@@ -573,13 +490,9 @@ export async function updateFeedback(
 	return updatedFeedback as IdResponse;
 }
 
-export async function deleteFeedback(authToken: string, feedbackId: string) {
-	const response = await fetch(`${API_URL}/feedbacks/${feedbackId}`, {
+export async function deleteFeedback(feedbackId: string) {
+	const response = await apiFetch(`${API_URL}/feedbacks/${feedbackId}`, {
 		method: 'DELETE',
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${authToken}`,
-		},
 	});
 
 	if (!response.ok) {
@@ -588,12 +501,8 @@ export async function deleteFeedback(authToken: string, feedbackId: string) {
 	}
 }
 
-export async function getFeedback(authToken: string, feedbackId: string) {
-	const response = await fetch(`${API_URL}/feedback/${feedbackId}`, {
-		headers: {
-			Authorization: `Bearer ${authToken}`,
-		},
-	});
+export async function getFeedback(feedbackId: string) {
+	const response = await apiFetch(`${API_URL}/feedback/${feedbackId}`);
 
 	if (!response.ok) {
 		const error = await response.json();
@@ -608,19 +517,13 @@ export async function listFeedbacks(
 	request: PaginatedReq & {
 		userId?: string;
 	},
-	authToken: string,
 ) {
 	const { userId, limit, page, order } = request;
 
-	const response = await fetch(
+	const response = await apiFetch(
 		`${API_URL}/feedback?userId=${
 			userId || ''
 		}&limit=${limit}&page=${page}&orderBy=${order?.field}:${order?.param}`,
-		{
-			headers: {
-				Authorization: `Bearer ${authToken}`,
-			},
-		},
 	);
 
 	if (!response.ok) {
@@ -632,15 +535,13 @@ export async function listFeedbacks(
 	return feedbacks as PaginatedResponse<Feedback>;
 }
 
-export async function uploadMedia(authToken: string, file: File) {
+export async function uploadMedia(file: File) {
 	const formData = new FormData();
 	formData.append('file', file);
 
-	const response = await fetch(`${API_URL}/media/upload`, {
+	const response = await apiFetch(`${API_URL}/media/upload`, {
 		method: 'POST',
-		headers: {
-			Authorization: `Bearer ${authToken}`,
-		},
+
 		body: formData,
 	});
 
@@ -654,7 +555,7 @@ export async function uploadMedia(authToken: string, file: File) {
 }
 
 export async function getMedia(mediaId: string) {
-	const response = await fetch(`${API_URL}/media/${mediaId}`);
+	const response = await apiFetch(`${API_URL}/media/${mediaId}`);
 
 	if (!response.ok) {
 		const error = await response.json();
@@ -665,17 +566,11 @@ export async function getMedia(mediaId: string) {
 	return media as Media;
 }
 
-export async function readNotification(
-	authToken: string,
-	notificationId: string,
-) {
-	const response = await fetch(
+export async function readNotification(notificationId: string) {
+	const response = await apiFetch(
 		`${API_URL}/notifications/${notificationId}/read`,
 		{
 			method: 'PATCH',
-			headers: {
-				Authorization: `Bearer ${authToken}`,
-			},
 		},
 	);
 
@@ -685,13 +580,11 @@ export async function readNotification(
 	}
 }
 
-export async function getUserNotifications(authToken: string) {
+export async function getUserNotifications() {
 	// TODO: add a infinite scroll to notification page using this query
-	const response = await fetch(`${API_URL}/notifications?limit=100&page=1`, {
-		headers: {
-			Authorization: `Bearer ${authToken}`,
-		},
-	});
+	const response = await apiFetch(
+		`${API_URL}/notifications?limit=100&page=1`,
+	);
 
 	if (!response.ok) {
 		const error = await response.json();

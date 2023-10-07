@@ -2,22 +2,18 @@ import { Container } from '#/fe/shared/components/container';
 import { ReservationItem } from '#/fe/shared/components/reservation-item';
 import { Skeleton } from '#/fe/shared/components/ui/skeleton';
 import { listReservations } from '#/fe/shared/services/api';
-import { useJwtToken } from '#/fe/shared/state/logged-user';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 export default function UserReservationListPage() {
 	const [page, setPage] = useState(1);
-	const jwtToken = useJwtToken();
 
 	const {
 		isLoading,
 		data: reservations,
 		refetch,
 	} = useQuery(['reservations', page], () => {
-		if (!jwtToken) return;
-
-		return listReservations(jwtToken, {
+		return listReservations({
 			limit: 10,
 			page,
 		});

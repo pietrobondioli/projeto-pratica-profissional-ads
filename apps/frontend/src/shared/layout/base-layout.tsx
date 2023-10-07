@@ -11,7 +11,7 @@ import { useIsLogged, useLoggedUserActions } from '../state/logged-user';
 const NavBar = () => {
 	const navigate = useNavigate();
 	const userIsLogged = useIsLogged();
-	const { logout } = useLoggedUserActions();
+	const { LOGOUT } = useLoggedUserActions();
 
 	return (
 		<div className="flex justify-between items-center p-4 bg-white shadow-md w-full fixed">
@@ -52,7 +52,7 @@ const NavBar = () => {
 						</MenuItem>
 						<MenuItem
 							onSelect={() => {
-								logout();
+								LOGOUT();
 								navigate(ROUTES.HOME);
 							}}
 						>

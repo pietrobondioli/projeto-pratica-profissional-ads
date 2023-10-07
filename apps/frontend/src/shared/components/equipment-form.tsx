@@ -13,7 +13,6 @@ import {
 	uploadMedia,
 } from '../services/api';
 import { Equipment } from '../services/api-types';
-import { useJwtToken } from '../state/logged-user';
 import { FormItem, FormLabel, FormMessage } from './form';
 import { Input } from './input';
 import { PhotoUploadInput } from './photo-upload-input';
@@ -34,7 +33,6 @@ type EquipmentFormProps = {
 
 export const EquipmentForm = ({ equipment }: EquipmentFormProps) => {
 	const navigate = useNavigate();
-	const jwtToken = useJwtToken();
 
 	const { data: media } = useQuery(
 		['media', equipment?.photo.id],
@@ -73,9 +71,7 @@ export const EquipmentForm = ({ equipment }: EquipmentFormProps) => {
 
 	const uploadMediaMtt = useMutation(
 		async (file: File) => {
-			if (!jwtToken) return;
-
-			return await uploadMedia(jwtToken, file);
+			return await uploadMedia(file);
 		},
 		{
 			onSuccess: (media) => {
@@ -92,9 +88,9 @@ export const EquipmentForm = ({ equipment }: EquipmentFormProps) => {
 
 	const updateEquipMtt = useMutation(
 		async (data: EquipmentSchema) => {
-			if (!jwtToken || !equipment?.id) return;
+			if (!equipment?.id) return;
 
-			return await updateEquipment(jwtToken, equipment.id, {
+			return await updateEquipment(equipment.id, {
 				title: data.title,
 				description: data.description,
 				pricePerDay: data.pricePerDay,
@@ -114,15 +110,13 @@ export const EquipmentForm = ({ equipment }: EquipmentFormProps) => {
 
 	const createEquipMtt = useMutation(
 		async (data: EquipmentSchema) => {
-			if (!jwtToken) return;
-
 			if (!data.photoId) {
 				throw new Error(
 					'Você precisa enviar uma imagem para criar um equipamento',
 				);
 			}
 
-			return await createEquipment(jwtToken, {
+			return await createEquipment({
 				title: data.title,
 				description: data.description,
 				pricePerDay: data.pricePerDay,

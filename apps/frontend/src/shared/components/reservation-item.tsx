@@ -5,7 +5,7 @@ import { generatePath, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { cancelReservation, getEquipment, getUser } from '../services/api';
 import { Reservation } from '../services/api-types';
-import { useJwtToken, useLoggedUser } from '../state/logged-user';
+import { useLoggedUser } from '../state/logged-user';
 
 type ReservationItemProps = {
 	reservation: Reservation;
@@ -17,7 +17,7 @@ export function ReservationItem({
 	refetchItems,
 }: ReservationItemProps) {
 	const loggedUser = useLoggedUser();
-	const jwtToken = useJwtToken();
+
 	const navigate = useNavigate();
 
 	const { data: equipment } = useQuery(
@@ -45,9 +45,7 @@ export function ReservationItem({
 
 	const cancelReservationMtt = useMutation(
 		async (reservationId: string) => {
-			if (!jwtToken) return;
-
-			return await cancelReservation(jwtToken, reservationId);
+			return await cancelReservation(reservationId);
 		},
 		{
 			onSuccess: () => {

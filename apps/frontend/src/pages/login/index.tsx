@@ -39,13 +39,17 @@ export function LoginPage() {
 	});
 
 	const navigate = useNavigate();
-	const { login: loginAction } = useLoggedUserActions();
+	const { LOGIN, SET_USER } = useLoggedUserActions();
 
 	const loginMutation = useMutation(
 		async (data: LoginData) => {
 			const loginRes = await login(data.email, data.password);
 
-			const user = await getMe(loginRes.token);
+			LOGIN(loginRes.token);
+
+			const user = await getMe();
+
+			SET_USER(user);
 
 			return {
 				jwtToken: loginRes.token,
@@ -53,8 +57,7 @@ export function LoginPage() {
 			};
 		},
 		{
-			onSuccess: (token) => {
-				loginAction(token.jwtToken, token.user);
+			onSuccess: () => {
 				if (returnTo) {
 					navigate(returnTo);
 					return;

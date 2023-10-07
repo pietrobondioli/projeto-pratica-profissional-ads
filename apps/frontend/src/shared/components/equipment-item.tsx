@@ -6,7 +6,7 @@ import { generatePath, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { deleteEquipment, getMedia, getUser } from '../services/api';
 import { Equipment } from '../services/api-types';
-import { useJwtToken, useLoggedUser } from '../state/logged-user';
+import { useLoggedUser } from '../state/logged-user';
 import {
 	Card,
 	CardContent,
@@ -28,7 +28,7 @@ export const EquipmentItem = ({
 	goToEquipment,
 }: EquipmentItemProps) => {
 	const navigate = useNavigate();
-	const jwtToken = useJwtToken();
+
 	const loggedUser = useLoggedUser();
 
 	const { data: owner } = useQuery(['user', equipment.owner.id], async () => {
@@ -56,9 +56,7 @@ export const EquipmentItem = ({
 
 	const deleteMtt = useMutation(
 		async () => {
-			if (!jwtToken) return;
-
-			await deleteEquipment(jwtToken, equipment.id);
+			await deleteEquipment(equipment.id);
 		},
 		{
 			onSuccess: () => {

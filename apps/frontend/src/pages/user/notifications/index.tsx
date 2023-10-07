@@ -3,19 +3,16 @@ import { NotificationItem } from '#/fe/shared/components/notification-item';
 import { Skeleton } from '#/fe/shared/components/ui/skeleton';
 import { getUserNotifications } from '#/fe/shared/services/api';
 import { Notification } from '#/fe/shared/services/api-types';
-import { useJwtToken, useLoggedUser } from '#/fe/shared/state/logged-user';
+import { useLoggedUser } from '#/fe/shared/state/logged-user';
 import { useQuery } from '@tanstack/react-query';
 
 export default function UserNotificationListPage() {
 	const loggedUser = useLoggedUser();
-	const jwtToken = useJwtToken();
 
 	const { data: notifications, isLoading } = useQuery(
-		['notifications', jwtToken],
+		['notifications'],
 		() => {
-			if (!jwtToken) return;
-
-			return getUserNotifications(jwtToken);
+			return getUserNotifications();
 		},
 		{ enabled: !!loggedUser?.id },
 	);

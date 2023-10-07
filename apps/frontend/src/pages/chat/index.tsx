@@ -7,7 +7,7 @@ import { Input } from '#/fe/shared/components/input';
 import { Button } from '#/fe/shared/components/ui/button';
 import { getChat, listChats, sendMessage } from '#/fe/shared/services/api';
 import { Chat } from '#/fe/shared/services/api-types';
-import { useJwtToken, useLoggedUser } from '#/fe/shared/state/logged-user';
+import { useLoggedUser } from '#/fe/shared/state/logged-user';
 import { toast } from 'react-toastify';
 
 function ChatList({
@@ -39,10 +39,9 @@ function ChatList({
 
 function ChatBox({ chatId }: { chatId: string }) {
 	const loggedUser = useLoggedUser();
-	const loggedJwt = useJwtToken();
 
-	const chatQry = useQuery(['chat', loggedJwt, chatId], async () => {
-		if (loggedJwt) return getChat(loggedJwt, chatId);
+	const chatQry = useQuery(['chat', chatId], async () => {
+		return getChat(chatId);
 	});
 
 	const messages = chatQry.data?.messages ?? [];
@@ -51,9 +50,9 @@ function ChatBox({ chatId }: { chatId: string }) {
 
 	const sendMessageMtt = useMutation(
 		async (message: string) => {
-			if (!loggedJwt || !chatId) return;
+			if (!chatId) return;
 
-			return await sendMessage(loggedJwt, chatId, {
+			return await sendMessage(chatId, {
 				message,
 			});
 		},
@@ -137,23 +136,16 @@ function ChatBox({ chatId }: { chatId: string }) {
 function ChatPage() {
 	const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
 
-	const loggedJwt = useJwtToken();
-
 	const [page, setPage] = useState(1);
 	const [userSearch, setUserSearch] = useState('');
 
-	const { data: chats } = useQuery(
-		['chats', loggedJwt, page, userSearch],
-		() => {
-			if (!loggedJwt) return;
-
-			return listChats(loggedJwt, {
-				page,
-				limit: 50,
-				targetUserSearch: userSearch,
-			});
-		},
-	);
+	const { data: chats } = useQuery(['chats', page, userSearch], () => {
+		return listChats({
+			page,
+			limit: 50,
+			targetUserSearch: userSearch,
+		});
+	});
 
 	return (
 		<Container className="max-h-screen flex">

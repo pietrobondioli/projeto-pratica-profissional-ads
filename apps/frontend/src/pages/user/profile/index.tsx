@@ -4,7 +4,6 @@ import { Input } from '#/fe/shared/components/input';
 import { Avatar, AvatarImage } from '#/fe/shared/components/ui/avatar';
 import { Button } from '#/fe/shared/components/ui/button';
 import { getMe, getMedia, updateUserProfile } from '#/fe/shared/services/api';
-import { useJwtToken } from '#/fe/shared/state/logged-user';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useEffect, useMemo, useState } from 'react';
@@ -23,17 +22,9 @@ const userProfileSchema = z.object({
 type UserProfile = z.infer<typeof userProfileSchema>;
 
 function UserProfilePage() {
-	const jwtToken = useJwtToken();
-	const { data: user, isLoading } = useQuery(
-		['userProfile', jwtToken],
-		async () => {
-			if (!jwtToken) {
-				throw new Error('No JWT token.');
-			}
-
-			return getMe(jwtToken);
-		},
-	);
+	const { data: user, isLoading } = useQuery(['userProfile'], async () => {
+		return getMe();
+	});
 
 	const { data: media } = useQuery(
 		['media', user?.userProfile.profilePicture?.id],
@@ -89,8 +80,7 @@ function UserProfilePage() {
 
 	const updateProfile = useMutation(
 		async (updatedProfile: UserProfile) => {
-			if (jwtToken)
-				return await updateUserProfile(jwtToken, updatedProfile);
+			return await updateUserProfile(updatedProfile);
 		},
 		{
 			onSuccess: () => {
