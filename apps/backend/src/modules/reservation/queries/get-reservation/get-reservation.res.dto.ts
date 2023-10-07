@@ -10,6 +10,8 @@ class UserDto extends ResponseBase {}
 
 class PaymentDto extends ResponseBase {}
 
+class FeedbackDto extends ResponseBase {}
+
 export class GetReservationResDto extends ResponseBase {
   @Expose()
   @Type(() => EquipmentDto)
@@ -72,4 +74,12 @@ export class GetReservationResDto extends ResponseBase {
     description: 'Payment id object',
   })
   payment: PaymentDto;
+
+  @Expose()
+  @Type(() => FeedbackDto)
+  @ApiProperty({
+    type: () => [FeedbackDto],
+    description: 'Array of feedbacks',
+  })
+  feedbacks: FeedbackDto[];
 }

@@ -38,7 +38,7 @@ export class GetReservationQueryHandler
           },
         },
       ],
-      relations: ['equipment', 'renter', 'rentee', 'payment'],
+      relations: ['equipment', 'renter', 'rentee', 'payment', 'feedbacks'],
     });
 
     if (!reservation) {

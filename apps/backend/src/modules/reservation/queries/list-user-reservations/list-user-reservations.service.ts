@@ -40,7 +40,7 @@ export class ListUserReservationsQueryHandler
       order: {
         [order.field]: order.param,
       },
-      relations: ['equipment', 'renter', 'rentee', 'payment'],
+      relations: ['equipment', 'renter', 'rentee', 'payment', 'feedbacks'],
     });
 
     return new Ok({
