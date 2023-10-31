@@ -27,7 +27,7 @@ function ChatList({
 					onClick={() => onSelectChat(chat)}
 					className="w-full text-left p-4 hover:bg-gray-200 cursor-pointer border-b"
 				>
-					Chat with:{' '}
+					Chat com:{' '}
 					{chat.user1.id === loggedUser?.id
 						? `${chat.user2.userProfile.firstName} ${chat.user2.userProfile.lastName}`
 						: `${chat.user1.userProfile.firstName} ${chat.user1.userProfile.lastName}`}
@@ -62,7 +62,7 @@ function ChatBox({ chatId }: { chatId: string }) {
 				chatQry.refetch();
 			},
 			onSuccess: () => {
-				toast.success('Message sent!');
+				toast.success('Mensagem enviada!');
 			},
 			onError: (err: any) => {
 				chatQry.refetch();
@@ -106,11 +106,17 @@ function ChatBox({ chatId }: { chatId: string }) {
 								<div className="flex justify-between items-center mb-2 gap-2">
 									<div className="font-bold">
 										{message.sender.id === loggedUser?.id
-											? 'You'
+											? 'Você'
 											: message.sender.userProfile
 													.firstName}
 									</div>
-									<div className="text-sm text-gray-500">
+									<div
+										className={`text-sm ${
+											message.sender.id === loggedUser?.id
+												? 'text-white'
+												: 'text-gray-500'
+										}`}
+									>
 										{new Date(
 											message.createdAt,
 										).toLocaleString()}
@@ -126,14 +132,14 @@ function ChatBox({ chatId }: { chatId: string }) {
 				<div className="flex">
 					<Input
 						name="message"
-						placeholder="Type a message..."
+						placeholder="Digite sua mensagem..."
 						className="flex-grow mr-2"
 						value={message}
 						onChange={(e) => setMessage(e.target.value)}
 						onKeyDown={handleKeyDown}
 					/>
 					<Button onClick={() => sendMessageMtt.mutate(message)}>
-						Send
+						Enviar
 					</Button>
 				</div>
 			</div>

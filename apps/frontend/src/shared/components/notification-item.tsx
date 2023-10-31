@@ -57,7 +57,7 @@ export const NotificationItem: FC<NotificationItemProps> = ({
 					className="text-sm font-medium text-gray-500 hover:text-gray-700 ml-4"
 					disabled={markAsReadMtt.isLoading}
 				>
-					Mark as read
+					Marcar como lida
 				</button>
 			)}
 		</div>
