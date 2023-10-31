@@ -1,4 +1,4 @@
-import { Controller, HttpStatus, Param, Post, Res } from '@nestjs/common';
+import { Controller, HttpStatus, Param, Patch, Res } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
@@ -20,7 +20,7 @@ import { ReadNotificationReqParamsDto } from './read-notification.req.params.dto
 export class ReadNotificationHttpController {
   constructor(private readonly commandBus: CommandBus) {}
 
-  @Post(routesV1.notification.commands.read)
+  @Patch(routesV1.notification.commands.read)
   @ApiOperation({ summary: 'Mark a notification as read' })
   @ApiResponse({
     status: HttpStatus.OK,
