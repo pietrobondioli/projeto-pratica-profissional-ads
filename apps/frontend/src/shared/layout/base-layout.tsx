@@ -29,7 +29,7 @@ const NavBar = () => {
 			{userIsLogged ? (
 				<NavigationMenu>
 					<MenuIcon>
-						<Avatar src={userPictureUrl} alt="Profile Picture">
+						<Avatar src={userPictureUrl} alt="Foto do perfil">
 							<FaUserAlt />
 						</Avatar>
 					</MenuIcon>

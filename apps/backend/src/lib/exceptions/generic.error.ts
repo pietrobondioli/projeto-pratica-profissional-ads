@@ -12,11 +12,7 @@ export class GenericError extends ExceptionBase {
     httpStatus?: string | number,
     metadata?: unknown,
   ) {
-    super(
-      message ?? cause?.message ?? `Something went wrong.`,
-      cause,
-      metadata,
-    );
+    super(message ?? cause?.message ?? `Algo deu errado.`, cause, metadata);
     if (originalStack) {
       this.stack = originalStack;
     }
