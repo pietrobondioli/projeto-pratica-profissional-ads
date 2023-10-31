@@ -126,7 +126,7 @@ function UserProfilePage() {
 			<div className="flex items-center justify-between mb-4">
 				<h2 className="text-2xl font-bold">Meu Perfil</h2>
 				<Button onClick={handleEditToggle}>
-					{isEditMode ? 'Cancel' : 'Edit'}
+					{isEditMode ? 'Cancelar' : 'Editar'}
 				</Button>
 			</div>
 
@@ -136,7 +136,7 @@ function UserProfilePage() {
 					className="flex gap-4 flex-col justify-stretch w-full"
 				>
 					<FormItem>
-						<FormLabel>Photo</FormLabel>
+						<FormLabel>Foto</FormLabel>
 						<PhotoUploadInput
 							defaultFileUrl={media?.url}
 							onSubmit={(file) => uploadMediaMtt.mutate(file)}
@@ -204,7 +204,7 @@ function UserProfilePage() {
 					{isEditMode && (
 						<div className="flex w-full">
 							<FormItem>
-								<Button type="submit">Save Changes</Button>
+								<Button type="submit">Salvar Alterações</Button>
 							</FormItem>
 						</div>
 					)}

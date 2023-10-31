@@ -156,14 +156,14 @@ export const EquipmentForm = ({ equipment }: EquipmentFormProps) => {
 				)}
 			</FormItem>
 			<FormItem>
-				<FormLabel>Description</FormLabel>
+				<FormLabel>Descrição</FormLabel>
 				<Input {...register('description')} placeholder="Descrição" />
 				{errors.description && (
 					<FormMessage>{errors.description.message}</FormMessage>
 				)}
 			</FormItem>
 			<FormItem>
-				<FormLabel>Price per day</FormLabel>
+				<FormLabel>Preço por dia</FormLabel>
 				<Input
 					type="number"
 					{...register('pricePerDay')}
@@ -174,14 +174,14 @@ export const EquipmentForm = ({ equipment }: EquipmentFormProps) => {
 				)}
 			</FormItem>
 			<FormItem>
-				<FormLabel>Photo</FormLabel>
+				<FormLabel>Foto</FormLabel>
 				<PhotoUploadInput
 					defaultFileUrl={media?.url}
 					onSubmit={(file) => uploadMediaMtt.mutate(file)}
 				/>
 			</FormItem>
 			<Button type="submit" variant="secondary">
-				{equipment?.id ? 'Save' : 'Create'}
+				{equipment?.id ? 'Salvar' : 'Criar'}
 			</Button>
 		</form>
 	);

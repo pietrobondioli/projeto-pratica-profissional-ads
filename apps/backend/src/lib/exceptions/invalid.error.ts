@@ -6,6 +6,6 @@ export abstract class InvalidError extends ExceptionBase {
   public readonly httpStatus = HttpStatus.BAD_REQUEST;
 
   constructor(entity: string, cause?: Error, metadata?: unknown) {
-    super(`Invalid ${entity}.`, cause, metadata);
+    super(`${entity} inválido.`, cause, metadata);
   }
 }

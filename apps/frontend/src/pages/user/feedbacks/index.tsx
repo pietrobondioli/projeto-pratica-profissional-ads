@@ -58,7 +58,7 @@ export default function UserFeedbackListPage() {
 							: 'bg-blue-500'
 					} text-white px-4 py-2 rounded-md`}
 				>
-					Previous
+					Anterior
 				</button>
 				<button
 					onClick={handleNextPageClick}
@@ -69,7 +69,7 @@ export default function UserFeedbackListPage() {
 							: 'bg-blue-500'
 					} text-white px-4 py-2 rounded-md`}
 				>
-					Next
+					Próxima
 				</button>
 			</div>
 		</Container>
