@@ -42,6 +42,26 @@ O projeto segue uma estrutura de monorepo contendo duas principais pastas: `back
 - **Yarn**
   - [Yarn](https://classic.yarnpkg.com/en/docs/install/#debian-stable)
 
+## Instruções Docker
+
+1. **Inicialização do Banco de Dados**:
+   ```bash
+   docker-compose up -d
+   ```
+
+2. **Execução de Migrations**:
+   ```bash
+   # Go to backend folder
+    cd apps/backend
+
+    # Run migrations
+    yarn typeorm migration:run
+
+    # Lembre-se de que a env database__uri deve estar configurada corretamente, leia mais em "Instruções Backend"
+    ```
+
+3. Pronto! Agora para checar você pode usar ferramentas como o [MySQL Workbench](https://www.mysql.com/products/workbench/) ou o [DBeaver](https://dbeaver.io/) para acessar uma visualização do banco de dados.
+
 ### Instruções Backend
 
 1. **Instalação das Dependências**:
