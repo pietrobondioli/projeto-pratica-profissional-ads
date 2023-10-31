@@ -110,7 +110,7 @@ function UserProfilePage() {
 		{
 			onSuccess: () => {
 				setIsEditMode(false);
-				toast.success('Profile updated successfully!');
+				toast.success('Perfil atualizado com sucesso!');
 			},
 		},
 	);
@@ -119,7 +119,7 @@ function UserProfilePage() {
 		updateProfile.mutate(updatedProfile);
 	};
 
-	if (isLoading || !user) return <div>Loading...</div>;
+	if (isLoading || !user) return <div>Carregando...</div>;
 
 	return (
 		<Container>

@@ -97,7 +97,7 @@ export function UserFeedbackItem({
 	const { data: equipment } = useQuery(
 		['equipment', reservation?.equipment.id],
 		() => {
-			if (!reservation) throw new Error('No reservation');
+			if (!reservation) throw new Error('Sem reserva');
 
 			return getEquipment(reservation?.equipment.id);
 		},
@@ -160,7 +160,7 @@ export function UserFeedbackItem({
 								</select>
 							) : (
 								<Input
-									placeholder="Rating"
+									placeholder="Avaliação"
 									{...register('rating')}
 									readOnly
 								/>
@@ -174,7 +174,7 @@ export function UserFeedbackItem({
 						<FormItem>
 							<FormLabel>Comentário</FormLabel>
 							<Textarea
-								placeholder="Rating"
+								placeholder="Avaliação"
 								{...register('comment')}
 								rows={5}
 							/>

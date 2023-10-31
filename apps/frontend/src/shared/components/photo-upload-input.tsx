@@ -95,7 +95,7 @@ export const PhotoUploadInput = ({
 					onClick={handleUploadClick}
 					disabled={!file}
 				>
-					{defaultFileUrl && file ? 'Replace' : 'Upload'}
+					{defaultFileUrl && file ? 'Substituir' : 'Upload'}
 				</button>
 			)}
 		</div>
