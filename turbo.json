@@ -12,6 +12,10 @@
 			"dependsOn": ["^build:lib"],
 			"cache": false
 		},
+		"start:prod": {
+			"dependsOn": ["^build:lib"],
+			"cache": false
+		},
 		"test": {
 			"dependsOn": ["build"],
 			"outputs": [],
