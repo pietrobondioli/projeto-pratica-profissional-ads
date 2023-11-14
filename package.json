@@ -12,6 +12,7 @@
 	"scripts": {
 		"prepare": "husky install",
 		"start:dev": "turbo run start:dev --parallel --no-cache",
+		"start:prod": "turbo run start:prod --parallel --no-cache",
 		"build": "turbo run build",
 		"frontend": "yarn workspace @/frontend start:dev",
 		"frontend:build": "yarn workspace @/frontend build",
