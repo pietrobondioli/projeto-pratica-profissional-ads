@@ -17,6 +17,7 @@
 		"frontend": "yarn workspace @/frontend start:dev",
 		"frontend:build": "yarn workspace @/frontend build",
 		"frontend:start:prod": "yarn workspace @/frontend start:prod",
+		"frontend:serve:prod": "yarn workspace @/frontend serve:prod",
 		"backend": "yarn workspace @/backend start:dev",
 		"backend:build": "yarn workspace @/backend build",
 		"backend:start:prod": "yarn workspace @/backend start:prod",
