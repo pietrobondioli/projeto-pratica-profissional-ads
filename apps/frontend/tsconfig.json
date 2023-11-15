@@ -19,6 +19,5 @@
 			"#/fe/*": ["./src/*"]
 		}
 	},
-	"include": ["src"],
 	"extends": "../../tsconfig.json"
 }
